@@ -449,8 +449,13 @@ function initSmokeBackground(){
       float t = uTime * 0.03; float n = 0.0; float amp=0.6; vec2 pp=p*1.5; 
       for(int i=0;i<4;i++){ n += noise(pp + t)*amp; pp*=1.9; amp*=0.55; }
       float glow = smoothstep(0.5,0.05,length(p));
-      vec3 col = mix(vec3(0.02,0.07,0.08), vec3(0.1,0.4,0.32), n*0.85);
-      col += (1.0-glow)*0.12;
+  // Farbverlauf Blau (dunkel -> cyan/blau glühend)
+  vec3 baseA = vec3(0.01,0.02,0.07);      // sehr dunkles Blau
+  vec3 baseB = vec3(0.05,0.20,0.55);      // mittleres Blau
+  vec3 accent = vec3(0.15,0.65,0.95);     // leuchtender Akzent
+  vec3 col = mix(baseA, baseB, n*0.9);
+  col = mix(col, accent, pow(n, 3.0)*0.85);
+  col += (1.0-glow)*0.10;
       gl_FragColor = vec4(col, 1.0); }`;
 
   function compile(type, src){

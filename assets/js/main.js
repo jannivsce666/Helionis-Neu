@@ -440,23 +440,51 @@ function initSmokeBackground(){
   if(!gl){ console.warn('WebGL nicht verfügbar – nur Fallback aktiv.'); return; }
 
   const vertSrc = `attribute vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}`;
+  // Fragment-Shader: restaurierter grün/türkiser Nebel
+  // Hinweis: Wenn du wieder Blau testen willst, unten einfach "#define PALETTE_GREEN" auskommentieren
   const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime; 
-    // Simple procedural noise-ish fog
+    // ======= Noise Basis =======
     float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453); }
     float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); 
       return mix(mix(hash(i+vec2(0.,0.)),hash(i+vec2(1.,0.)),f.x), mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x), f.y); }
-    void main(){ vec2 uv = gl_FragCoord.xy / uRes.xy; vec2 p = (uv-0.5); p.x *= uRes.x/uRes.y; 
-      float t = uTime * 0.03; float n = 0.0; float amp=0.6; vec2 pp=p*1.5; 
-      for(int i=0;i<4;i++){ n += noise(pp + t)*amp; pp*=1.9; amp*=0.55; }
-      float glow = smoothstep(0.5,0.05,length(p));
-  // Farbverlauf Blau (dunkel -> cyan/blau glühend)
-  vec3 baseA = vec3(0.01,0.02,0.07);      // sehr dunkles Blau
-  vec3 baseB = vec3(0.05,0.20,0.55);      // mittleres Blau
-  vec3 accent = vec3(0.15,0.65,0.95);     // leuchtender Akzent
-  vec3 col = mix(baseA, baseB, n*0.9);
-  col = mix(col, accent, pow(n, 3.0)*0.85);
-  col += (1.0-glow)*0.10;
-      gl_FragColor = vec4(col, 1.0); }`;
+    
+    // ======= Palette Switch =======
+    #define PALETTE_GREEN 1
+    
+    vec3 palette(float n){
+      #ifdef PALETTE_GREEN
+        // Dunkelgrün -> Türkis -> sanftes Glühen
+        vec3 a = vec3(0.007, 0.055, 0.050);   // sehr dunkel (nahe Schwarz mit Grün)
+        vec3 b = vec3(0.050, 0.320, 0.250);   // sattes Grün/Türkis
+        vec3 c = vec3(0.180, 0.820, 0.650);   // leuchtender Akzent
+      #else
+        // Alternative Blaupalette (falls später benötigt)
+        vec3 a = vec3(0.010, 0.020, 0.070);
+        vec3 b = vec3(0.050, 0.200, 0.550);
+        vec3 c = vec3(0.150, 0.650, 0.950);
+      #endif
+      vec3 col = mix(a, b, n);
+      // Sichtbarkeit verstärken: Übergang zum Akzent früher einsetzen
+      col = mix(col, c, smoothstep(0.55, 0.95, n));
+      return col;
+    }
+    
+    void main(){ 
+      vec2 uv = gl_FragCoord.xy / uRes.xy; 
+      vec2 p = (uv - 0.5); p.x *= uRes.x / uRes.y; 
+      float t = uTime * 0.035; 
+      float n = 0.0; float amp=0.65; vec2 pp=p*1.35; 
+      for(int i=0;i<5;i++){ n += noise(pp + t)*amp; pp*=1.85; amp*=0.55; }
+      n /= 1.0; // Normierung (locker)
+      // Leichter Zentrumsglow reduziert, damit Ränder nicht zu dunkel werden
+      float vign = smoothstep(0.8, 0.05, length(p));
+      vec3 col = palette(n);
+      // Feinhelligkeit – macht Nebel sichtbarer ohne alles auszuwaschen
+      col += (1.0 - vign) * 0.08;
+      // Leichte Nebelschleier-Körnung
+      col += (hash(p + t) - 0.5) * 0.015;
+      gl_FragColor = vec4(col, 1.0); 
+    }`;
 
   function compile(type, src){
     const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh);

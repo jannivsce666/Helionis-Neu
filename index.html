@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helionis - Mystische Spiritualität & Esoterik</title>
+    <meta name="description" content="Entdecken Sie die Welt der Spiritualität mit Helionis. Mystische Amulette, Pyramiden, Horoskope und spirituelle Beratung für Ihre persönliche Transformation.">
+    <meta name="keywords" content="Spiritualität, Esoterik, Amulette, Pyramiden, Horoskope, Orakel, mystisch">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Helionis - Mystische Spiritualität & Esoterik">
+    <meta property="og:description" content="Entdecken Sie die Welt der Spiritualität mit Helionis. Mystische Amulette, Pyramiden, Horoskope und spirituelle Beratung.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://helionis.de">
+    <meta property="og:image" content="https://helionis.de/assets/images/helionis-og.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
+    </noscript>
+</head>
+<body>
+    <!-- Ultrarealistischer WebGL Rauch -->
+    <canvas id="smoke-canvas"></canvas>
+    <div class="no-webgl-fallback"></div>
+    
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">HELIONIS</h1>
+            <p class="hero-subtitle">Die Welt der mystischen Spiritualität</p>
+            <p class="hero-description">
+                Tauchen Sie ein in eine Welt voller Geheimnisse und spiritueller Erkenntnisse. 
+                Entdecken Sie kraftvolle Amulette, mystische Pyramiden und persönliche Horoskope, 
+                die Ihnen auf Ihrem spirituellen Weg Führung und Schutz bieten.
+            </p>
+            <div class="hero-buttons">
+                <a href="shop.html" class="btn btn-primary mystical-glow">Jetzt entdecken</a>
+                <a href="about.html" class="btn btn-secondary">Mehr erfahren</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Categories -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Unsere mystischen Kategorien</h2>
+            <div class="product-grid">
+                <div class="product-card" onclick="location.href='shop.html?category=amulette'">
+                    <img src="assets/images/categories/amulette.svg" alt="Mystische Amulette" class="product-image" loading="lazy">
+                    <h3 class="product-title">Amulette</h3>
+                    <p class="product-description">
+                        Kraftvolle Schutzamulette und Talismane aus verschiedenen Kulturen. 
+                        Jedes Amulett trägt eine einzigartige Energie und spirituelle Bedeutung.
+                    </p>
+                    <a href="shop.html?category=amulette" class="btn btn-secondary">Entdecken</a>
+                </div>
+                
+                <div class="product-card" onclick="location.href='shop.html?category=pyramiden'">
+                    <img src="assets/images/categories/pyramiden.svg" alt="Energiepyramiden" class="product-image" loading="lazy">
+                    <h3 class="product-title">Pyramiden</h3>
+                    <p class="product-description">
+                        Energiepyramiden aus Edelsteinen und Kristallen zur Harmonisierung 
+                        und Verstärkung der spirituellen Energie in Ihrem Zuhause.
+                    </p>
+                    <a href="shop.html?category=pyramiden" class="btn btn-secondary">Entdecken</a>
+                </div>
+                
+                <div class="product-card" onclick="location.href='shop.html?category=wuerfel'">
+                    <img src="assets/images/categories/wuerfel.svg" alt="Mystische Würfel" class="product-image" loading="lazy">
+                    <h3 class="product-title">Würfel</h3>
+                    <p class="product-description">
+                        Spirituelle Würfel für Meditation und Divination. 
+                        Perfekt für die tägliche spirituelle Praxis und Selbstreflexion.
+                    </p>
+                    <a href="shop.html?category=wuerfel" class="btn btn-secondary">Entdecken</a>
+                </div>
+                
+                <div class="product-card" onclick="location.href='horoskop.html'">
+                    <img src="assets/images/categories/horoskope.svg" alt="Persönliche Horoskope" class="product-image" loading="lazy">
+                    <h3 class="product-title">Horoskope</h3>
+                    <p class="product-description">
+                        Detaillierte astrologische Analysen und personalisierte Horoskope 
+                        für tiefe Einblicke in Ihre spirituelle Reise.
+                    </p>
+                    <a href="horoskop.html" class="btn btn-secondary">Entdecken</a>
+                </div>
+                
+                <div class="product-card" onclick="location.href='shop.html?category=orakel'">
+                    <img src="assets/images/categories/orakel.svg" alt="Orakelkarten" class="product-image" loading="lazy">
+                    <h3 class="product-title">Orakel</h3>
+                    <p class="product-description">
+                        Orakelkarten und Wahrsageutensilien für spirituelle Führung 
+                        und die Erforschung verborgener Wahrheiten.
+                    </p>
+                    <a href="shop.html?category=orakel" class="btn btn-secondary">Entdecken</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Preview -->
+    <section class="section">
+        <div class="container">
+            <div class="card">
+                <h2 class="card-title text-center">Die Helionis-Philosophie</h2>
+                <p style="text-align: center; font-size: 1.1rem; line-height: 1.8; color: var(--silver);">
+                    Bei Helionis glauben wir an die transformative Kraft der Spiritualität. 
+                    Unsere sorgfältig ausgewählten Produkte sind mehr als nur Gegenstände – 
+                    sie sind Begleiter auf Ihrem Weg zur inneren Erkenntnis und spirituellen Entwicklung.
+                </p>
+                <p style="text-align: center; font-size: 1.1rem; line-height: 1.8; color: var(--silver); margin-top: 1rem;">
+                    Jedes unserer Produkte wird mit Respekt vor den alten Traditionen und dem Wissen 
+                    verschiedener Kulturen ausgewählt. Wir verstehen, dass spirituelle Reisen individuell sind, 
+                    und bieten Ihnen die Werkzeuge, die Sie auf Ihrem einzigartigen Pfad unterstützen.
+                </p>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="about.html" class="btn btn-primary">Unsere Geschichte</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products (aktualisiert) -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Ausgewählte Objekte</h2>
+            <div class="product-grid">
+                <div class="product-card" onclick="location.href='produkt-spirale.html'">
+                    <img src="assets/images/products/spirale.png" alt="Mystische Spirale" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystische Spirale</h3>
+                    <p class="product-price">149,99 €</p>
+                    <p class="product-description">
+                        Kraftvolles Meditationsobjekt zur Aktivierung von Klarheit, Fokus und innerem Wachstum.
+                    </p>
+                    <a href="produkt-spirale.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
+                </div>
+                <div class="product-card" onclick="location.href='produkt-pyramide.html'">
+                    <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystische Pyramide</h3>
+                    <p class="product-price">199,99 €</p>
+                    <p class="product-description">
+                        Energetisches Kraftzentrum zur Harmonisierung von Raumenergie und spiritueller Vertiefung.
+                    </p>
+                    <a href="produkt-pyramide.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
+                </div>
+                <div class="product-card" onclick="location.href='produkt-cube.html'">
+                    <img src="assets/images/products/cube.png" alt="Mystischer Würfel" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystischer Würfel</h3>
+                    <p class="product-price">119,99 €</p>
+                    <p class="product-description">
+                        Strukturierendes Orakelwerkzeug für klare Impulse bei Entscheidungen und Reflexion.
+                    </p>
+                    <a href="produkt-cube.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="shop.html" class="btn btn-secondary">Zum Shop</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="section">
+        <div class="container">
+            <div class="card text-center">
+                <h2 class="card-title">Bleiben Sie mit dem Kosmos verbunden</h2>
+                <p style="color: var(--silver); margin-bottom: 2rem;">
+                    Erhalten Sie exklusive spirituelle Einblicke, Mondkalender und besondere Angebote 
+                    direkt in Ihr E-Mail-Postfach.
+                </p>
+                <form class="newsletter-form" style="max-width: 400px; margin: 0 auto;">
+                    <div class="form-group">
+                        <input type="email" class="form-input" placeholder="Ihre E-Mail-Adresse" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        Anmelden
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <!-- Firebase and Auth (only load if needed) -->
+    <script type="module">
+        // Only load Firebase on pages that need it
+        if (window.location.pathname.includes('login') || window.location.pathname.includes('profile')) {
+            import('./assets/js/auth-state.js').catch(err => {
+                console.log('Auth not needed on this page');
+            });
+        } else {
+            // Lightweight auth state check for navigation
+            const userStatus = document.getElementById('user-status');
+            const userData = localStorage.getItem('helionis-user');
+            
+            if (userData && userStatus) {
+                try {
+                    const user = JSON.parse(userData);
+                    userStatus.textContent = user.displayName?.split(' ')[0] || 'Profil';
+                    userStatus.closest('a').href = 'profile.html';
+                } catch (e) {
+                    console.log('No user data found');
+                }
+            }
+        }
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Helionis",
+        "description": "Mystische Spiritualität & Esoterik - Amulette, Pyramiden, Horoskope",
+        "url": "https://helionis.de",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://helionis.de/shop.html?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warenkorb - Helionis | Spirituelle Produkte</title>
+    <meta name="description" content="Ihr Warenkorb bei Helionis. Überprüfen Sie Ihre spirituellen Produkte und gehen Sie zur sicheren Kasse.">
+    <meta name="keywords" content="Warenkorb, Kasse, spirituelle Produkte kaufen, Helionis Shop">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Warenkorb - Helionis">
+    <meta property="og:description" content="Ihr Warenkorb bei Helionis. Spirituelle Produkte sicher kaufen.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://helionis.de/cart.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+</head>
+<body>
+    <!-- Ultrarealistischer WebGL Rauch -->
+    <canvas id="smoke-canvas"></canvas>
+    <div class="no-webgl-fallback"></div>
+    
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon" style="color: var(--silver-light);"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> Login</a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Warenkorb Header -->
+    <section class="hero" style="min-height: 40vh; padding-top: 120px;">
+        <div class="hero-content">
+            <h1 class="hero-title" style="font-size: 3rem;">Ihr Warenkorb</h1>
+            <p class="hero-subtitle">Überprüfen Sie Ihre spirituellen Begleiter</p>
+        </div>
+    </section>
+    
+    <!-- Warenkorb Content -->
+    <section class="section">
+        <div class="container" style="max-width: 1000px;">
+            <div id="cart-empty" style="display: none;">
+                <div class="card text-center">
+                    <div style="font-size: 4rem; margin-bottom: 2rem;"><svg class="mystical-sprite xl"><use href="#cart"></use></svg></div>
+                    <h2 class="card-title">Ihr Warenkorb ist leer</h2>
+                    <p style="color: var(--silver); margin-bottom: 2rem;">
+                        Entdecken Sie unsere spirituellen Produkte und finden Sie Ihre perfekten Begleiter.
+                    </p>
+                    <a href="shop.html" class="btn btn-primary">Zum Shop</a>
+                </div>
+            </div>
+            
+            <div id="cart-content" style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
+                <!-- Warenkorb-Items -->
+                <div>
+                    <div class="card">
+                        <h2 class="card-title">Ihre Produkte</h2>
+                        <div id="cart-items">
+                            <!-- Wird dynamisch befüllt -->
+                        </div>
+                    </div>
+                    
+                    <!-- Gutscheincode -->
+                    <div class="card">
+                        <h3 class="card-title">Gutscheincode</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" class="form-input" id="coupon-code" placeholder="Gutscheincode eingeben" style="flex: 1; margin-bottom: 0;">
+                            <button class="btn btn-secondary" onclick="applyCoupon()">Einlösen</button>
+                        </div>
+                        <div id="coupon-message" style="margin-top: 1rem; display: none;"></div>
+                    </div>
+                    
+                    <!-- Versandinfo -->
+                    <div class="card">
+                        <h3 class="card-title">Versandinformationen</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="color: var(--mystical-green); font-size: 1.5rem;"><svg class="mystical-sprite large"><use href="#truck"></use></svg></div>
+                            <div>
+                                <strong style="color: var(--silver-light);">Kostenloser Versand ab 75€</strong>
+                                <div style="color: var(--silver); font-size: 0.9rem;">Noch <span id="free-shipping-remaining">0€</span> bis kostenloser Versand</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="color: var(--mystical-green); font-size: 1.5rem;"><svg class="mystical-sprite large"><use href="#package"></use></svg></div>
+                            <div>
+                                <strong style="color: var(--silver-light);">Lieferzeit: 2-4 Werktage</strong>
+                                <div style="color: var(--silver); font-size: 0.9rem;">Alle Produkte werden energetisch gereinigt</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Zusammenfassung -->
+                <div>
+                    <div class="card mystical-glow" style="position: sticky; top: 140px;">
+                        <h3 class="card-title">Bestellübersicht</h3>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: var(--silver);">Zwischensumme:</span>
+                                <span id="subtotal" style="color: var(--silver-light);">€0,00</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: var(--silver);">Versand:</span>
+                                <span id="shipping-cost" style="color: var(--silver-light);">€4,90</span>
+                            </div>
+                            <div id="coupon-discount" style="display: none; margin-bottom: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--mystical-green);">Rabatt:</span>
+                                    <span id="discount-amount" style="color: var(--mystical-green);">-€0,00</span>
+                                </div>
+                            </div>
+                            <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold;">
+                                <span style="color: var(--silver-light);">Gesamt:</span>
+                                <span id="total" style="color: var(--gold-accent);">€0,00</span>
+                            </div>
+                        </div>
+                        
+                        <button id="checkout-btn" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem; font-size: 1.1rem; padding: 1rem;" onclick="proceedToCheckout()">
+                            <svg class="mystical-sprite"><use href="#lock"></use></svg> Zur Kasse
+                        </button>
+                        
+                        <div style="text-align: center; color: var(--silver); font-size: 0.9rem; line-height: 1.5;">
+                            <div style="margin-bottom: 0.5rem;"><svg class="mystical-sprite"><use href="#lock"></use></svg> Sichere SSL-Verschlüsselung</div>
+                            <div style="margin-bottom: 0.5rem;"><svg class="mystical-sprite"><use href="#credit-card"></use></svg> PayPal, Kreditkarte, SEPA</div>
+                            <div><svg class="mystical-sprite"><use href="#return-arrow"></use></svg> 30 Tage Rückgaberecht</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vertrauenszeichen -->
+                    <div class="card">
+                        <h3 class="card-title">Warum Helionis?</h3>
+                        <div style="color: var(--silver); line-height: 1.6;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <svg class="mystical-sprite large sparkle-accent"><use href="#sparkle"></use></svg>
+                                <span>Energetische Reinigung aller Produkte</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <svg class="mystical-sprite large"><use href="#mystic-eye"></use></svg>
+                                <span>Über 10 Jahre Erfahrung</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <svg class="mystical-sprite large star-rating"><use href="#star"></use></svg>
+                                <span>5000+ zufriedene Kunden</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <svg class="mystical-sprite large"><use href="#crystal-ball"></use></svg>
+                                <span>Höchste Qualitätsstandards</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Auch interessant -->
+    <section class="section" id="recommendations-section" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Das könnte Sie auch interessieren</h2>
+            <div class="product-grid" id="recommended-products">
+                <!-- Wird dynamisch befüllt -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; backdrop-filter: blur(10px);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 16px; padding: 2rem; width: 90%; max-width: 600px; max-height: 90%; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3 class="text-gold">Checkout - Bestellung abschließen</h3>
+                <button onclick="closeCheckoutModal()" style="background: none; border: none; color: var(--silver); font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            
+            <form id="checkout-form">
+                <h4 style="color: var(--silver-light); margin-bottom: 1rem;">Rechnungsadresse</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Vorname *</label>
+                        <input type="text" class="form-input" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nachname *</label>
+                        <input type="text" class="form-input" name="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">E-Mail-Adresse *</label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Straße und Hausnummer *</label>
+                    <input type="text" class="form-input" name="street" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">PLZ *</label>
+                        <input type="text" class="form-input" name="zip" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Stadt *</label>
+                        <input type="text" class="form-input" name="city" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Land *</label>
+                    <select class="form-input" name="country" required>
+                        <option value="DE">Deutschland</option>
+                        <option value="AT">Österreich</option>
+                        <option value="CH">Schweiz</option>
+                    </select>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--silver); cursor: pointer;">
+                        <input type="checkbox" id="different-shipping" style="accent-color: var(--mystical-green);">
+                        Abweichende Lieferadresse
+                    </label>
+                </div>
+                
+                <div id="shipping-address" style="display: none;">
+                    <h4 style="color: var(--silver-light); margin-bottom: 1rem;">Lieferadresse</h4>
+                    <!-- Gleiche Felder wie Rechnungsadresse -->
+                </div>
+                
+                <h4 style="color: var(--silver-light); margin: 2rem 0 1rem;">Zahlungsart</h4>
+                
+                <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                    <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                        <input type="radio" name="payment" value="paypal" style="accent-color: var(--mystical-green);" checked>
+                        <div style="flex: 1;">
+                            <strong style="color: var(--silver-light);">PayPal</strong>
+                            <div style="color: var(--silver); font-size: 0.9rem;">Sicher und schnell mit PayPal bezahlen</div>
+                        </div>
+                        <span style="color: var(--gold-accent);"><svg class="mystical-sprite"><use href="#credit-card"></use></svg></span>
+                    </label>
+                    
+                    <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                        <input type="radio" name="payment" value="credit" style="accent-color: var(--mystical-green);">
+                        <div style="flex: 1;">
+                            <strong style="color: var(--silver-light);">Kreditkarte</strong>
+                            <div style="color: var(--silver); font-size: 0.9rem;">Visa, Mastercard, American Express</div>
+                        </div>
+                        <span style="color: var(--gold-accent);"><svg class="mystical-sprite"><use href="#credit-card"></use></svg></span>
+                    </label>
+                    
+                    <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                        <input type="radio" name="payment" value="sepa" style="accent-color: var(--mystical-green);">
+                        <div style="flex: 1;">
+                            <strong style="color: var(--silver-light);">SEPA Lastschrift</strong>
+                            <div style="color: var(--silver); font-size: 0.9rem;">Bequem per Bankeinzug</div>
+                        </div>
+                        <span style="color: var(--gold-accent);"><svg class="mystical-sprite"><use href="#bank"></use></svg></span>
+                    </label>
+                </div>
+                
+                <div style="margin: 2rem 0;">
+                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--silver); cursor: pointer; line-height: 1.5;">
+                        <input type="checkbox" required style="accent-color: var(--mystical-green); margin-top: 0.2rem;">
+                        Ich habe die <a href="agb.html" style="color: var(--mystical-green-light);">AGB</a> und 
+                        <a href="datenschutz.html" style="color: var(--mystical-green-light);">Datenschutzerklärung</a> gelesen und akzeptiert. *
+                    </label>
+                </div>
+                
+                <div style="margin: 1rem 0;">
+                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; color: var(--silver); cursor: pointer; line-height: 1.5;">
+                        <input type="checkbox" style="accent-color: var(--mystical-green); margin-top: 0.2rem;">
+                        Ich möchte den Helionis Newsletter erhalten und über spirituelle Angebote informiert werden.
+                    </label>
+                </div>
+                
+                <div style="background: var(--glass-bg); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <h4 style="color: var(--silver-light); margin-bottom: 1rem;">Bestellübersicht</h4>
+                    <div id="checkout-summary">
+                        <!-- Wird dynamisch befüllt -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeCheckoutModal()" style="flex: 1;">Zurück</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">
+                        <svg class="mystical-sprite"><use href="#lock"></use></svg> Kostenpflichtig bestellen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    
+    <script>
+        // Warenkorb-spezifische Funktionalität
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartPage();
+            loadRecommendations();
+        });
+        
+        function loadCartPage() {
+            const cart = getCart();
+            const cartEmpty = document.getElementById('cart-empty');
+            const cartContent = document.getElementById('cart-content');
+            
+            if (cart.length === 0) {
+                cartEmpty.style.display = 'block';
+                cartContent.style.display = 'none';
+                return;
+            }
+            
+            cartEmpty.style.display = 'none';
+            cartContent.style.display = 'grid';
+            
+            displayCartItems();
+            updateCartSummary();
+        }
+        
+        function displayCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cart = getCart();
+            
+            cartItemsContainer.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-title">${item.name}</h3>
+                        <p class="cart-item-price">€${item.price.toFixed(2)}</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateCartItemQuantity(${index}, ${item.quantity - 1})">-</button>
+                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="10" 
+                               onchange="updateCartItemQuantity(${index}, this.value)">
+                        <button class="quantity-btn" onclick="updateCartItemQuantity(${index}, ${item.quantity + 1})">+</button>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: var(--gold-accent); margin-bottom: 0.5rem;">
+                            €${(item.price * item.quantity).toFixed(2)}
+                        </div>
+                        <button onclick="removeCartItem(${index})" style="background: none; border: none; color: var(--silver); cursor: pointer; font-size: 0.9rem;">
+                            <svg class="mystical-sprite"><use href="#trash"></use></svg> Entfernen
+                        </button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+        }
+        
+        function updateCartItemQuantity(index, newQuantity) {
+            newQuantity = parseInt(newQuantity);
+            if (newQuantity < 1) return;
+            if (newQuantity > 10) newQuantity = 10;
+            
+            const cart = getCart();
+            cart[index].quantity = newQuantity;
+            localStorage.setItem('helionis_cart', JSON.stringify(cart));
+            
+            displayCartItems();
+            updateCartSummary();
+            updateCartCount();
+        }
+        
+        function removeCartItem(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            localStorage.setItem('helionis_cart', JSON.stringify(cart));
+            
+            if (cart.length === 0) {
+                loadCartPage();
+            } else {
+                displayCartItems();
+                updateCartSummary();
+            }
+            updateCartCount();
+        }
+        
+        function updateCartSummary() {
+            const cart = getCart();
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Gutschein-Rabatt
+            const discountPercent = localStorage.getItem('helionis_discount') || 0;
+            const discount = subtotal * (discountPercent / 100);
+            
+            // Versandkosten
+            const shippingCost = subtotal >= 75 ? 0 : 4.90;
+            
+            // Gesamt
+            const total = subtotal - discount + shippingCost;
+            
+            // Anzeige aktualisieren
+            document.getElementById('subtotal').textContent = '€' + subtotal.toFixed(2);
+            document.getElementById('shipping-cost').textContent = shippingCost === 0 ? 'Kostenlos' : '€' + shippingCost.toFixed(2);
+            document.getElementById('total').textContent = '€' + total.toFixed(2);
+            
+            // Kostenloser Versand Info
+            const freeShippingRemaining = Math.max(0, 75 - subtotal);
+            document.getElementById('free-shipping-remaining').textContent = '€' + freeShippingRemaining.toFixed(2);
+            
+            // Rabatt anzeigen
+            if (discount > 0) {
+                document.getElementById('coupon-discount').style.display = 'block';
+                document.getElementById('discount-amount').textContent = '-€' + discount.toFixed(2);
+            } else {
+                document.getElementById('coupon-discount').style.display = 'none';
+            }
+            
+            // Checkout Button aktivieren/deaktivieren
+            const checkoutBtn = document.getElementById('checkout-btn');
+            if (cart.length === 0) {
+                checkoutBtn.disabled = true;
+                checkoutBtn.textContent = 'Warenkorb ist leer';
+            } else {
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = '<svg class="mystical-sprite"><use href="#lock"></use></svg> Zur Kasse';
+            }
+        }
+        
+        function applyCoupon() {
+            const couponCode = document.getElementById('coupon-code').value.trim().toLowerCase();
+            const couponMessage = document.getElementById('coupon-message');
+            
+            const validCoupons = {
+                'welcome10': 10,
+                'spirit15': 15,
+                'helionis20': 20
+            };
+            
+            if (validCoupons[couponCode]) {
+                localStorage.setItem('helionis_discount', validCoupons[couponCode]);
+                couponMessage.className = 'message success';
+                couponMessage.textContent = `Gutschein eingelöst! Sie erhalten ${validCoupons[couponCode]}% Rabatt.`;
+                couponMessage.style.display = 'block';
+                updateCartSummary();
+            } else {
+                couponMessage.className = 'message error';
+                couponMessage.textContent = 'Ungültiger Gutscheincode.';
+                couponMessage.style.display = 'block';
+            }
+            
+            setTimeout(() => {
+                couponMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        function loadRecommendations() {
+            const cart = getCart();
+            if (cart.length === 0) return;
+            
+            // Empfehlungen basierend auf Warenkorb-Inhalten
+            const recommendedProducts = [
+                {
+                    id: 4,
+                    name: 'Liebes-Amulett "Venus"',
+                    price: 129.90,
+                    image: 'assets/images/products/amulett-liebe.jpg',
+                    description: 'Roségoldenes Amulett zur Stärkung der Herzchakra-Energie.'
+                },
+                {
+                    id: 5,
+                    name: 'Wohlstands-Amulett "Fortuna"',
+                    price: 199.90,
+                    image: 'assets/images/products/amulett-wohlstand.jpg',
+                    description: 'Goldenes Amulett mit Citrin-Einlage für Fülle und Wohlstand.'
+                },
+                {
+                    id: 6,
+                    name: 'Amethyst-Pyramide "Mystica"',
+                    price: 249.90,
+                    image: 'assets/images/products/pyramide-amethyst.jpg',
+                    description: 'Große Amethyst-Pyramide für tiefe Meditation.'
+                }
+            ];
+            
+            const recommendationsSection = document.getElementById('recommendations-section');
+            const recommendedContainer = document.getElementById('recommended-products');
+            
+            recommendedContainer.innerHTML = '';
+            
+            recommendedProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => location.href = `product-detail.html?id=${product.id}`;
+                
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-price">€${product.price.toFixed(2)}</p>
+                    <p class="product-description">${product.description}</p>
+                    <button class="btn btn-primary" onclick="addToCart(${product.id}); event.stopPropagation();">In den Warenkorb</button>
+                `;
+                
+                recommendedContainer.appendChild(card);
+            });
+            
+            recommendationsSection.style.display = 'block';
+        }
+        
+        function proceedToCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) return;
+            
+            updateCheckoutSummary();
+            document.getElementById('checkout-modal').style.display = 'block';
+        }
+        
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+        
+        function updateCheckoutSummary() {
+            const cart = getCart();
+            const summaryContainer = document.getElementById('checkout-summary');
+            
+            let html = '';
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                html += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--silver);">
+                        <span>${item.name} × ${item.quantity}</span>
+                        <span>€${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            const discountPercent = localStorage.getItem('helionis_discount') || 0;
+            const discount = subtotal * (discountPercent / 100);
+            const shippingCost = subtotal >= 75 ? 0 : 4.90;
+            const total = subtotal - discount + shippingCost;
+            
+            html += `
+                <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--silver);">
+                    <span>Zwischensumme:</span>
+                    <span>€${subtotal.toFixed(2)}</span>
+                </div>
+            `;
+            
+            if (discount > 0) {
+                html += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--mystical-green);">
+                        <span>Rabatt (${discountPercent}%):</span>
+                        <span>-€${discount.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--silver);">
+                    <span>Versand:</span>
+                    <span>${shippingCost === 0 ? 'Kostenlos' : '€' + shippingCost.toFixed(2)}</span>
+                </div>
+                <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem;">
+                    <span style="color: var(--silver-light);">Gesamt:</span>
+                    <span style="color: var(--gold-accent);">€${total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            summaryContainer.innerHTML = html;
+        }
+        
+        // Checkout Form Submit
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hier würde normalerweise die Bestellung verarbeitet
+            const formData = new FormData(this);
+            const orderData = {
+                customer: Object.fromEntries(formData),
+                cart: getCart(),
+                total: document.getElementById('total').textContent
+            };
+            
+            // Simulation einer erfolgreichen Bestellung
+            alert('Vielen Dank für Ihre Bestellung! Sie erhalten in Kürze eine Bestätigungsmail. Ihre spirituellen Begleiter werden liebevoll verpackt und energetisch gereinigt versendet.');
+            
+            // Warenkorb leeren
+            localStorage.removeItem('helionis_cart');
+            localStorage.removeItem('helionis_discount');
+            
+            // Zur Startseite weiterleiten
+            window.location.href = '/';
+        });
+        
+        // Modal schließen bei Klick außerhalb
+        document.getElementById('checkout-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCheckoutModal();
+            }
+        });
+        
+        // Responsive Layout
+        function adjustLayout() {
+            const cartContent = document.getElementById('cart-content');
+            if (window.innerWidth <= 768) {
+                cartContent.style.gridTemplateColumns = '1fr';
+                cartContent.style.gap = '2rem';
+            } else {
+                cartContent.style.gridTemplateColumns = '2fr 1fr';
+                cartContent.style.gap = '3rem';
+            }
+        }
+        
+        window.addEventListener('resize', adjustLayout);
+        adjustLayout();
+    </script>
+    
+    <script src="assets/js/sprites.js"></script>
+</body>
+</html>

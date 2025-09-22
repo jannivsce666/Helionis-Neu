@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Produktdetails - Helionis</title>
+    <meta id="page-description" name="description" content="Entdecken Sie die Details dieses spirituellen Produkts bei Helionis.">
+    <meta name="keywords" content="Spirituelles Produkt, Amulett, Pyramide, Orakel, Esoterik">
+    
+    <!-- Open Graph -->
+    <meta id="og-title" property="og:title" content="Produktdetails - Helionis">
+    <meta id="og-description" property="og:description" content="Entdecken Sie die Details dieses spirituellen Produkts bei Helionis.">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://helionis.de/product-detail.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+</head>
+<body>
+    <!-- Ultrarealistischer WebGL Rauch -->
+    <canvas id="smoke-canvas"></canvas>
+    <div class="no-webgl-fallback"></div>
+    
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite"><use href="#cart"></use></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite"><use href="#user"></use></svg> Login</a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Breadcrumb -->
+    <section style="padding-top: 120px; padding-bottom: 2rem;">
+        <div class="container">
+            <nav style="color: var(--silver); font-size: 0.9rem;">
+                <a href="/" style="color: var(--silver); text-decoration: none;">Start</a> 
+                <span style="margin: 0 0.5rem;">›</span>
+                <a href="shop.html" style="color: var(--silver); text-decoration: none;">Shop</a>
+                <span style="margin: 0 0.5rem;">›</span>
+                <span id="breadcrumb-category" style="color: var(--mystical-green-light);">Produkt</span>
+            </nav>
+        </div>
+    </section>
+    
+    <!-- Produktdetails -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div id="product-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem;">
+                <!-- Produktbild -->
+                <div>
+                    <div style="position: relative;">
+                        <img id="product-image" src="" alt="" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--shadow-glass);" loading="lazy">
+                        <div style="position: absolute; top: 1rem; right: 1rem; background: var(--mystical-green); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+                            <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> Energetisch gereinigt
+                        </div>
+                    </div>
+                    
+                    <!-- Zusätzliche Produktbilder (Galerie) -->
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem; overflow-x: auto; padding-bottom: 0.5rem;">
+                        <img src="assets/images/products/detail1.jpg" alt="Detail 1" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border); cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" loading="lazy">
+                        <img src="assets/images/products/detail2.jpg" alt="Detail 2" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border); cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" loading="lazy">
+                        <img src="assets/images/products/detail3.jpg" alt="Detail 3" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border); cursor: pointer; opacity: 0.7; transition: opacity 0.3s;" loading="lazy">
+                    </div>
+                </div>
+                
+                <!-- Produktinfo -->
+                <div>
+                    <h1 id="product-title" class="hero-title" style="font-size: 2.5rem; margin-bottom: 1rem;"></h1>
+                    <p id="product-price" class="product-price" style="font-size: 2rem; margin-bottom: 2rem;"></p>
+                    
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <h3 class="card-title">Beschreibung</h3>
+                        <p id="product-description" style="color: var(--silver); line-height: 1.8;"></p>
+                    </div>
+                    
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <h3 class="card-title">Spirituelle Eigenschaften</h3>
+                        <ul id="product-properties" style="color: var(--silver); line-height: 1.8; padding-left: 1.5rem;">
+                        </ul>
+                    </div>
+                    
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <h3 class="card-title">Produktdetails</h3>
+                        <div id="product-details" style="color: var(--silver); line-height: 1.8;">
+                        </div>
+                    </div>
+                    
+                    <!-- Kaufbereich -->
+                    <div class="card mystical-glow">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                            <label for="quantity" class="form-label" style="margin-bottom: 0;">Anzahl:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                                <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="10">
+                                <button type="button" class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                            </div>
+                        </div>
+                        
+                        <button id="add-to-cart-btn" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem; font-size: 1.1rem; padding: 1rem;">
+                            <svg class="mystical-sprite"><use href="#cart"></use></svg> In den Warenkorb - <span id="total-price"></span>
+                        </button>
+                        
+                        <div style="display: flex; gap: 1rem;">
+                            <button class="btn btn-secondary" style="flex: 1;" onclick="addToWishlist()">
+                                <svg class="mystical-sprite heart-wishlist interactive"><use href="#heart-outline"></use></svg> Merkliste
+                            </button>
+                            <button class="btn btn-secondary" style="flex: 1;" onclick="shareProduct()">
+                                <svg class="mystical-sprite"><use href="#share"></use></svg> Teilen
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Vertrauenszeichen -->
+                    <div style="display: flex; justify-content: space-around; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+                        <div style="text-align: center; color: var(--silver);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><svg class="mystical-sprite large"><use href="#truck"></use></svg></div>
+                            <small>Kostenloser Versand<br>ab 75€</small>
+                        </div>
+                        <div style="text-align: center; color: var(--silver);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><svg class="mystical-sprite large"><use href="#return-arrow"></use></svg></div>
+                            <small>30 Tage<br>Rückgaberecht</small>
+                        </div>
+                        <div style="text-align: center; color: var(--silver);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><svg class="mystical-sprite large sparkle-accent animated"><use href="#sparkle"></use></svg></div>
+                            <small>Energetisch<br>gereinigt</small>
+                        </div>
+                        <div style="text-align: center; color: var(--silver);">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><svg class="mystical-sprite large"><use href="#lock"></use></svg></div>
+                            <small>Sichere<br>Bezahlung</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ähnliche Produkte -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Ähnliche Produkte</h2>
+            <div class="product-grid" id="similar-products">
+                <!-- Wird dynamisch befüllt -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bewertungen -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Kundenbewertungen</h2>
+            <div class="card">
+                <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; color: var(--gold-accent); font-weight: bold;">4.8</div>
+                        <div style="color: var(--silver); font-size: 1.5rem;">
+                            <svg class="mystical-sprite star-rating"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite star-rating"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite star-rating"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite star-rating"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite star-rating"><use href="#star"></use></svg>
+                        </div>
+                        <div style="color: var(--silver); font-size: 0.9rem;">aus 127 Bewertungen</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <button class="btn btn-secondary" onclick="openReviewForm()">Bewertung schreiben</button>
+                    </div>
+                </div>
+                
+                <!-- Beispiel-Bewertungen -->
+                <div style="border-top: 1px solid var(--glass-border); padding-top: 2rem;">
+                    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--glass-border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div>
+                                <strong style="color: var(--silver-light);">Maria S.</strong>
+                                <div style="color: var(--gold-accent);">
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                </div>
+                            </div>
+                            <small style="color: var(--silver);">vor 2 Wochen</small>
+                        </div>
+                        <p style="color: var(--silver); line-height: 1.6;">
+                            Absolut begeistert von diesem Amulett! Die Verarbeitung ist wunderschön und ich spüre wirklich eine positive Energie. 
+                            Der Versand war schnell und die Verpackung sehr liebevoll. Definitiv mein neuer Lieblingsschmuck!
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--glass-border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div>
+                                <strong style="color: var(--silver-light);">Thomas K.</strong>
+                                <div style="color: var(--gold-accent);">
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                </div>
+                            </div>
+                            <small style="color: var(--silver);">vor 1 Monat</small>
+                        </div>
+                        <p style="color: var(--silver); line-height: 1.6;">
+                            Hochwertige Qualität und genau wie beschrieben. Die spirituelle Reinigung ist spürbar. 
+                            Kann Helionis nur weiterempfehlen - echte Profis in Sachen Spiritualität!
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div>
+                                <strong style="color: var(--silver-light);">Luna M.</strong>
+                                <div style="color: var(--gold-accent);">
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite star-rating small"><use href="#star"></use></svg>
+                                </div>
+                            </div>
+                            <small style="color: var(--silver);">vor 6 Wochen</small>
+                        </div>
+                        <p style="color: var(--silver); line-height: 1.6;">
+                            Bin schon lange Kundin bei Helionis und wurde noch nie enttäuscht. 
+                            Dieses Produkt übertrifft wieder alle Erwartungen. Vielen Dank für die wundervolle Arbeit!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    
+    <script>
+        // Produktdatenbank
+        const products = {
+            1: {
+                name: 'Schutz-Amulett "Aegis"',
+                price: 89.90,
+                category: 'amulette',
+                image: 'assets/images/products/amulett-schutz.jpg',
+                description: 'Ein kraftvolles Schutzamulett aus antikem Silber, handgraviert mit mystischen Symbolen aus verschiedenen spirituellen Traditionen. Das Aegis-Amulett wurde speziell für ultimativen spirituellen Schutz vor negativen Energien entwickelt und vereint die Weisheit alter Kulturen.',
+                properties: [
+                    'Schutz vor negativen Energien und psychischen Angriffen',
+                    'Stärkung der persönlichen Aura und Energiefelder',
+                    'Förderung von Mut und Selbstvertrauen',
+                    'Harmonisierung des Chakra-Systems',
+                    'Unterstützung bei spiritueller Transformation'
+                ],
+                details: {
+                    'Material': 'Antikes Silber 925',
+                    'Größe': '3,5 cm x 2,8 cm',
+                    'Gewicht': '15 Gramm',
+                    'Kette': 'Inklusive 60cm Silberkette',
+                    'Herkunft': 'Handgefertigt in Tibet',
+                    'Energetische Reinigung': 'Vollmond-Zeremonie'
+                }
+            },
+            2: {
+                name: 'Kristallpyramide "Lumina"',
+                price: 149.90,
+                category: 'pyramiden',
+                image: 'assets/images/products/pyramide-kristall.jpg',
+                description: 'Eine handgefertigte Pyramide aus reinem Bergkristall, perfekt geschliffen nach den Proportionen der großen Pyramide von Gizeh. Diese kraftvolle Pyramide verstärkt spirituelle Energie und harmonisiert Räume mit ihrer reinen, klaren Schwingung.',
+                properties: [
+                    'Verstärkung und Fokussierung spiritueller Energie',
+                    'Harmonisierung und Reinigung von Räumen',
+                    'Unterstützung bei Meditation und Bewusstseinserweiterung',
+                    'Schutz vor elektromagnetischen Störungen',
+                    'Förderung von Klarheit und geistiger Schärfe'
+                ],
+                details: {
+                    'Material': 'Reiner Bergkristall AAA-Qualität',
+                    'Größe': '8 cm x 8 cm x 6 cm hoch',
+                    'Gewicht': '350 Gramm',
+                    'Schliff': 'Präzisionsschliff nach Gizeh-Proportionen',
+                    'Herkunft': 'Brasilien, handgeschliffen',
+                    'Energetische Aufladung': 'Sonnenenergie-Ritual'
+                }
+            },
+            3: {
+                name: 'Orakeldeck "Visions"',
+                price: 49.90,
+                category: 'orakel',
+                image: 'assets/images/products/orakel-deck.jpg',
+                description: '78 kunstvoll gestaltete Orakelkarten mit mystischen Symbolen und spirituellen Botschaften. Jede Karte wurde von unserer Meisterin Luna Oracle channelt und bietet tiefe spirituelle Einsichten für Ihre persönliche Führung und Entwicklung.',
+                properties: [
+                    'Tiefe spirituelle Einsichten und Führung',
+                    'Unterstützung bei Entscheidungsfindung',
+                    'Förderung der Intuition und hellseherischen Fähigkeiten',
+                    'Verbindung zu höheren spirituellen Ebenen',
+                    'Selbstreflexion und persönliches Wachstum'
+                ],
+                details: {
+                    'Kartenanzahl': '78 Orakelkarten',
+                    'Größe': '6,8 cm x 12 cm',
+                    'Material': 'Premium-Kartenstock, laminiert',
+                    'Handbuch': '120 Seiten Begleitbuch (Deutsch)',
+                    'Künstler': 'Luna Oracle & Mystische Illustratoren',
+                    'Verpackung': 'Edle Geschenkbox mit Magnetverschluss'
+                }
+            }
+        };
+        
+        let currentProduct = null;
+        
+        // Seite laden
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (productId && products[productId]) {
+                loadProduct(productId);
+                loadSimilarProducts(productId);
+            } else {
+                // Zurück zum Shop wenn Produkt nicht gefunden
+                window.location.href = 'shop.html';
+            }
+        });
+        
+        function loadProduct(productId) {
+            currentProduct = products[productId];
+            
+            // Meta-Tags aktualisieren
+            document.getElementById('page-title').textContent = currentProduct.name + ' - Helionis';
+            document.getElementById('page-description').content = currentProduct.description.substring(0, 160) + '...';
+            document.getElementById('og-title').content = currentProduct.name + ' - Helionis';
+            document.getElementById('og-description').content = currentProduct.description.substring(0, 160) + '...';
+            
+            // Breadcrumb
+            document.getElementById('breadcrumb-category').textContent = getCategoryName(currentProduct.category);
+            
+            // Produktinformationen
+            document.getElementById('product-title').textContent = currentProduct.name;
+            document.getElementById('product-price').textContent = '€' + currentProduct.price.toFixed(2);
+            document.getElementById('product-image').src = currentProduct.image;
+            document.getElementById('product-image').alt = currentProduct.name;
+            document.getElementById('product-description').textContent = currentProduct.description;
+            
+            // Eigenschaften
+            const propertiesList = document.getElementById('product-properties');
+            propertiesList.innerHTML = '';
+            currentProduct.properties.forEach(property => {
+                const li = document.createElement('li');
+                li.textContent = property;
+                li.style.marginBottom = '0.5rem';
+                propertiesList.appendChild(li);
+            });
+            
+            // Details
+            const detailsDiv = document.getElementById('product-details');
+            detailsDiv.innerHTML = '';
+            Object.entries(currentProduct.details).forEach(([key, value]) => {
+                const div = document.createElement('div');
+                div.style.display = 'flex';
+                div.style.justifyContent = 'space-between';
+                div.style.marginBottom = '0.5rem';
+                div.innerHTML = `<strong>${key}:</strong> <span>${value}</span>`;
+                detailsDiv.appendChild(div);
+            });
+            
+            updateTotalPrice();
+        }
+        
+        function getCategoryName(category) {
+            const names = {
+                'amulette': 'Amulette',
+                'pyramiden': 'Pyramiden',
+                'wuerfel': 'Würfel',
+                'orakel': 'Orakel',
+                'horoskope': 'Horoskope'
+            };
+            return names[category] || 'Produkt';
+        }
+        
+        function changeQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let newQuantity = parseInt(quantityInput.value) + change;
+            
+            if (newQuantity < 1) newQuantity = 1;
+            if (newQuantity > 10) newQuantity = 10;
+            
+            quantityInput.value = newQuantity;
+            updateTotalPrice();
+        }
+        
+        function updateTotalPrice() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const totalPrice = (currentProduct.price * quantity).toFixed(2);
+            document.getElementById('total-price').textContent = '€' + totalPrice;
+        }
+        
+        // Event Listeners
+        document.getElementById('quantity').addEventListener('change', updateTotalPrice);
+        
+        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const productId = Object.keys(products).find(key => products[key] === currentProduct);
+            
+            // Produkt zum Warenkorb hinzufügen
+            addToCart(parseInt(productId), quantity);
+            
+            // Feedback geben
+            this.innerHTML = '<svg class="mystical-sprite"><use href="#check"></use></svg> Hinzugefügt!';
+            this.style.background = 'var(--mystical-green)';
+            
+            setTimeout(() => {
+                this.innerHTML = '<svg class="mystical-sprite"><use href="#cart"></use></svg> In den Warenkorb - ' + document.getElementById('total-price').textContent;
+                this.style.background = '';
+            }, 2000);
+        });
+        
+        function addToWishlist() {
+            // Hier würde die Merkliste-Funktionalität implementiert
+            alert('Produkt zur Merkliste hinzugefügt!');
+        }
+        
+        function shareProduct() {
+            if (navigator.share) {
+                navigator.share({
+                    title: currentProduct.name,
+                    text: currentProduct.description.substring(0, 100) + '...',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: URL in Zwischenablage kopieren
+                navigator.clipboard.writeText(window.location.href);
+                alert('Produkt-Link wurde in die Zwischenablage kopiert!');
+            }
+        }
+        
+        function loadSimilarProducts(excludeId) {
+            const similarProducts = document.getElementById('similar-products');
+            similarProducts.innerHTML = '';
+            
+            // 3 ähnliche Produkte laden (ausgenommen aktuelles Produkt)
+            const productIds = Object.keys(products).filter(id => id !== excludeId).slice(0, 3);
+            
+            productIds.forEach(id => {
+                const product = products[id];
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => location.href = `product-detail.html?id=${id}`;
+                
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-price">€${product.price.toFixed(2)}</p>
+                    <p class="product-description">${product.description.substring(0, 100)}...</p>
+                    <button class="btn btn-primary" onclick="addToCart(${id}); event.stopPropagation();">In den Warenkorb</button>
+                `;
+                
+                similarProducts.appendChild(card);
+            });
+        }
+        
+        function openReviewForm() {
+            // Hier würde ein Bewertungsformular geöffnet
+            alert('Bewertungsformular würde hier geöffnet werden.');
+        }
+        
+        // Responsive Design für Produktdetails
+        function adjustLayout() {
+            const productContent = document.getElementById('product-content');
+            if (window.innerWidth <= 768) {
+                productContent.style.gridTemplateColumns = '1fr';
+                productContent.style.gap = '2rem';
+            } else {
+                productContent.style.gridTemplateColumns = '1fr 1fr';
+                productContent.style.gap = '4rem';
+            }
+        }
+        
+        window.addEventListener('resize', adjustLayout);
+        adjustLayout(); // Initial call
+    </script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json" id="product-schema">
+    {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": "",
+        "description": "",
+        "category": "",
+        "brand": {
+            "@type": "Brand",
+            "name": "Helionis"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": "",
+            "priceCurrency": "EUR",
+            "price": "",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "Helionis"
+            }
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127"
+        }
+    }
+    </script>
+    <script src="assets/js/sprites.js"></script>
+</body>
+</html>

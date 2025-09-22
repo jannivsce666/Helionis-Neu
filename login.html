@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Helionis</title>
+    <meta name="description" content="Melden Sie sich bei Helionis an für personalisierte spirituelle Erfahrungen">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
+        
+        // Make Firebase available globally for compatibility
+        window.firebaseSDK = {
+            initializeApp,
+            getAuth,
+            getAnalytics
+        };
+    </script>
+</head>
+<body>
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link active"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Anmeldung</h1>
+                <p class="page-subtitle">Treten Sie der Helionis-Community bei</p>
+            </div>
+            
+            <!-- Login Section -->
+            <div class="card" style="max-width: 500px; margin: 0 auto;" id="login-section">
+                <h2 class="card-title text-center">Mit Google anmelden</h2>
+                <p style="text-align: center; color: var(--silver); margin-bottom: 2rem;">
+                    Melden Sie sich sicher mit Ihrem Google-Konto an, um personalisierte spirituelle Erfahrungen zu erhalten.
+                </p>
+                
+                <div style="text-align: center;">
+                    <button id="google-signin-btn" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" style="fill: currentColor;">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Mit Google anmelden
+                    </button>
+                </div>
+                
+                <div id="login-error" class="error-message" style="display: none; text-align: center; margin-top: 1rem; color: #ff6b6b;"></div>
+            </div>
+            
+            <!-- User Profile Section (hidden initially) -->
+            <div class="card" id="profile-section" style="display: none;">
+                <h2 class="card-title">Willkommen zurück!</h2>
+                
+                <div id="user-info" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <img id="user-photo" src="" alt="Profilbild" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <h3 id="user-name" style="margin: 0; color: var(--primary);"></h3>
+                        <p id="user-email" style="margin: 0; color: var(--silver);"></p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <a href="profile.html" class="btn btn-primary">Profil bearbeiten</a>
+                    <a href="shop.html" class="btn btn-secondary">Zum Shop</a>
+                    <button id="signout-btn" class="btn" style="background: transparent; border: 1px solid var(--silver); color: var(--silver);">Abmelden</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script type="module">
+        import { signInWithGoogle, signOutUser, onAuthStateChange, getCurrentUser } from './assets/js/firebase-config.js';
+        
+        const googleSigninBtn = document.getElementById('google-signin-btn');
+        const signoutBtn = document.getElementById('signout-btn');
+        const loginSection = document.getElementById('login-section');
+        const profileSection = document.getElementById('profile-section');
+        const loginError = document.getElementById('login-error');
+        const userStatus = document.getElementById('user-status');
+        
+        // Google Sign In
+        googleSigninBtn.addEventListener('click', async () => {
+            try {
+                googleSigninBtn.disabled = true;
+                googleSigninBtn.textContent = 'Anmeldung läuft...';
+                
+                await signInWithGoogle();
+                
+            } catch (error) {
+                loginError.textContent = 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+                loginError.style.display = 'block';
+                
+                googleSigninBtn.disabled = false;
+                googleSigninBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Mit Google anmelden';
+            }
+        });
+        
+        // Sign Out
+        signoutBtn.addEventListener('click', async () => {
+            try {
+                await signOutUser();
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        });
+        
+        // Auth state observer
+        onAuthStateChange((user) => {
+            if (user) {
+                // User is signed in
+                loginSection.style.display = 'none';
+                profileSection.style.display = 'block';
+                userStatus.textContent = user.displayName || 'Profil';
+                
+                // Update user info
+                document.getElementById('user-name').textContent = user.displayName;
+                document.getElementById('user-email').textContent = user.email;
+                document.getElementById('user-photo').src = user.photoURL;
+                
+            } else {
+                // User is signed out
+                loginSection.style.display = 'block';
+                profileSection.style.display = 'none';
+                userStatus.textContent = 'Login';
+                
+                googleSigninBtn.disabled = false;
+                googleSigninBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" style="fill: currentColor;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Mit Google anmelden';
+            }
+        });
+    </script>
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

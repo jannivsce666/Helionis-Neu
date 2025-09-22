@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystische Spirale - Helionis</title>
+    <meta name="description" content="Kraftvolle mystische Spirale zur Meditation und spirituellen Transformation. Handgefertigt aus edlen Materialien.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    <link rel="stylesheet" href="assets/css/product.css">
+    
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
+</head>
+<body>
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+        <symbol id="star" viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+        </symbol>
+        <symbol id="return-arrow" viewBox="0 0 24 24">
+            <path d="M9 7l-5 5 5 5M4 12h11a4 4 0 0 1 0 8h-1" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.html">Start</a>
+                <span>›</span>
+                <a href="shop.html">Shop</a>
+                <span>›</span>
+                <span>Mystische Spirale</span>
+            </nav>
+
+            <!-- Product Section -->
+            <div class="product-detail">
+                <div class="product-images">
+                    <div class="main-image">
+                        <div class="media-frame">
+                            <img src="assets/images/products/spirale.png" alt="Mystische Spirale" id="main-product-image">
+                            <div class="video-overlay">
+                                <video autoplay muted loop playsinline class="product-video">
+                                    <source src="assets/images/videos/spirale.mp4" type="video/mp4">
+                                    Ihr Browser unterstützt keine Videos.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-thumbnails">
+                        <img src="assets/images/products/spirale.png" alt="Mystische Spirale - Hauptansicht" class="thumbnail active" onclick="showImage('assets/images/products/spirale.png')">
+                        <div class="video-thumbnail" onclick="showVideo()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>Video</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-info">
+                    <h1 class="product-title">Mystische Spirale</h1>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                        </div>
+                        <span class="rating-count">(89 Bewertungen)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">149,99 €</span>
+                        <span class="original-price">179,99 €</span>
+                        <span class="discount">-17%</span>
+                    </div>
+
+                    <div class="product-description">
+                        <p>Die Mystische Spirale ist ein kraftvolles Meditationsobjekt, das die urale Weisheit der Spiralenergie verkörpert. Sie unterstützt spirituelle Transformation und inneres Wachstum.</p>
+                        
+                        <h3>Eigenschaften und Wirkung:</h3>
+                        <ul class="clean-bullets">
+                            <li>Aktiviert die Spiralenergie des Lebens und fördert zentrierte Klarheit</li>
+                            <li>Vertieft Meditation und verlängert fokussierte Aufmerksamkeit</li>
+                            <li>Unterstützt innere Transformationsprozesse</li>
+                            <li>Harmonisiert Chakren und energetische Zentren</li>
+                            <li>Begünstigt Umsetzung von Zielen und kontinuierliches Wachstum</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature">
+                            <strong>Material:</strong> Hochwertiges Resin mit mystischen Einschlüssen
+                        </div>
+                        <div class="feature">
+                            <strong>Größe:</strong> Durchmesser 12 cm, Höhe 4 cm
+                        </div>
+                        <div class="feature">
+                            <strong>Gewicht:</strong> 350g (perfekt ausbalanciert)
+                        </div>
+                        <div class="feature">
+                            <strong>Herkunft:</strong> Handgefertigt von tibetischen Meistern
+                        </div>
+                        <div class="feature">
+                            <strong>Energetisierung:</strong> 7 Tage im Kloster aufgeladen
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <label for="quantity">Menge:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="5">
+                                <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('mystische-spirale', 'Mystische Spirale', 149.99)">
+                            <svg class="mystical-sprite small"><use href="#cart"></use></svg>
+                            In den Warenkorb
+                        </button>
+
+                        <button class="btn btn-secondary wishlist-btn">
+                            ♡ Zur Wunschliste
+                        </button>
+                    </div>
+
+                    <div class="delivery-info">
+                        <div class="info-item">
+                            <strong>🚚 Kostenloser Versand</strong> ab 75€ Bestellwert
+                        </div>
+                        <div class="info-item">
+                            <strong>⏰ Lieferzeit:</strong> 5-7 Werktage (Sonderanfertigung)
+                        </div>
+                        <div class="info-item">
+                            <strong>🔒 Sichere Bezahlung</strong> SSL-verschlüsselt
+                        </div>
+                        <div class="info-item">
+                            <strong><svg class="mystical-sprite small"><use href="#return-arrow"></use></svg> 30 Tage Rückgaberecht</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-tabs">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('description')">Detaillierte Beschreibung</button>
+                    <button class="tab-btn" onclick="showTab('usage')">Anwendung & Meditation</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Bewertungen (89)</button>
+                    <button class="tab-btn" onclick="showTab('shipping')">Versand & Rückgabe</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="description" class="tab-panel active">
+                        <h3>Die Mystische Spirale - Portal zur inneren Transformation</h3>
+                        <p>Seit Jahrtausenden ist die Spirale eines der mächtigsten Symbole der Menschheit. Sie repräsentiert den ewigen Kreislauf des Lebens, Wachstum, Evolution und die Reise der Seele durch verschiedene Bewusstseinszustände.</p>
+                        
+                        <h4>Spirituelle Bedeutung der Spirale</h4>
+                        <p>Die Spiralform findet sich überall in der Natur - von der DNS-Struktur bis zu Galaxien. Diese universelle Form trägt eine besondere Energie in sich, die Transformation und spirituelles Wachstum fördert. Unsere Mystische Spirale konzentriert diese natürliche Kraft in einem wunderschönen Meditationsobjekt.</p>
+                        
+                        <h4>Handwerkskunst und Materialien</h4>
+                        <p>Jede Spirale wird von erfahrenen tibetischen Handwerkern in monatelanger Arbeit gefertigt. Das vergoldete Messing bildet die perfekte Basis für die Spiralform, während der eingearbeitete Quarzkristall-Kern die Energie verstärkt und harmonisiert.</p>
+                        
+                        <h4>Energetische Eigenschaften</h4>
+                        <p>Nach der Fertigstellung wird jede Spirale 7 Tage lang in einem tibetischen Kloster aufgeladen. Mönche rezitieren spezielle Mantras und führen Energieübertragungsrituale durch, die der Spirale ihre besondere spirituelle Kraft verleihen.</p>
+                        
+                        <h4>Chakra-Harmonisierung</h4>
+                        <p>Die Spiralenergie wirkt besonders stark auf das Kronenchakra und das Dritte Auge. Sie kann dabei helfen, blockierte Energien zu lösen und einen freien Energiefluss durch alle Chakren zu fördern.</p>
+                    </div>
+
+                    <div id="usage" class="tab-panel">
+                        <h3>Anwendung und Meditation mit der Mystischen Spirale</h3>
+                        
+                        <h4>Grundlegende Meditation</h4>
+                        <ol>
+                            <li>Platzieren Sie die Spirale vor sich auf Augenhöhe</li>
+                            <li>Setzen Sie sich bequem und entspannt hin</li>
+                            <li>Blicken Sie sanft auf das Zentrum der Spirale</li>
+                            <li>Folgen Sie gedanklich der Spiralform von außen nach innen</li>
+                            <li>Lassen Sie Ihren Geist ruhig werden und öffnen Sie sich für Einsichten</li>
+                        </ol>
+                        
+                        <h4>Manifestations-Meditation</h4>
+                        <ol>
+                            <li>Halten Sie Ihr Ziel oder Ihren Wunsch klar vor Augen</li>
+                            <li>Visualisieren Sie, wie Ihre Intention in die Spirale hineinwandert</li>
+                            <li>Sehen Sie, wie die Spiralenergie Ihren Wunsch verstärkt</li>
+                            <li>Fühlen Sie, wie die manifestierende Kraft sich entfaltet</li>
+                            <li>Vertrauen Sie darauf, dass das Universum Ihren Wunsch erhört</li>
+                        </ol>
+                        
+                        <h4>Chakra-Reinigung</h4>
+                        <ul>
+                            <li>Bewegen Sie die Spirale langsam über Ihre Chakren</li>
+                            <li>Visualisieren Sie, wie die Spiralenergie Blockaden löst</li>
+                            <li>Spüren Sie die harmonisierende Wirkung auf Ihre Energiezentren</li>
+                            <li>Beenden Sie mit einer Dankbarkeitsmeditation</li>
+                        </ul>
+                        
+                        <h4>Tägliche Pflege</h4>
+                        <ul>
+                            <li>Reinigen Sie die Spirale wöchentlich mit einem weichen Tuch</li>
+                            <li>Stellen Sie sie über Nacht auf Bergkristall oder Amethyst</li>
+                            <li>Bei Vollmond können Sie sie draußen "aufladen" lassen</li>
+                            <li>Behandeln Sie sie mit Respekt als heiliges Objekt</li>
+                        </ul>
+                    </div>
+
+                    <div id="reviews" class="tab-panel">
+                        <h3>Kundenbewertungen</h3>
+                        <div class="reviews-summary">
+                            <div class="average-rating">
+                                <div class="rating-number">4.8</div>
+                                <div class="stars">
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                </div>
+                                <div class="rating-text">89 Bewertungen</div>
+                            </div>
+                        </div>
+
+                        <div class="review-list">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Michael W.</div>
+                                    <div class="review-date">vor 1 Woche</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Diese Spirale hat meine Meditationspraxis revolutioniert. Die Energie ist sofort spürbar und hilft mir, viel tiefer in die Meditation einzutauchen. Ein wirklich kraftvolles Werkzeug!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Sarah L.</div>
+                                    <div class="review-date">vor 3 Wochen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Wunderschönes Stück mit unglaublicher Ausstrahlung. Seit ich sie besitze, haben sich mehrere meiner Lebensziele auf fast magische Weise manifestiert. Die Qualität ist erstklassig!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">David K.</div>
+                                    <div class="review-date">vor 2 Monaten</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Als Yoga-Lehrer kann ich diese Spirale nur empfehlen. Sie verstärkt die Energie im Raum enorm und meine Schüler spüren den Unterschied sofort. Ein Muss für jeden spirituell Suchenden!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="shipping" class="tab-panel">
+                        <h3>Versand und Rückgabe</h3>
+                        
+                        <h4>Besondere Versandbedingungen</h4>
+                        <p>Da jede Mystische Spirale ein handgefertigtes Unikat ist, benötigen wir 5-7 Werktage für die Vorbereitung und energetische Aufladung vor dem Versand.</p>
+                        
+                        <h4>Versandinformationen</h4>
+                        <ul>
+                            <li><strong>Kostenloser Versand</strong> ab 75€ Bestellwert</li>
+                            <li><strong>Standardversand:</strong> 9,99€ (5-7 Werktage)</li>
+                            <li><strong>Express nicht verfügbar</strong> (aufgrund Energetisierungszeit)</li>
+                            <li><strong>Internationale Lieferung:</strong> Verfügbar in alle EU-Länder</li>
+                        </ul>
+                        
+                        <h4>Besondere Verpackung</h4>
+                        <p>Die Spirale wird in einer speziellen, energetisch neutralen Verpackung geliefert, die mit schützenden Symbolen versehen ist. Ein ausführliches Handbuch zur Anwendung und ein Echtheitszertifikat sind ebenfalls enthalten.</p>
+                        
+                        <h4>Rückgaberecht</h4>
+                        <ul>
+                            <li><strong>30 Tage Rückgaberecht</strong> ab Erhalt der Ware</li>
+                            <li>Bei Rückgabe wird eine energetische Neuaufladung durchgeführt</li>
+                            <li>Kostenlose Rücksendung bei Mängeln oder falscher Lieferung</li>
+                            <li>Normale Rücksendekosten: 15,99€ (aufgrund Spezialverpackung)</li>
+                        </ul>
+                        
+                        <h4>Garantie und Service</h4>
+                        <ul>
+                            <li><strong>5 Jahre Garantie</strong> auf Materialfehler</li>
+                            <li><strong>Lebenslange spirituelle Beratung</strong> durch unsere Meister</li>
+                            <li>Jährliche kostenlose Energetisierung auf Wunsch</li>
+                            <li>Reparaturservice für handwerkliche Schäden</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <section class="related-products">
+                <h3>Weitere mystische Objekte</h3>
+                <div class="related-grid">
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystische Pyramide</h4>
+                            <div class="rc-price">199,99 €</div>
+                            <a href="produkt-pyramide.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/cube.png" alt="Mystischer Würfel">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystischer Würfel</h4>
+                            <div class="rc-price">119,99 €</div>
+                            <a href="produkt-cube.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Helionis</h4>
+                <p>Ihre Quelle für authentische spirituelle Produkte und mystische Weisheit.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="shop.html">Alle Produkte</a></li>
+                    <li><a href="produkt-spirale.html">Mystische Spirale</a></li>
+                    <li><a href="produkt-pyramide.html">Mystische Pyramide</a></li>
+                    <li><a href="produkt-cube.html">Mystischer Würfel</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Service</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">Über uns</a></li>
+                    <li><a href="contact.html">Kontakt</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="versand.html">Versand</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Rechtliches</h4>
+                <ul class="footer-links">
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutz</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                    <li><a href="widerruf.html">Widerruf</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed for spiritual souls</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Quantity controls
+        function increaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) < 5) {
+                qty.value = parseInt(qty.value) + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) > 1) {
+                qty.value = parseInt(qty.value) - 1;
+            }
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab panel
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Add to cart functionality
+        function addToCart(productId, productName, price) {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            // Get existing cart or create new one
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if product already exists in cart
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: price,
+                    quantity: quantity,
+                    image: 'assets/images/products/spirale.png'
+                });
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart count in navigation
+            updateCartCount();
+            
+            // Show confirmation
+            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        // Initialize cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
+        // Video and image gallery functions
+        function showImage(imageSrc) {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.src = imageSrc;
+            mainImage.style.display = 'block';
+            videoOverlay.style.display = 'none';
+        }
+
+        function showVideo() {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.style.display = 'none';
+            videoOverlay.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#13100a"/>
+  <g><circle cx="200" cy="200" r="70" fill="none" stroke="#6b5a1a" stroke-width="3" opacity="0.8"/><circle cx="200" cy="200" r="50" fill="none" stroke="#4a3a0d" stroke-width="2" opacity="0.6"/><path d="M200,130 L210,190 L200,200 L190,190 Z" fill="#6b5a1a"/><path d="M270,200 L210,210 L200,200 L210,190 Z" fill="#6b5a1a"/><path d="M200,270 L190,210 L200,200 L210,210 Z" fill="#6b5a1a"/><path d="M130,200 L190,190 L200,200 L190,210 Z" fill="#6b5a1a"/></g>
+  <text x="200" y="330" font-family="serif" font-size="14" text-anchor="middle" fill="#c9d1d9" opacity="0.8">Persönliche Horoskope</text>
+</svg>

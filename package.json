@@ -1,0 +1,48 @@
+{
+  "name": "helionis-website",
+  "version": "1.0.0",
+  "description": "Mystical spiritual e-commerce website for Helionis",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --host=localhost --entry-file=index.html",
+    "build": "echo 'Building for production...' && npm run optimize",
+    "optimize": "echo 'Optimizing images and assets...'",
+    "deploy": "firebase deploy",
+    "serve": "firebase serve --port=3000",
+    "test": "echo 'Running tests...'",
+    "lint": "echo 'Linting code...'"
+  },
+  "keywords": [
+    "spirituality",
+    "ecommerce",
+    "mystical",
+    "crystals",
+    "astrology",
+    "horoscope",
+    "amulets",
+    "meditation"
+  ],
+  "author": "Helionis Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/helionis/website.git"
+  },
+  "homepage": "https://helionis.de",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "firebase-tools": "^12.0.0"
+  },
+  "dependencies": {
+    "firebase": "^10.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

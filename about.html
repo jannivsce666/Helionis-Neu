@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Über uns - Helionis</title>
+    <meta name="description" content="Lernen Sie Johannes und Michael von Helionis kennen - Ihre spirituellen Begleiter auf dem Weg zur inneren Erkenntnis und mystischen Weisheit.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
+</head>
+<body>
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link active">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> Login</a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Über uns</h1>
+                <p class="page-subtitle">Die Gründer von Helionis</p>
+            </div>
+            
+            <!-- Unsere Geschichte -->
+            <div class="card">
+                <h2 class="card-title">Unsere spirituelle Reise</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--silver);">
+                    Willkommen bei Helionis - einem Ort, wo Spiritualität auf Authentizität trifft. 
+                    Wir sind <strong>Johannes und Michael</strong>, die Gründer und Herzen hinter diesem 
+                    besonderen Unternehmen. Seit über einem Jahrzehnt widmen wir uns der Erforschung 
+                    und Weitergabe spiritueller Weisheit.
+                </p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--silver); margin-top: 1.5rem;">
+                    Unsere Reise begann in den stillen Stunden der Meditation, als wir beide unabhängig 
+                    voneinander die transformative Kraft spiritueller Praktiken entdeckten. Das Schicksal 
+                    führte uns zusammen, und aus unserer gemeinsamen Vision entstand Helionis - ein Name, 
+                    der die Verbindung zwischen Sonne (Helios) und Weisheit symbolisiert.
+                </p>
+            </div>
+            
+            <!-- Team Sektion -->
+            <div class="product-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                <div class="card text-center">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--dark); font-weight: 600;">J</div>
+                    <h3 class="card-title">Johannes</h3>
+                    <p style="color: var(--primary); margin-bottom: 1rem; font-weight: 500;">Spiritueller Mentor & Produktkurator</p>
+                    <p style="color: var(--silver); line-height: 1.6;">
+                        Johannes bringt über 15 Jahre Erfahrung in der Spiritualität mit. Seine Expertise 
+                        in alten Traditionen und mystischen Symbolen hilft dabei, authentische und 
+                        kraftvolle spirituelle Werkzeuge auszuwählen.
+                    </p>
+                </div>
+                
+                <div class="card text-center">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--secondary), var(--primary)); border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--dark); font-weight: 600;">M</div>
+                    <h3 class="card-title">Michael</h3>
+                    <p style="color: var(--primary); margin-bottom: 1rem; font-weight: 500;">Astrologe & Spiritueller Berater</p>
+                    <p style="color: var(--silver); line-height: 1.6;">
+                        Michael ist ein erfahrener Astrologe und spiritueller Berater. Seine tiefe 
+                        Verbindung zu den kosmischen Energien fließt in jede Beratung und jedes 
+                        von ihm erstellte Horoskop ein.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Unsere Mission -->
+            <div class="card">
+                <h2 class="card-title">Unsere Mission</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--silver);">
+                    Bei Helionis glauben wir daran, dass jeder Mensch das Potenzial für spirituelles 
+                    Wachstum in sich trägt. Unsere Mission ist es, Ihnen die Werkzeuge und das Wissen 
+                    zu vermitteln, die Sie auf Ihrem einzigartigen spirituellen Weg unterstützen.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div style="text-align: center;">
+                        <svg class="mystical-sprite" style="width: 3rem; height: 3rem; color: var(--primary); margin-bottom: 1rem;"><use href="#heart"></use></svg>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Authentizität</h3>
+                        <p style="color: var(--silver);">Jedes Produkt wird sorgfältig ausgewählt und mit Respekt vor den ursprünglichen Traditionen behandelt.</p>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <svg class="mystical-sprite" style="width: 3rem; height: 3rem; color: var(--primary); margin-bottom: 1rem;"><use href="#star"></use></svg>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Qualität</h3>
+                        <p style="color: var(--silver);">Wir arbeiten nur mit vertrauenswürdigen Lieferanten zusammen, die unsere hohen Standards teilen.</p>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <svg class="mystical-sprite" style="width: 3rem; height: 3rem; color: var(--primary); margin-bottom: 1rem;"><use href="#sparkle"></use></svg>
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Transformation</h3>
+                        <p style="color: var(--silver);">Wir möchten Sie auf Ihrem Weg zur persönlichen und spirituellen Transformation begleiten.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kontakt Information -->
+            <div class="card">
+                <h2 class="card-title">Besuchen Sie uns</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Unser Standort</h3>
+                        <p style="color: var(--silver); line-height: 1.8;">
+                            <strong>Helionis</strong><br>
+                            Johannes und Michael<br>
+                            Albstraße 5<br>
+                            89542 Herbrechtingen<br>
+                            Deutschland
+                        </p>
+                        
+                        <div style="margin-top: 1.5rem;">
+                            <p style="color: var(--silver);"><strong>E-Mail:</strong> info@helionis.de</p>
+                            <p style="color: var(--silver);"><strong>Telefon:</strong> +49 (0) 7324 123456</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Öffnungszeiten</h3>
+                        <p style="color: var(--silver); line-height: 1.8;">
+                            <strong>Montag - Freitag:</strong> 10:00 - 18:00 Uhr<br>
+                            <strong>Samstag:</strong> 10:00 - 16:00 Uhr<br>
+                            <strong>Sonntag:</strong> Nach Vereinbarung<br>
+                        </p>
+                        
+                        <p style="color: var(--silver); margin-top: 1rem; font-style: italic;">
+                            Gerne empfangen wir Sie auch außerhalb der Öffnungszeiten 
+                            für persönliche Beratungen nach vorheriger Terminvereinbarung.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="contact.html" class="btn btn-primary">Kontakt aufnehmen</a>
+                    <a href="shop.html" class="btn btn-secondary">Zum Shop</a>
+                </div>
+            </div>
+            
+            <!-- Philosophie -->
+            <div class="card">
+                <h2 class="card-title">Unsere Philosophie</h2>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--silver);">
+                    Spiritualität ist keine Mode, sondern ein Lebensweg. Wir verstehen, dass jeder Mensch 
+                    seinen eigenen Pfad zur Erleuchtung hat, und respektieren die Vielfalt spiritueller 
+                    Traditionen. Bei Helionis finden Sie keine dogmatischen Lehren, sondern Werkzeuge 
+                    und Inspirationen, die Sie auf Ihrer ganz persönlichen Reise unterstützen.
+                </p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--silver); margin-top: 1.5rem;">
+                    Wir glauben an die Kraft der Intention, die Weisheit der Ahnen und die unendlichen 
+                    Möglichkeiten des menschlichen Geistes. Jedes Produkt in unserem Sortiment wird 
+                    mit Bedacht ausgewählt und trägt eine Geschichte, eine Energie und ein Versprechen 
+                    für spirituelles Wachstum in sich.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/auth-state.js"></script>
+</body>
+</html>

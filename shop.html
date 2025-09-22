@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Helionis | Mystische Spiritualität & Esoterik</title>
+    <meta name="description" content="Entdecken Sie unsere große Auswahl an spirituellen Produkten: Amulette, Pyramiden, Würfel, Orakelkarten und mehr für Ihre spirituelle Reise.">
+    <meta name="keywords" content="Spiritueller Shop, Amulette kaufen, Pyramiden, Orakelkarten, Esoterik Shop">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Shop - Helionis | Mystische Spiritualität & Esoterik">
+    <meta property="og:description" content="Entdecken Sie unsere große Auswahl an spirituellen Produkten für Ihre spirituelle Reise.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://helionis.de/shop.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+</head>
+<body>
+    <!-- Ultrarealistischer WebGL Rauch -->
+    <canvas id="smoke-canvas"></canvas>
+    <div class="no-webgl-fallback"></div>
+    
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link" style="color: var(--silver-light);">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon">
+                    <svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+                        <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="login.html" class="nav-link">
+                    <svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+                    </svg>
+                    Login
+                </a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Shop Header -->
+    <section class="hero" style="min-height: 60vh; padding-top: 120px;">
+        <div class="hero-content">
+            <h1 class="hero-title" style="font-size: 3rem;">Mystischer Shop</h1>
+            <p class="hero-subtitle">Entdecken Sie kraftvolle spirituelle Begleiter</p>
+            <p class="hero-description">
+                Jedes Produkt in unserem Shop wurde sorgfältig ausgewählt und trägt eine einzigartige spirituelle Energie. 
+                Lassen Sie sich von der mystischen Kraft unserer Amulette, Pyramiden und Orakel inspirieren.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Shop Content -->
+    <section class="section">
+        <div class="container">
+            <!-- Filter und Suche -->
+            <div class="card" style="margin-bottom: 3rem;">
+                <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <input type="text" class="form-input" id="search-input" placeholder="Suchen Sie nach Produkten..." style="margin-bottom: 0;">
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <select class="form-input" id="category-filter" style="width: auto; margin-bottom: 0;">
+                            <option value="">Alle Kategorien</option>
+                            <option value="spiralen">Mystische Spiralen</option>
+                            <option value="pyramiden">Mystische Pyramiden</option>
+                            <option value="wuerfel">Mystische Würfel</option>
+                        </select>
+                        <select class="form-input" id="price-filter" style="width: auto; margin-bottom: 0;">
+                            <option value="">Alle Preise</option>
+                            <option value="100-150">100€ - 150€</option>
+                            <option value="150-200">150€ - 200€</option>
+                            <option value="200+">Über 200€</option>
+                        </select>
+                        <button class="btn btn-secondary" id="clear-filters">Filter löschen</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Produktgrid -->
+            <div class="product-grid" id="product-grid">
+                <!-- Mystische Spirale -->
+                <div class="product-card" data-category="spiralen" data-price="149.99" onclick="location.href='produkt-spirale.html'">
+                    <img src="assets/images/products/spirale.png" alt="Mystische Spirale" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystische Spirale</h3>
+                    <p class="product-price">€149,99</p>
+                    <p class="product-description">
+                        Kraftvolle mystische Spirale zur Meditation und spirituellen Transformation. 
+                        Aktiviert die Spiralenergie des Lebens und fördert inneres Wachstum.
+                    </p>
+                    <button class="btn btn-primary" onclick="addToCart('mystische-spirale', 'Mystische Spirale', 149.99); event.stopPropagation();">In den Warenkorb</button>
+                </div>
+                
+                <!-- Mystische Pyramide -->
+                <div class="product-card" data-category="pyramiden" data-price="199.99" onclick="location.href='produkt-pyramide.html'">
+                    <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystische Pyramide</h3>
+                    <p class="product-price">€199,99</p>
+                    <p class="product-description">
+                        Kraftvolle mystische Pyramide zur Energieverstärkung und spirituellen Heilung. 
+                        Konzentriert und verstärkt spirituelle Energien harmonisch.
+                    </p>
+                    <button class="btn btn-primary" onclick="addToCart('mystische-pyramide', 'Mystische Pyramide', 199.99); event.stopPropagation();">In den Warenkorb</button>
+                </div>
+                
+                <!-- Mystischer Würfel -->
+                <div class="product-card" data-category="wuerfel" data-price="119.99" onclick="location.href='produkt-cube.html'">
+                    <img src="assets/images/products/cube.png" alt="Mystischer Würfel" class="product-image" loading="lazy">
+                    <h3 class="product-title">Mystischer Würfel</h3>
+                    <p class="product-price">€119,99</p>
+                    <p class="product-description">
+                        Kraftvoller mystischer Würfel für Entscheidungsfindung und spirituelle Führung. 
+                        6 verschiedene mystische Symbole für klare Antworten.
+                    </p>
+                    <button class="btn btn-primary" onclick="addToCart('mystischer-wuerfel', 'Mystischer Würfel', 119.99); event.stopPropagation();">In den Warenkorb</button>
+                </div>
+            </div>
+            
+            <!-- Keine Ergebnisse -->
+            <div id="no-results" style="display: none; text-align: center; margin-top: 3rem;">
+                <div class="card">
+                    <h3 style="color: var(--silver-light); margin-bottom: 1rem;">Keine Produkte gefunden</h3>
+                    <p style="color: var(--silver);">Versuchen Sie es mit anderen Suchbegriffen oder Filtern.</p>
+                    <button class="btn btn-secondary" id="reset-search">Suche zurücksetzen</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script>
+        // Shop-spezifische Funktionalität
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            const priceFilter = document.getElementById('price-filter');
+            const clearFilters = document.getElementById('clear-filters');
+            const productGrid = document.getElementById('product-grid');
+            const noResults = document.getElementById('no-results');
+            const resetSearch = document.getElementById('reset-search');
+            
+            // URL Parameter lesen
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            const search = urlParams.get('search');
+            
+            if (category) {
+                categoryFilter.value = category;
+                filterProducts();
+            }
+            
+            if (search) {
+                searchInput.value = search;
+                filterProducts();
+            }
+            
+            // Event Listeners
+            searchInput.addEventListener('input', filterProducts);
+            categoryFilter.addEventListener('change', filterProducts);
+            priceFilter.addEventListener('change', filterProducts);
+            clearFilters.addEventListener('click', clearAllFilters);
+            resetSearch.addEventListener('click', clearAllFilters);
+            
+            function filterProducts() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedCategory = categoryFilter.value;
+                const selectedPriceRange = priceFilter.value;
+                const products = productGrid.querySelectorAll('.product-card');
+                let visibleCount = 0;
+                
+                products.forEach(product => {
+                    const title = product.querySelector('.product-title').textContent.toLowerCase();
+                    const description = product.querySelector('.product-description').textContent.toLowerCase();
+                    const category = product.dataset.category;
+                    const price = parseFloat(product.dataset.price);
+                    
+                    let matches = true;
+                    
+                    // Suchbegriff Filter
+                    if (searchTerm && !title.includes(searchTerm) && !description.includes(searchTerm)) {
+                        matches = false;
+                    }
+                    
+                    // Kategorie Filter
+                    if (selectedCategory && category !== selectedCategory) {
+                        matches = false;
+                    }
+                    
+                    // Preis Filter
+                    if (selectedPriceRange) {
+                        const [min, max] = selectedPriceRange.split('-').map(p => p === '+' ? Infinity : parseFloat(p));
+                        if (max && (price < min || price > max)) {
+                            matches = false;
+                        } else if (!max && price < min) {
+                            matches = false;
+                        }
+                    }
+                    
+                    if (matches) {
+                        product.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+                
+                // Keine Ergebnisse anzeigen
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+            }
+            
+            function clearAllFilters() {
+                searchInput.value = '';
+                categoryFilter.value = '';
+                priceFilter.value = '';
+                filterProducts();
+            }
+        });
+    </script>
+    
+    <!-- Neue Cart-Funktionalität für PNG-Produkte -->
+    <script>
+        // Override the addToCart function for the new products
+        window.addToCart = function(productId, productName, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if product already exists in cart
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                // Map product IDs to images
+                const imageMap = {
+                    'mystische-spirale': 'assets/images/products/spirale.png',
+                    'mystische-pyramide': 'assets/images/products/pyramide.png',
+                    'mystischer-wuerfel': 'assets/images/products/cube.png'
+                };
+                
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: price,
+                    quantity: 1,
+                    image: imageMap[productId]
+                });
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Update cart count
+            updateCartCount();
+            
+            // Show notification
+            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        };
+
+        // Update cart count function
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountElement = document.getElementById('cart-count');
+            if (cartCountElement) {
+                cartCountElement.textContent = totalItems;
+            }
+        }
+
+        // Initialize cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+    </script>
+    
+    <script src="assets/js/sprites.js"></script>
+</body>
+</html>

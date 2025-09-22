@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystischer Würfel - Helionis</title>
+    <meta name="description" content="Kraftvoller mystischer Würfel für Entscheidungsfindung und spirituelle Führung. Handgefertigt aus edlen Materialien.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    <link rel="stylesheet" href="assets/css/product.css">
+    
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
+</head>
+<body>
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+        <symbol id="star" viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+        </symbol>
+        <symbol id="return-arrow" viewBox="0 0 24 24">
+            <path d="M9 7l-5 5 5 5M4 12h11a4 4 0 0 1 0 8h-1" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.html">Start</a>
+                <span>›</span>
+                <a href="shop.html">Shop</a>
+                <span>›</span>
+                <span>Mystischer Würfel</span>
+            </nav>
+
+            <!-- Product Section -->
+            <div class="product-detail">
+                <div class="product-images">
+                    <div class="main-image">
+                        <div class="media-frame">
+                            <img src="assets/images/products/cube.png" alt="Mystischer Würfel" id="main-product-image">
+                            <div class="video-overlay">
+                                <video autoplay muted loop playsinline class="product-video">
+                                    <source src="assets/images/videos/cube.mp4" type="video/mp4">
+                                    Ihr Browser unterstützt keine Videos.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-thumbnails">
+                        <img src="assets/images/products/cube.png" alt="Mystischer Würfel - Hauptansicht" class="thumbnail active" onclick="showImage('assets/images/products/cube.png')">
+                        <div class="video-thumbnail" onclick="showVideo()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>Video</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-info">
+                    <h1 class="product-title">Mystischer Würfel</h1>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                        </div>
+                        <span class="rating-count">(97 Bewertungen)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">119,99 €</span>
+                        <span class="original-price">139,99 €</span>
+                        <span class="discount">-14%</span>
+                    </div>
+
+                    <div class="product-description">
+                        <p>Der Mystische Würfel ist ein kraftvolles Orakel-Werkzeug für Entscheidungsfindung und spirituelle Führung. Jede Seite trägt alte Symbole, die Ihnen Klarheit und Weisheit in wichtigen Lebensfragen schenken.</p>
+                        
+                        <h3>Eigenschaften und Wirkung:</h3>
+                        <ul class="clean-bullets">
+                          <li>Sechs symbolische Flächen für strukturierte Antwortimpulse</li>
+                          <li>Hilft Entscheidungsprozesse zu fokussieren</li>
+                          <li>Fördert Zugang zu reflektiver Intuition</li>
+                          <li>Kann Wahrnehmungsschärfe und Einschätzung verbessern</li>
+                          <li>Stärkt Ausgleich und Orientierung bei Komplexität</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature">
+                            <strong>Material:</strong> Schwarzes Epoxidharz mit Silber-Einschlüssen
+                        </div>
+                        <div class="feature">
+                            <strong>Größe:</strong> 4x4x4 cm (perfekte Handgröße)
+                        </div>
+                        <div class="feature">
+                            <strong>Gewicht:</strong> 120g (angenehm in der Hand)
+                        </div>
+                        <div class="feature">
+                            <strong>Symbole:</strong> 6 verschiedene Orakel-Zeichen
+                        </div>
+                        <div class="feature">
+                            <strong>Energetisierung:</strong> 9 Tage unter verschiedenen Mondphasen
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <label for="quantity">Menge:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="7">
+                                <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('mystischer-wuerfel', 'Mystischer Würfel', 119.99)">
+                            <svg class="mystical-sprite small"><use href="#cart"></use></svg>
+                            In den Warenkorb
+                        </button>
+
+                        <button class="btn btn-secondary wishlist-btn">
+                            ♡ Zur Wunschliste
+                        </button>
+                    </div>
+
+                    <div class="delivery-info">
+                        <div class="info-item">
+                            <strong>🚚 Kostenloser Versand</strong> ab 75€ Bestellwert
+                        </div>
+                        <div class="info-item">
+                            <strong>⏰ Lieferzeit:</strong> 3-5 Werktage
+                        </div>
+                        <div class="info-item">
+                            <strong>🔒 Sichere Bezahlung</strong> SSL-verschlüsselt
+                        </div>
+                        <div class="info-item">
+                            <strong><svg class="mystical-sprite small"><use href="#return-arrow"></use></svg> 30 Tage Rückgaberecht</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-tabs">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('description')">Detaillierte Beschreibung</button>
+                    <button class="tab-btn" onclick="showTab('usage')">Anwendung & Deutung</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Bewertungen (97)</button>
+                    <button class="tab-btn" onclick="showTab('shipping')">Versand & Rückgabe</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="description" class="tab-panel active">
+                        <h3>Der Mystische Würfel - Ihr persönlicher Weisheitslehrer</h3>
+                        <p>Seit Jahrtausenden nutzen Menschen Würfel nicht nur für Spiele, sondern auch als kraftvolle Orakel-Werkzeuge. Unser Mystischer Würfel vereint diese uralte Tradition mit moderner spiritueller Praxis und bietet Ihnen einen direkten Zugang zu Ihrer inneren Weisheit.</p>
+                        
+                        <h4>Die 6 Mystischen Symbole</h4>
+                        <p>Jede Seite des Würfels trägt ein sorgfältig ausgewähltes Symbol:</p>
+                        <ul>
+                            <li><strong>Das Auge der Weisheit</strong> - Klarheit und tiefe Einsicht</li>
+                            <li><strong>Die Spirale des Wandels</strong> - Transformation und Neubeginn</li>
+                            <li><strong>Der Baum des Lebens</strong> - Wachstum und Erdung</li>
+                            <li><strong>Das Herz der Liebe</strong> - Emotionale Führung und Mitgefühl</li>
+                            <li><strong>Der Stern der Hoffnung</strong> - Optimismus und spirituelle Führung</li>
+                            <li><strong>Das Kreuz der Balance</strong> - Harmonie und Gleichgewicht</li>
+                        </ul>
+                        
+                        <h4>Handwerkskunst aus Ebenholz</h4>
+                        <p>Jeder Würfel wird aus einem einzigen Stück kostbaren Ebenholzes gefertigt. Dieses seltene Holz ist bekannt für seine schützenden Eigenschaften und seine Fähigkeit, spirituelle Energien zu verstärken. Die mystischen Symbole werden in präziser Handarbeit mit Silber-Intarsien eingelegt.</p>
+                        
+                        <h4>9-Tage-Energetisierung</h4>
+                        <p>Nach der Fertigstellung wird jeder Würfel 9 Tage lang unter verschiedenen Mondphasen energetisiert. Jede Nacht erhält er die spezielle Energie einer anderen Mondphase, wodurch er zu einem vollständigen spirituellen Werkzeug wird, das alle Aspekte des Lebens abdeckt.</p>
+                        
+                        <h4>Wissenschaft der Synchronizität</h4>
+                        <p>Der Mystische Würfel funktioniert nach dem Prinzip der Synchronizität - der bedeutungsvollen Koinzidenz. Wenn Sie eine Frage stellen und den Würfel werfen, verbindet sich Ihre Intention mit dem universellen Energiefeld und führt zu einem Symbol, das genau die Antwort trägt, die Sie benötigen.</p>
+                    </div>
+
+                    <div id="usage" class="tab-panel">
+                        <h3>Anwendung und Symbolbedeutungen</h3>
+                        
+                        <h4>Grundlegende Anwendung</h4>
+                        <ol>
+                            <li>Halten Sie den Würfel in beiden Händen</li>
+                            <li>Formulieren Sie Ihre Frage klar in Gedanken</li>
+                            <li>Atmen Sie tief ein und lassen Sie los</li>
+                            <li>Werfen Sie den Würfel sanft auf eine weiche Unterlage</li>
+                            <li>Betrachten Sie das erschienene Symbol und öffnen Sie sich für seine Botschaft</li>
+                        </ol>
+                        
+                        <h4>Detaillierte Symbolbedeutungen</h4>
+                        
+                        <h5>Das Auge der Weisheit</h5>
+                        <p><strong>Bedeutung:</strong> Es ist Zeit, tiefer zu schauen. Die Antwort liegt bereits in Ihnen - vertrauen Sie Ihrer Intuition. Eine wichtige Erkenntnis steht bevor.</p>
+                        <p><strong>Bereiche:</strong> Selbsterkenntnis, spirituelle Entwicklung, verborgene Wahrheiten</p>
+                        
+                        <h5>🌀 Die Spirale des Wandels</h5>
+                        <p><strong>Bedeutung:</strong> Veränderung ist nicht nur möglich, sondern notwendig. Lassen Sie alte Muster los und öffnen Sie sich für neue Möglichkeiten.</p>
+                        <p><strong>Bereiche:</strong> Transformation, Neuanfang, Loslassen, Evolution</p>
+                        
+                        <h5>🌳 Der Baum des Lebens</h5>
+                        <p><strong>Bedeutung:</strong> Bleiben Sie geerdet und geduldig. Wachstum braucht Zeit. Ihre Wurzeln sind stark - vertrauen Sie dem natürlichen Prozess.</p>
+                        <p><strong>Bereiche:</strong> Geduld, natürliches Wachstum, Familie, Stabilität</p>
+                        
+                        <h5>❤️ Das Herz der Liebe</h5>
+                        <p><strong>Bedeutung:</strong> Folgen Sie Ihrem Herzen. Liebe und Mitgefühl sind der Schlüssel. Wichtige Beziehungen stehen im Fokus.</p>
+                        <p><strong>Bereiche:</strong> Beziehungen, Liebe, Emotionen, Herzensangelegenheiten</p>
+                        
+                        <h5>⭐ Der Stern der Hoffnung</h5>
+                        <p><strong>Bedeutung:</strong> Optimismus ist gerechtfertigt. Ihre Träume können wahr werden. Das Universum unterstützt Sie - bleiben Sie positiv.</p>
+                        <p><strong>Bereiche:</strong> Hoffnung, Träume, spirituelle Führung, Optimismus</p>
+                        
+                        <h5>✚ Das Kreuz der Balance</h5>
+                        <p><strong>Bedeutung:</strong> Suchen Sie das Gleichgewicht. Alle Bereiche Ihres Lebens brauchen Aufmerksamkeit. Harmonie ist der Schlüssel zum Erfolg.</p>
+                        <p><strong>Bereiche:</strong> Balance, Harmonie, Gerechtigkeit, Gleichgewicht</p>
+                        
+                        <h4>Fortgeschrittene Techniken</h4>
+                        <ul>
+                            <li><strong>Drei-Würfel-Lesung:</strong> Vergangenheit, Gegenwart, Zukunft</li>
+                            <li><strong>Ja/Nein-Fragen:</strong> Ungerade Symbole = Ja, Gerade = Nein</li>
+                            <li><strong>Wochenlesung:</strong> Ein Wurf für jeden Tag der Woche</li>
+                            <li><strong>Beziehungslesung:</strong> Ein Wurf für jede Person</li>
+                        </ul>
+                        
+                        <h4>Pflege Ihres Mystischen Würfels</h4>
+                        <ul>
+                            <li>Reinigen Sie ihn wöchentlich mit einem weichen, trockenen Tuch</li>
+                            <li>Bewahren Sie ihn in dem mitgelieferten Samtbeutel auf</li>
+                            <li>Laden Sie ihn monatlich bei Vollmond auf</li>
+                            <li>Lassen Sie niemand anderen den Würfel anfassen (persönliche Energie)</li>
+                        </ul>
+                    </div>
+
+                    <div id="reviews" class="tab-panel">
+                        <h3>Kundenbewertungen</h3>
+                        <div class="reviews-summary">
+                            <div class="average-rating">
+                                <div class="rating-number">4.7</div>
+                                <div class="stars">
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                </div>
+                                <div class="rating-text">97 Bewertungen</div>
+                            </div>
+                        </div>
+
+                        <div class="review-list">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Claudia B.</div>
+                                    <div class="review-date">vor 3 Tagen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Ich bin begeistert! Der Würfel gibt mir immer genau die Antworten, die ich brauche. Die Symbole sind wunderschön und die Verarbeitung ist makellos. Ein treuer Begleiter für alle Lebensfragen!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Frank M.</div>
+                                    <div class="review-date">vor 1 Woche</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Als Skeptiker war ich überrascht, wie treffsicher die Antworten sind. Der Würfel hat mir bei mehreren wichtigen Entscheidungen geholfen. Die Qualität ist exceptional!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Lisa T.</div>
+                                    <div class="review-date">vor 3 Wochen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Perfektes Geschenk für spirituell interessierte Menschen! Meine Schwester war begeistert. Das Ebenholz fühlt sich so hochwertig an und die Silber-Intarsien sind ein Kunstwerk!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="shipping" class="tab-panel">
+                        <h3>Versand und Rückgabe</h3>
+                        
+                        <h4>Versandinformationen</h4>
+                        <ul>
+                            <li><strong>Kostenloser Versand</strong> ab 75€ Bestellwert</li>
+                            <li><strong>Standardversand:</strong> 4,99€ (3-5 Werktage)</li>
+                            <li><strong>Express-Versand:</strong> 9,99€ (1-2 Werktage)</li>
+                            <li><strong>Internationale Lieferung:</strong> Verfügbar in alle EU-Länder</li>
+                        </ul>
+                        
+                        <h4>Exklusive Geschenkverpackung</h4>
+                        <p>Jeder Mystische Würfel wird in einer luxuriösen Holzbox mit Samtauskleidung geliefert. Enthalten sind:</p>
+                        <ul>
+                            <li>Hochwertiger Samtbeutel für die Aufbewahrung</li>
+                            <li>Ausführliches Handbuch mit Symbolbedeutungen</li>
+                            <li>Echtheitszertifikat mit Herstellungsdetails</li>
+                            <li>Persönlicher Energetisierungsnachweis</li>
+                        </ul>
+                        
+                        <h4>Rückgaberecht</h4>
+                        <ul>
+                            <li><strong>30 Tage Rückgaberecht</strong> ab Erhalt der Ware</li>
+                            <li>Artikel müssen unbenutzt und in der Originalverpackung sein</li>
+                            <li>Kostenlose Rücksendung bei Mängeln oder falscher Lieferung</li>
+                            <li>Bei normaler Rücksendung trägt der Kunde die Rücksendekosten (4,99€)</li>
+                        </ul>
+                        
+                        <h4>Garantie und Service</h4>
+                        <ul>
+                            <li><strong>5 Jahre Garantie</strong> auf Materialfehler und Verarbeitung</li>
+                            <li><strong>Lebenslange Beratung</strong> durch unser Expertenteam</li>
+                            <li>Kostenlose Nachpolitur der Silber-Intarsien nach 2 Jahren</li>
+                            <li>Reparaturservice für Beschädigungen</li>
+                        </ul>
+                        
+                        <h4>Energetische Garantie</h4>
+                        <p>Sollten Sie nach 90 Tagen das Gefühl haben, dass der Würfel nicht richtig mit Ihrer Energie harmoniert, bieten wir eine kostenlose Neu-Energetisierung oder einen vollständigen Umtausch an.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <section class="related-products">
+                <h3>Weitere mystische Objekte</h3>
+                <div class="related-grid">
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/spirale.png" alt="Mystische Spirale">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystische Spirale</h4>
+                            <div class="rc-price">149,99 €</div>
+                            <a href="produkt-spirale.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystische Pyramide</h4>
+                            <div class="rc-price">199,99 €</div>
+                            <a href="produkt-pyramide.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Helionis</h4>
+                <p>Ihre Quelle für authentische spirituelle Produkte und mystische Weisheit.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="shop.html">Alle Produkte</a></li>
+                    <li><a href="produkt-spirale.html">Mystische Spirale</a></li>
+                    <li><a href="produkt-pyramide.html">Mystische Pyramide</a></li>
+                    <li><a href="produkt-cube.html">Mystischer Würfel</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Service</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">Über uns</a></li>
+                    <li><a href="contact.html">Kontakt</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="versand.html">Versand</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Rechtliches</h4>
+                <ul class="footer-links">
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutz</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                    <li><a href="widerruf.html">Widerruf</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with ✨ for spiritual souls</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Quantity controls
+        function increaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) < 7) {
+                qty.value = parseInt(qty.value) + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) > 1) {
+                qty.value = parseInt(qty.value) - 1;
+            }
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Add to cart functionality
+        function addToCart(productId, productName, price) {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: price,
+                    quantity: quantity,
+                    image: 'assets/images/products/cube.png'
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
+        // Video and image gallery functions
+        function showImage(imageSrc) {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.src = imageSrc;
+            mainImage.style.display = 'block';
+            videoOverlay.style.display = 'none';
+        }
+
+        function showVideo() {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.style.display = 'none';
+            videoOverlay.style.display = 'block';
+        }
+    </script>
+    
+    <style>
+        /* Modern Video Styles */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .video-thumbnail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal-medium));
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--silver-light);
+            font-size: 0.75rem;
+            gap: 4px;
+        }
+
+        .video-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(26, 107, 90, 0.3);
+        }
+
+        .video-thumbnail.active {
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 0 10px rgba(230, 192, 123, 0.4);
+        }
+
+        .main-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .image-thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .thumbnail {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .thumbnail:hover, .video-thumbnail:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</body>
+</html>

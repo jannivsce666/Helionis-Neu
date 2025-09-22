@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystische Pyramide - Helionis</title>
+    <meta name="description" content="Kraftvolle mystische Pyramide zur Energieverstärkung und spirituellen Heilung. Handgefertigt aus edlen Kristallen.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+    <link rel="stylesheet" href="assets/css/product.css">
+    
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
+</head>
+<body>
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+        <symbol id="star" viewBox="0 0 24 24">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+        </symbol>
+        <symbol id="return-arrow" viewBox="0 0 24 24">
+            <path d="M9 7l-5 5 5 5M4 12h11a4 4 0 0 1 0 8h-1" fill="none" stroke="currentColor" stroke-width="2"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.html">Start</a>
+                <span>›</span>
+                <a href="shop.html">Shop</a>
+                <span>›</span>
+                <span>Mystische Pyramide</span>
+            </nav>
+
+            <!-- Product Section -->
+            <div class="product-detail">
+                <div class="product-images">
+                    <div class="main-image">
+                        <div class="media-frame">
+                            <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide" id="main-product-image">
+                            <div class="video-overlay">
+                                <video autoplay muted loop playsinline class="product-video">
+                                    <source src="assets/images/videos/pyramide.mp4" type="video/mp4">
+                                    Ihr Browser unterstützt keine Videos.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-thumbnails">
+                        <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide - Hauptansicht" class="thumbnail active" onclick="showImage('assets/images/products/pyramide.png')">
+                        <div class="video-thumbnail" onclick="showVideo()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            <span>Video</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-info">
+                    <h1 class="product-title">Mystische Pyramide</h1>
+                    <div class="product-rating">
+                        <div class="stars">
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                            <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                        </div>
+                        <span class="rating-count">(156 Bewertungen)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price">199,99 €</span>
+                        <span class="original-price">249,99 €</span>
+                        <span class="discount">-20%</span>
+                    </div>
+
+                    <div class="product-description">
+                        <p>Die Mystische Pyramide verkörpert die uralte Weisheit der ägyptischen Meister. Sie konzentriert und verstärkt spirituelle Energien und schafft ein kraftvolles Feld der Heilung und Transformation.</p>
+                        
+                        <h3>Eigenschaften und Wirkung:</h3>
+                        <ul class="clean-bullets">
+                            <li>Bündelt und verstärkt fokussierte Energieflüsse</li>
+                            <li>Unterstützt die harmonische Aktivierung aller Chakren</li>
+                            <li>Stabilisiert den Raum durch energetische Feldbildung</li>
+                            <li>Vertieft meditative und kontemplative Praxis</li>
+                            <li>Dient als energetische Ladeplattform für kleine Objekte</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature">
+                            <strong>Material:</strong> Klares Epoxidharz mit Rosenquarz und Amethyst-Einschlüssen
+                        </div>
+                        <div class="feature">
+                            <strong>Größe:</strong> Grundfläche 8x8 cm, Höhe 6 cm
+                        </div>
+                        <div class="feature">
+                            <strong>Gewicht:</strong> 280g (perfekte Energiedichte)
+                        </div>
+                        <div class="feature">
+                            <strong>Herkunft:</strong> Handgeschliffen in den Alpen
+                        </div>
+                        <div class="feature">
+                            <strong>Energetisierung:</strong> 21 Tage bei Sonnenauf- und untergang
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <div class="quantity-selector">
+                            <label for="quantity">Menge:</label>
+                            <div class="quantity-controls">
+                                <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="3">
+                                <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('mystische-pyramide', 'Mystische Pyramide', 199.99)">
+                            <svg class="mystical-sprite small"><use href="#cart"></use></svg>
+                            In den Warenkorb
+                        </button>
+
+                        <button class="btn btn-secondary wishlist-btn">
+                            ♡ Zur Wunschliste
+                        </button>
+                    </div>
+
+                    <div class="delivery-info">
+                        <div class="info-item">
+                            <strong>🚚 Kostenloser Versand</strong> ab 75€ Bestellwert
+                        </div>
+                        <div class="info-item">
+                            <strong>⏰ Lieferzeit:</strong> 7-10 Werktage (Kristall-Selektion)
+                        </div>
+                        <div class="info-item">
+                            <strong>🔒 Sichere Bezahlung</strong> SSL-verschlüsselt
+                        </div>
+                        <div class="info-item">
+                            <strong><svg class="mystical-sprite small"><use href="#return-arrow"></use></svg> 30 Tage Rückgaberecht</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-tabs">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('description')">Detaillierte Beschreibung</button>
+                    <button class="tab-btn" onclick="showTab('usage')">Anwendung & Aufstellung</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Bewertungen (156)</button>
+                    <button class="tab-btn" onclick="showTab('shipping')">Versand & Rückgabe</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="description" class="tab-panel active">
+                        <h3>Die Mystische Pyramide - Kraftzentrum für spirituelle Energie</h3>
+                        <p>Seit über 4000 Jahren nutzen spirituelle Suchende die besondere Geometrie der Pyramide, um kosmische Energien zu konzentrieren und zu verstärken. Unsere Mystische Pyramide vereint diese uralte Weisheit mit den reinsten Kristallen der Erde.</p>
+                        
+                        <h4>Die Kraft der Pyramiden-Geometrie</h4>
+                        <p>Die Pyramidenform ist mehr als nur eine geometrische Struktur - sie ist ein kraftvoller Energiegenerator. Durch ihre perfekten Proportionen sammelt sie kosmische Energien an der Spitze und verstärkt sie exponentiell. Diese konzentrierte Kraft kann Heilung fördern, Meditation vertiefen und spirituelle Entwicklung beschleunigen.</p>
+                        
+                        <h4>Ausgewählte Kristalle</h4>
+                        <p>Jede Pyramide wird aus drei kraftvollen Kristallarten gefertigt:</p>
+                        <ul>
+                            <li><strong>Bergkristall</strong> - der Meisterheiler, verstärkt alle anderen Energien</li>
+                            <li><strong>Rosenquarz</strong> - öffnet das Herzchakra und fördert Liebe und Heilung</li>
+                            <li><strong>Amethyst</strong> - aktiviert das Kronenchakra und spirituelle Intuition</li>
+                        </ul>
+                        
+                        <h4>Handwerkliche Perfektion</h4>
+                        <p>Jede Pyramide wird von Meister-Kristallschleifern in den österreichischen Alpen handgefertigt. Die perfekten Winkel und Proportionen werden millimetergenau eingehalten, um die optimale Energiekonzentration zu gewährleisten.</p>
+                        
+                        <h4>21-Tage-Energetisierung</h4>
+                        <p>Nach der Fertigstellung wird jede Pyramide 21 Tage lang bei jedem Sonnenauf- und untergang energetisiert. Dieser intensive Aufladungsprozess verleiht der Pyramide ihre außergewöhnliche spirituelle Kraft.</p>
+                    </div>
+
+                    <div id="usage" class="tab-panel">
+                        <h3>Anwendung und optimale Aufstellung</h3>
+                        
+                        <h4>Ideale Platzierung</h4>
+                        <ul>
+                            <li><strong>Meditationsplatz:</strong> Stellen Sie die Pyramide 50-100 cm vor sich auf</li>
+                            <li><strong>Schlafzimmer:</strong> Auf dem Nachttisch für besseren Schlaf und Träume</li>
+                            <li><strong>Arbeitsplatz:</strong> Reduziert Stress und erhöht die Konzentration</li>
+                            <li><strong>Wohnzimmer:</strong> Harmonisiert die Energie des gesamten Raumes</li>
+                        </ul>
+                        
+                        <h4>Ausrichtung nach Himmelsrichtungen</h4>
+                        <ul>
+                            <li><strong>Norden:</strong> Für Stabilität und Erdung</li>
+                            <li><strong>Osten:</strong> Für neue Anfänge und Inspiration</li>
+                            <li><strong>Süden:</strong> Für Aktivierung und Lebensenergie</li>
+                            <li><strong>Westen:</strong> Für Heilung und emotionale Balance</li>
+                        </ul>
+                        
+                        <h4>Energetische Anwendungen</h4>
+                        <ol>
+                            <li><strong>Kristall-Aufladung:</strong> Legen Sie andere Kristalle um die Pyramide</li>
+                            <li><strong>Wasserenergetisierung:</strong> Stellen Sie ein Glas Wasser daneben über Nacht</li>
+                            <li><strong>Raumreinigung:</strong> Lassen Sie die Pyramide 24h im Raum wirken</li>
+                            <li><strong>Heilungsarbeit:</strong> Halten Sie die Pyramide über Körperstellen</li>
+                        </ol>
+                        
+                        <h4>Meditation mit der Pyramide</h4>
+                        <ol>
+                            <li>Setzen Sie sich entspannt vor die Pyramide</li>
+                            <li>Visualisieren Sie, wie Energie von der Spitze ausströmt</li>
+                            <li>Atmen Sie diese Energie bewusst ein</li>
+                            <li>Spüren Sie, wie sie Ihren Körper durchströmt</li>
+                            <li>Lassen Sie sich von der Pyramidenenergie führen</li>
+                        </ol>
+                        
+                        <h4>Pflege und Reinigung</h4>
+                        <ul>
+                            <li>Wöchentliche Reinigung mit destilliertem Wasser</li>
+                            <li>Monatliche energetische Reinigung mit Salbei oder Palo Santo</li>
+                            <li>Bei Vollmond für 3 Stunden ins Mondlicht stellen</li>
+                            <li>Niemals mit chemischen Reinigern behandeln</li>
+                        </ul>
+                    </div>
+
+                    <div id="reviews" class="tab-panel">
+                        <h3>Kundenbewertungen</h3>
+                        <div class="reviews-summary">
+                            <div class="average-rating">
+                                <div class="rating-number">4.9</div>
+                                <div class="stars">
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                </div>
+                                <div class="rating-text">156 Bewertungen</div>
+                            </div>
+                        </div>
+
+                        <div class="review-list">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Dr. Andrea M.</div>
+                                    <div class="review-date">vor 5 Tagen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Als Heilpraktikerin nutze ich diese Pyramide täglich in meiner Praxis. Die Energiequalität ist außergewöhnlich und meine Patienten spüren sofort den Unterschied. Ein professionelles Werkzeug höchster Güte!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Robert F.</div>
+                                    <div class="review-date">vor 2 Wochen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Unglaublich! Seit die Pyramide in meinem Wohnzimmer steht, hat sich die gesamte Atmosphäre verändert. Besucher bemerken sofort die friedliche, kraftvolle Energie. Das Geld absolut wert!"</p>
+                                </div>
+                            </div>
+
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Elena S.</div>
+                                    <div class="review-date">vor 1 Monat</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Die Verarbeitung ist makellos und die Energie spürbar kraftvoll. Meine Meditation hat sich seit dem Kauf um Dimensionen vertieft. Kann es jedem spirituell Suchenden empfehlen!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="shipping" class="tab-panel">
+                        <h3>Versand und Rückgabe</h3>
+                        
+                        <h4>Besondere Versandbedingungen</h4>
+                        <p>Jede Pyramide wird individuell aus unseren Kristallvorräten zusammengestellt und final energetisiert. Daher benötigen wir 7-10 Werktage für die sorgfältige Vorbereitung.</p>
+                        
+                        <h4>Versandinformationen</h4>
+                        <ul>
+                            <li><strong>Kostenloser Versand</strong> ab 75€ Bestellwert</li>
+                            <li><strong>Standardversand:</strong> 12,99€ (7-10 Werktage)</li>
+                            <li><strong>Express nicht verfügbar</strong> (aufgrund Kristall-Selektion)</li>
+                            <li><strong>Internationale Lieferung:</strong> Verfügbar weltweit</li>
+                        </ul>
+                        
+                        <h4>Schutzverpackung</h4>
+                        <p>Die Pyramide wird in einer speziellen stoßfesten Verpackung mit energetischem Schutz geliefert. Ein Kristall-Pflegeset, Aufstellungsanleitung und Echtheitszertifikat sind enthalten.</p>
+                        
+                        <h4>Rückgaberecht</h4>
+                        <ul>
+                            <li><strong>30 Tage Rückgaberecht</strong> ab Erhalt der Ware</li>
+                            <li>Energetische Neuaufladung bei jeder Rücknahme</li>
+                            <li>Kostenlose Rücksendung bei Transportschäden</li>
+                            <li>Normale Rücksendekosten: 19,99€ (Spezialverpackung)</li>
+                        </ul>
+                        
+                        <h4>Garantie und Service</h4>
+                        <ul>
+                            <li><strong>Lebenslange Garantie</strong> auf Kristallbruch durch Herstellerfehler</li>
+                            <li><strong>Kostenloser Austausch</strong> bei Energieverlust (binnen 2 Jahren)</li>
+                            <li>Jährliche kostenlose Neuen ergietisierung auf Anfrage</li>
+                            <li>24/7 spirituelle Beratung durch Kristall-Experten</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <section class="related-products">
+                <h3>Weitere mystische Objekte</h3>
+                <div class="related-grid">
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/spirale.png" alt="Mystische Spirale">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystische Spirale</h4>
+                            <div class="rc-price">149,99 €</div>
+                            <a href="produkt-spirale.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                    <div class="related-card">
+                        <div class="thumb-wrapper">
+                            <img src="assets/images/products/cube.png" alt="Mystischer Würfel">
+                        </div>
+                        <div class="rc-body">
+                            <h4>Mystischer Würfel</h4>
+                            <div class="rc-price">119,99 €</div>
+                            <a href="produkt-cube.html" class="btn-mini">DETAILS</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Helionis</h4>
+                <p>Ihre Quelle für authentische spirituelle Produkte und mystische Weisheit.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">🐦</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="shop.html">Alle Produkte</a></li>
+                    <li><a href="produkt-spirale.html">Mystische Spirale</a></li>
+                    <li><a href="produkt-pyramide.html">Mystische Pyramide</a></li>
+                    <li><a href="produkt-cube.html">Mystischer Würfel</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Service</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">Über uns</a></li>
+                    <li><a href="contact.html">Kontakt</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="versand.html">Versand</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Rechtliches</h4>
+                <ul class="footer-links">
+                    <li><a href="impressum.html">Impressum</a></li>
+                    <li><a href="datenschutz.html">Datenschutz</a></li>
+                    <li><a href="agb.html">AGB</a></li>
+                    <li><a href="widerruf.html">Widerruf</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with ✨ for spiritual souls</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Quantity controls
+        function increaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) < 3) {
+                qty.value = parseInt(qty.value) + 1;
+            }
+        }
+
+        function decreaseQuantity() {
+            const qty = document.getElementById('quantity');
+            if (parseInt(qty.value) > 1) {
+                qty.value = parseInt(qty.value) - 1;
+            }
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Add to cart functionality
+        function addToCart(productId, productName, price) {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: price,
+                    quantity: quantity,
+                    image: 'assets/images/products/pyramide.png'
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+        });
+
+        // Video and image gallery functions
+        function showImage(imageSrc) {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.src = imageSrc;
+            mainImage.style.display = 'block';
+            videoOverlay.style.display = 'none';
+        }
+
+        function showVideo() {
+            const mainImage = document.getElementById('main-product-image');
+            const videoOverlay = document.querySelector('.video-overlay');
+            
+            mainImage.style.display = 'none';
+            videoOverlay.style.display = 'block';
+        }
+    </script>
+    
+    <style>
+        /* Modern Video Styles */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .product-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .video-thumbnail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--teal-dark), var(--teal-medium));
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--silver-light);
+            font-size: 0.75rem;
+            gap: 4px;
+        }
+
+        .video-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(26, 107, 90, 0.3);
+        }
+
+        .video-thumbnail.active {
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 0 10px rgba(230, 192, 123, 0.4);
+        }
+
+        .main-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .image-thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .thumbnail {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .thumbnail:hover, .video-thumbnail:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</body>
+</html>

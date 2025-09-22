@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horoskop - Helionis | Persönliche astrologische Beratung</title>
+    <meta name="description" content="Erhalten Sie Ihr persönliches Horoskop von Helionis. Professionelle astrologische Analysen, Partnerschaftshoroskope und spirituelle Führung.">
+    <meta name="keywords" content="Horoskop, Astrologie, Partnerschaftshoroskop, Sternzeichen, astrologische Beratung">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Horoskop - Helionis | Persönliche astrologische Beratung">
+    <meta property="og:description" content="Erhalten Sie Ihr persönliches Horoskop von Helionis. Professionelle astrologische Analysen und spirituelle Führung.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://helionis.de/horoskop.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sprites.css">
+</head>
+<body>
+    <!-- Ultrarealistischer WebGL Rauch -->
+    <canvas id="smoke-canvas"></canvas>
+    <div class="no-webgl-fallback"></div>
+    
+    <!-- Mystische Partikel -->
+    <div class="mystical-particles" id="particles"></div>
+    
+    <!-- SVG Sprites -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="cart" viewBox="0 0 24 24">
+            <path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9.5" cy="19" r="1.5" fill="currentColor"/>
+            <circle cx="17.5" cy="19" r="1.5" fill="currentColor"/>
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/>
+        </symbol>
+    </svg>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">HELIONIS</a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="/" class="nav-link">Start</a></li>
+                <li><a href="shop.html" class="nav-link">Shop</a></li>
+                <li><a href="horoskop.html" class="nav-link" style="color: var(--silver-light);">Horoskop</a></li>
+                <li><a href="about.html" class="nav-link">Über uns</a></li>
+                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> Login</a></li>
+            </ul>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Horoskop Header -->
+    <section class="hero" style="min-height: 60vh; padding-top: 120px;">
+        <div class="hero-content">
+            <h1 class="hero-title" style="font-size: 3rem;">Ihr persönliches Horoskop</h1>
+            <p class="hero-subtitle">Entdecken Sie die Geheimnisse der Sterne</p>
+            <p class="hero-description">
+                Die Sterne haben eine einzigartige Geschichte für Sie zu erzählen. Lassen Sie sich von der 
+                jahrtausendealten Weisheit der Astrologie auf Ihrem spirituellen Weg führen.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Horoskop-Services -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Unsere astrologischen Services</h2>
+            <div class="product-grid">
+                <!-- Persönliches Jahreshoroskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/yearly.jpg" alt="Jahreshoroskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Persönliches Jahreshoroskop</h3>
+                    <p class="product-price">€29,90</p>
+                    <p class="product-description">
+                        Eine detaillierte astrologische Analyse für das kommende Jahr. Basiert auf Ihren 
+                        exakten Geburtsdaten und den aktuellen Planetenständen. Erfahren Sie, was die Sterne 
+                        für Liebe, Karriere, Gesundheit und spirituelle Entwicklung vorhersagen.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('yearly')">Jetzt bestellen</button>
+                </div>
+                
+                <!-- Partnerschaftshoroskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/partnership.jpg" alt="Partnerschaftshoroskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Partnerschaftshoroskop</h3>
+                    <p class="product-price">€59,90</p>
+                    <p class="product-description">
+                        Eine umfassende astrologische Analyse Ihrer Beziehung. Erkundet die Kompatibilität, 
+                        Herausforderungen und Potentiale zwischen Ihnen und Ihrem Partner. Ideal für Paare, 
+                        die ihre Verbindung vertiefen möchten.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('partnership')">Jetzt bestellen</button>
+                </div>
+                
+                <!-- Geburtshoroskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/birth.jpg" alt="Geburtshoroskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Vollständiges Geburtshoroskop</h3>
+                    <p class="product-price">€89,90</p>
+                    <p class="product-description">
+                        Die Blaupause Ihrer Seele. Eine tiefgreifende Analyse Ihrer Persönlichkeit, 
+                        Lebensaufgabe, Stärken und Herausforderungen basierend auf Ihrem Geburtsmoment. 
+                        Der Schlüssel zu tieferer Selbsterkenntnis.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('birth')">Jetzt bestellen</button>
+                </div>
+                
+                <!-- Spirituelles Jahreshoroskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/spiritual.jpg" alt="Spirituelles Horoskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Spirituelles Jahreshoroskop</h3>
+                    <p class="product-price">€49,90</p>
+                    <p class="product-description">
+                        Fokussiert auf Ihre spirituelle Entwicklung und Bewusstseinserweiterung. 
+                        Entdecken Sie optimale Zeiten für Meditation, Heilung und spirituelle Praktiken. 
+                        Mit Mondkalendern und energetischen Vorhersagen.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('spiritual')">Jetzt bestellen</button>
+                </div>
+                
+                <!-- Kinder-Horoskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/child.jpg" alt="Kinder-Horoskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Kinder-Horoskop</h3>
+                    <p class="product-price">€39,90</p>
+                    <p class="product-description">
+                        Verstehen Sie die einzigartige Persönlichkeit und das Potential Ihres Kindes. 
+                        Erhalten Sie wertvolle Einblicke in Talente, Lernstile und optimale Förderungsmöglichkeiten 
+                        basierend auf den Sternen.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('child')">Jetzt bestellen</button>
+                </div>
+                
+                <!-- Monatshoroskop -->
+                <div class="product-card">
+                    <img src="assets/images/horoscope/monthly.jpg" alt="Monatshoroskop" class="product-image" loading="lazy">
+                    <h3 class="product-title">Detailliertes Monatshoroskop</h3>
+                    <p class="product-price">€19,90</p>
+                    <p class="product-description">
+                        Präzise Vorhersagen für den kommenden Monat. Optimale Termine für wichtige Entscheidungen, 
+                        günstige Tage für Liebe und Karriere sowie Warnungen vor herausfordernden Perioden.
+                    </p>
+                    <button class="btn btn-primary" onclick="openHoroscopeForm('monthly')">Jetzt bestellen</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tägliches Horoskop -->
+    <section class="section">
+        <div class="container">
+            <div class="card">
+                <h2 class="card-title text-center">Kostenloses Tageshoroskop</h2>
+                <p style="text-align: center; color: var(--silver); margin-bottom: 2rem;">
+                    Wählen Sie Ihr Sternzeichen und erhalten Sie Ihre tägliche astrologische Führung.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('widder')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♈ Widder<br><small>21.3 - 19.4</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('stier')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♉ Stier<br><small>20.4 - 20.5</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('zwillinge')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♊ Zwillinge<br><small>21.5 - 21.6</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('krebs')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♋ Krebs<br><small>22.6 - 22.7</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('loewe')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♌ Löwe<br><small>23.7 - 23.8</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('jungfrau')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♍ Jungfrau<br><small>24.8 - 23.9</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('waage')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♎ Waage<br><small>24.9 - 23.10</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('skorpion')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♏ Skorpion<br><small>24.10 - 22.11</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('schuetze')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♐ Schütze<br><small>23.11 - 21.12</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('steinbock')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♑ Steinbock<br><small>22.12 - 20.1</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('wassermann')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♒ Wassermann<br><small>21.1 - 19.2</small>
+                    </button>
+                    <button class="btn btn-secondary" onclick="getDailyHoroscope('fische')" style="padding: 1rem; font-size: 0.9rem;">
+                        ♓ Fische<br><small>20.2 - 20.3</small>
+                    </button>
+                </div>
+                
+                <div id="daily-horoscope" style="display: none; background: var(--glass-bg); padding: 2rem; border-radius: 12px; border: 1px solid var(--glass-border);">
+                    <h3 id="horoscope-sign" class="text-gold" style="margin-bottom: 1rem;"></h3>
+                    <p id="horoscope-date" style="color: var(--silver); margin-bottom: 1rem; font-size: 0.9rem;"></p>
+                    <p id="horoscope-text" style="color: var(--silver-light); line-height: 1.7;"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Warum Astrologie -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Die Kraft der Astrologie</h2>
+            <div class="product-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="card">
+                    <h3 class="card-title text-mystical"><svg class="mystical-sprite large"><use href="#starburst"></use></svg> Selbsterkenntnis</h3>
+                    <p style="color: var(--silver); line-height: 1.7;">
+                        Astrologie bietet tiefe Einblicke in Ihre Persönlichkeit, Stärken und Herausforderungen. 
+                        Verstehen Sie, wer Sie wirklich sind und was Sie antreibt.
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title text-mystical">⏰ Perfektes Timing</h3>
+                    <p style="color: var(--silver); line-height: 1.7;">
+                        Entdecken Sie die optimalen Zeiten für wichtige Entscheidungen, neue Projekte 
+                        und Lebenswandel. Die Sterne zeigen günstige Zyklen auf.
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title text-mystical">💕 Beziehungen verstehen</h3>
+                    <p style="color: var(--silver); line-height: 1.7;">
+                        Lernen Sie die Dynamik Ihrer Beziehungen besser kennen. Astrologie zeigt 
+                        Kompatibilität, Herausforderungen und Wachstumspotentiale auf.
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="card-title text-mystical"><svg class="mystical-sprite large"><use href="#crystal-ball"></use></svg> Spirituelle Führung</h3>
+                    <p style="color: var(--silver); line-height: 1.7;">
+                        Nutzen Sie astrologische Weisheit für Ihre spirituelle Entwicklung. 
+                        Finden Sie Ihren Seelenweg und Ihre Lebensaufgabe.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Astrologin Elena -->
+    <section class="section">
+        <div class="container">
+            <div class="card text-center">
+                <img src="assets/images/team/elena-astrology.jpg" alt="Elena Mystika - Astrologin" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; margin: 0 auto 2rem;" loading="lazy">
+                <h2 class="card-title text-gold">Elena Mystika</h2>
+                <p style="color: var(--mystical-green-light); font-weight: 500; margin-bottom: 2rem; font-size: 1.2rem;">
+                    Master-Astrologin & Spirituelle Beraterin
+                </p>
+                <p style="color: var(--silver); line-height: 1.8; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Seit über 20 Jahren erkundet Elena die Geheimnisse der Sterne und hilft Menschen dabei, 
+                    ihr wahres Potential zu entdecken. Als zertifizierte Astrologin und intuitive Beraterin 
+                    verbindet sie traditionelle astrologische Weisheit mit modernen spirituellen Erkenntnissen.
+                </p>
+                <blockquote style="font-style: italic; color: var(--gold-accent); font-size: 1.1rem; margin-bottom: 2rem;">
+                    "Die Sterne zwingen nicht, sie neigen. Astrologie zeigt uns Möglichkeiten auf, 
+                    aber die Entscheidungen treffen wir selbst. Meine Aufgabe ist es, Ihnen zu helfen, 
+                    diese Möglichkeiten zu erkennen und zu nutzen."
+                </blockquote>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <strong style="color: var(--silver-light); display: block;">20+</strong>
+                        <small style="color: var(--silver);">Jahre Erfahrung</small>
+                    </div>
+                    <div style="text-align: center;">
+                        <strong style="color: var(--silver-light); display: block;">5000+</strong>
+                        <small style="color: var(--silver);">Horoskope erstellt</small>
+                    </div>
+                    <div style="text-align: center;">
+                        <strong style="color: var(--silver-light); display: block;">98%</strong>
+                        <small style="color: var(--silver);">Kundenzufriedenheit</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Horoskop-Bestellformular Modal -->
+    <div id="horoscope-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; backdrop-filter: blur(10px);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-secondary); border: 1px solid var(--glass-border); border-radius: 16px; padding: 2rem; width: 90%; max-width: 500px; max-height: 90%; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3 id="modal-title" class="text-gold">Horoskop bestellen</h3>
+                <button onclick="closeHoroscopeModal()" style="background: none; border: none; color: var(--silver); font-size: 1.5rem; cursor: pointer;">×</button>
+            </div>
+            
+            <form id="horoscope-form">
+                <div class="form-group">
+                    <label class="form-label">Ihr Name *</label>
+                    <input type="text" class="form-input" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">E-Mail-Adresse *</label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Geburtsdatum *</label>
+                    <input type="date" class="form-input" name="birthdate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Geburtszeit (falls bekannt)</label>
+                    <input type="time" class="form-input" name="birthtime">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Geburtsort *</label>
+                    <input type="text" class="form-input" name="birthplace" placeholder="Stadt, Land" required>
+                </div>
+                
+                <div id="partner-fields" style="display: none;">
+                    <h4 style="color: var(--silver-light); margin: 2rem 0 1rem;">Partner-Daten</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Partner Name *</label>
+                        <input type="text" class="form-input" name="partner_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Partner Geburtsdatum *</label>
+                        <input type="date" class="form-input" name="partner_birthdate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Partner Geburtszeit (falls bekannt)</label>
+                        <input type="time" class="form-input" name="partner_birthtime">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Partner Geburtsort *</label>
+                        <input type="text" class="form-input" name="partner_birthplace" placeholder="Stadt, Land">
+                    </div>
+                </div>
+                
+                <div id="child-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Geschlecht des Kindes</label>
+                        <select class="form-input" name="child_gender">
+                            <option value="">Bitte wählen</option>
+                            <option value="männlich">Männlich</option>
+                            <option value="weiblich">Weiblich</option>
+                            <option value="divers">Divers</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Besondere Wünsche oder Fragen</label>
+                    <textarea class="form-input" name="notes" rows="3" placeholder="Haben Sie spezielle Fragen oder Themenbereiche, die besonders interessieren?"></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeHoroscopeModal()" style="flex: 1;">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <span id="order-price">Bestellen</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Helionis</h3>
+                <p style="color: var(--silver); line-height: 1.6;">
+                    Ihr vertrauensvoller Partner für spirituelle Entwicklung 
+                    und mystische Weisheit seit über einem Jahrzehnt.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <a href="shop.html?category=amulette">Amulette</a>
+                <a href="shop.html?category=pyramiden">Pyramiden</a>
+                <a href="shop.html?category=wuerfel">Würfel</a>
+                <a href="shop.html?category=orakel">Orakel</a>
+                <a href="horoskop.html">Horoskope</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Service</h3>
+                <a href="about.html">Über uns</a>
+                <a href="contact.html">Kontakt</a>
+                <a href="shipping.html">Versand</a>
+                <a href="returns.html">Rückgabe</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Rechtliches</h3>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+                <a href="agb.html">AGB</a>
+                <a href="widerruf.html">Widerruf</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Helionis. Alle Rechte vorbehalten. | Designed with <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> for spiritual souls</p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script>
+        // Horoskop-spezifische Funktionalität
+        const horoscopeTypes = {
+            yearly: { name: 'Persönliches Jahreshoroskop', price: '€29,90' },
+            partnership: { name: 'Partnerschaftshoroskop', price: '€59,90' },
+            birth: { name: 'Vollständiges Geburtshoroskop', price: '€89,90' },
+            spiritual: { name: 'Spirituelles Jahreshoroskop', price: '€49,90' },
+            child: { name: 'Kinder-Horoskop', price: '€39,90' },
+            monthly: { name: 'Detailliertes Monatshoroskop', price: '€19,90' }
+        };
+        
+        const dailyHoroscopes = {
+            widder: "Heute ist ein Tag für neue Anfänge, lieber Widder. Die Energie des Kosmos unterstützt Ihre Initiative und Ihren Mut. Vertrauen Sie auf Ihre Intuition bei wichtigen Entscheidungen.",
+            stier: "Beständigkeit und Geduld werden heute belohnt, lieber Stier. Konzentrieren Sie sich auf praktische Angelegenheiten und genießen Sie die kleinen Freuden des Lebens.",
+            zwillinge: "Kommunikation steht heute im Vordergrund, liebe Zwillinge. Neue Informationen und interessante Gespräche erwarten Sie. Bleiben Sie offen für unerwartete Wendungen.",
+            krebs: "Emotionale Tiefe und Intuition führen Sie heute, lieber Krebs. Hören Sie auf Ihr Herz und kümmern Sie sich um Ihre zwischenmenschlichen Beziehungen.",
+            loewe: "Ihre natürliche Ausstrahlung ist heute besonders stark, lieber Löwe. Nutzen Sie diese Energie für kreative Projekte und um andere zu inspirieren.",
+            jungfrau: "Präzision und Aufmerksamkeit für Details bringen heute Erfolg, liebe Jungfrau. Organisieren Sie Ihre Aufgaben und vertrauen Sie auf Ihre analytischen Fähigkeiten.",
+            waage: "Harmonie und Ausgewogenheit stehen heute im Fokus, liebe Waage. Suchen Sie den Kompromiss in Konflikten und umgeben Sie sich mit Schönheit.",
+            skorpion: "Transformation und tiefe Einsichten erwarten Sie heute, lieber Skorpion. Scheuen Sie sich nicht vor intensiven Gesprächen und emotionaler Heilung.",
+            schuetze: "Abenteuer und neue Horizonte locken heute, lieber Schütze. Erweitern Sie Ihren geistigen Horizont und folgen Sie Ihrer Neugier.",
+            steinbock: "Struktur und Zielstrebigkeit führen heute zum Erfolg, lieber Steinbock. Bleiben Sie fokussiert auf Ihre langfristigen Ziele und Ambitionen.",
+            wassermann: "Innovation und Originalität sind heute Ihre Stärken, lieber Wassermann. Denken Sie außerhalb gewohnter Muster und teilen Sie Ihre Visionen.",
+            fische: "Spiritualität und Mitgefühl prägen heute Ihren Tag, liebe Fische. Vertrauen Sie auf Ihre Intuition und helfen Sie anderen mit Ihrer Empathie."
+        };
+        
+        function openHoroscopeForm(type) {
+            const modal = document.getElementById('horoscope-modal');
+            const title = document.getElementById('modal-title');
+            const orderPrice = document.getElementById('order-price');
+            const partnerFields = document.getElementById('partner-fields');
+            const childFields = document.getElementById('child-fields');
+            
+            title.textContent = horoscopeTypes[type].name + ' bestellen';
+            orderPrice.textContent = 'Bestellen ' + horoscopeTypes[type].price;
+            
+            // Partner-Felder nur für Partnerschaftshoroskop anzeigen
+            if (type === 'partnership') {
+                partnerFields.style.display = 'block';
+                partnerFields.querySelectorAll('input').forEach(input => {
+                    input.required = true;
+                });
+            } else {
+                partnerFields.style.display = 'none';
+                partnerFields.querySelectorAll('input').forEach(input => {
+                    input.required = false;
+                });
+            }
+            
+            // Kind-Felder nur für Kinder-Horoskop anzeigen
+            if (type === 'child') {
+                childFields.style.display = 'block';
+            } else {
+                childFields.style.display = 'none';
+            }
+            
+            modal.style.display = 'block';
+            modal.dataset.type = type;
+        }
+        
+        function closeHoroscopeModal() {
+            document.getElementById('horoscope-modal').style.display = 'none';
+        }
+        
+        function getDailyHoroscope(sign) {
+            const container = document.getElementById('daily-horoscope');
+            const signElement = document.getElementById('horoscope-sign');
+            const dateElement = document.getElementById('horoscope-date');
+            const textElement = document.getElementById('horoscope-text');
+            
+            const signNames = {
+                widder: '♈ Widder',
+                stier: '♉ Stier',
+                zwillinge: '♊ Zwillinge',
+                krebs: '♋ Krebs',
+                loewe: '♌ Löwe',
+                jungfrau: '♍ Jungfrau',
+                waage: '♎ Waage',
+                skorpion: '♏ Skorpion',
+                schuetze: '♐ Schütze',
+                steinbock: '♑ Steinbock',
+                wassermann: '♒ Wassermann',
+                fische: '♓ Fische'
+            };
+            
+            const today = new Date().toLocaleDateString('de-DE', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            signElement.textContent = signNames[sign];
+            dateElement.textContent = today;
+            textElement.textContent = dailyHoroscopes[sign];
+            
+            container.style.display = 'block';
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Horoskop-Bestellformular
+        document.getElementById('horoscope-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const type = document.getElementById('horoscope-modal').dataset.type;
+            
+            // Hier würde normalerweise die Bestellung verarbeitet
+            alert('Vielen Dank für Ihre Bestellung! Sie erhalten in Kürze eine Bestätigung per E-Mail. Ihr ' + horoscopeTypes[type].name + ' wird innerhalb von 3-5 Werktagen erstellt.');
+            
+            closeHoroscopeModal();
+            this.reset();
+        });
+        
+        // Modal schließen bei Klick außerhalb
+        document.getElementById('horoscope-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHoroscopeModal();
+            }
+        });
+    </script>
+    <script src="assets/js/sprites.js"></script>
+</body>
+</html>

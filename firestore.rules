@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can read and write their own orders
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.uid == request.resource.data.userId);
+    }
+    
+    // Users can read and write their own horoscopes
+    match /horoscopes/{horoscopeId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.uid == request.resource.data.userId);
+    }
+    
+    // Products are readable by all, writable by admin only
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Product reviews
+    match /products/{productId}/reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      allow update, delete: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Newsletter subscriptions
+    match /newsletter/{email} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Contact messages
+    match /messages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Analytics data (admin only)
+    match /analytics/{document=**} {
+      allow read, write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+    
+    // Public content (FAQ, About, etc.)
+    match /content/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+        request.auth.token.admin == true;
+    }
+  }
+}

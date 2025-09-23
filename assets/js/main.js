@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+  // Navigation Login/Profile Umschaltung
+  setupAuthNavSwap();
 });
 
 // Create mystical particles effect
@@ -216,6 +219,40 @@ function initializeAnimations(){
       const s = window.pageYOffset, rate = s * -0.25;
       heroes.forEach(h => h.style.transform = `translateY(${rate}px)`);
     });
+  }
+}
+
+// Beobachtet Login-Zustand und passt den Nav-Link (Login -> Profil) an
+function setupAuthNavSwap(){
+  const update = (user)=>{
+    const span = document.getElementById('user-status');
+    if(!span) return;
+    const a = span.closest('a');
+    if(!a) return;
+    if(user){
+      span.textContent = 'Profil';
+      a.href = 'profile.html';
+      a.classList.add('logged-in');
+    } else {
+      span.textContent = 'Login';
+      a.href = 'login.html';
+      a.classList.remove('logged-in');
+    }
+  };
+  // Versuch aus localStorage (fallback)
+  try {
+    const raw = localStorage.getItem('helionis_user');
+    if(raw){ update(JSON.parse(raw)); }
+  } catch(e){}
+  // Firebase Listener falls verfügbar
+  if(window.firebase?.auth){
+    try { window.firebase.auth().onAuthStateChanged(u=> update(u)); } catch(e){}
+  } else {
+    // Polling Fallback falls Firebase später nachlädt
+    let tries=0; const int = setInterval(()=>{
+      if(window.firebase?.auth){ window.firebase.auth().onAuthStateChanged(u=> update(u)); clearInterval(int); }
+      if(++tries>40) clearInterval(int);
+    },250);
   }
 }
 

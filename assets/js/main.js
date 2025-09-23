@@ -447,24 +447,63 @@ function initSmokeBackground(){
   //  * Sanfte Wirbel durch rotierende Offsets
   //  * Leichte Körnung + weiche Alpha-Ausblendung oben/unten
   //  * Halbtransparenz + Blending (unten im JS aktiviert)
-  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;uniform vec3 uColA;uniform vec3 uColB;
-    float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453123); }
-    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
-    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.02; a*=0.52;} return r; }
-    vec2 warp(vec2 p,float t){ float w1=fbm(p*1.1+vec2(0.,t*0.09)); float w2=fbm(p*2.0-vec2(t*0.06,0.)); return p + vec2(w1-w2, w2-w1)*0.50; }
-    vec3 palette(float x){ vec3 base=vec3(0.015,0.02,0.035); vec3 blend=mix(uColA,uColB,smoothstep(0.12,0.88,x)); blend=mix(blend, vec3(0.80,0.85,1.0), smoothstep(0.80,1.0,x)*0.14); return mix(base, blend, 0.80); }
+  const fragSrc = `precision highp float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;uniform vec3 uColA;uniform vec3 uColB;uniform float uQuality;
+    // --- Hash & Noise (simple value noise) ---
+    float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453123); }
+    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f);
+      return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x), mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x), f.y); }
+    float fbm(vec2 p){ float a=.55; float r=0.; for(int i=0;i<5;i++){ r+=noise(p)*a; p*=2.03; a*=0.55;} return r; }
+    vec2 curl(vec2 p){ // approximate curl of noise field for swirling
+      const float e=.01; float n1=fbm(p+vec2(0,e)); float n2=fbm(p-vec2(0,e)); float n3=fbm(p+vec2(e,0)); float n4=fbm(p-vec2(e,0));
+      return vec2(n1-n2, n4-n3); }
+    vec3 palette(float x){ vec3 base=vec3(0.012,0.016,0.030); vec3 mid=mix(uColA,uColB, clamp(x*0.9,0.0,1.0)); vec3 hi=vec3(0.82,0.85,1.0); vec3 c=mix(base, mid, smoothstep(0.05,0.85,x)); c=mix(c, hi, smoothstep(0.78,1.0,x)*0.12); return c; }
+    // Raymarch durch pseudo-volumetrischen Nebel (2.5D)
+    float densitySample(vec2 basePos, float height, float t){
+      // Domain warp + curl swirl
+      vec2 p = basePos*1.1 + vec2(0.0, t*0.05) + vec2(0.0, height*0.35);
+      vec2 w = p + curl(p*0.8 + t*0.05)*0.55;
+      float d = fbm(w*1.2) * 0.7 + fbm(w*3.0)*0.3;
+      d = smoothstep(0.25,0.95,d);
+      return d;
+    }
     void main(){
-      vec2 uv = gl_FragCoord.xy / uRes.xy; vec2 p = uv - 0.5; p.x *= uRes.x / uRes.y; float t=uTime;
-      vec2 flow=p; flow.y += t*(0.055 + uIntensity*0.018); flow.x += sin(t*0.22 + p.y*3.0)*0.045 + sin(t*0.065 + p.y*5.5)*0.014;
-      float ang=t*0.06; mat2 R=mat2(cos(ang),-sin(ang),sin(ang),cos(ang)); flow*=R;
-      vec2 q = mix(warp(flow*1.05,t), warp(flow*0.55+vec2(0.,t*0.045), t*0.7), 0.55);
-      float base=fbm(q*1.15); float detail=fbm(q*3.4 + t*0.05); float shape=fbm(q*0.65 - t*0.018);
-      float n = base*0.55 + detail*0.34 + shape*0.42 - detail*0.20; n=clamp(n,0.,1.); n=pow(n,1.15); n=smoothstep(0.20,0.90,n); n*= (0.65 + uIntensity*0.40);
-      vec3 col = palette(n); col += 0.11*pow(n,2.3); col = mix(col, vec3(0.60,0.70,1.0), smoothstep(0.80,1.0,n)*0.15);
-      float grain = (hash(p*vec2(120.13,97.17)+t*0.5)-0.5); col += grain * 0.018;
-      float topFade=smoothstep(0.92,0.55,uv.y); float bottomFade=smoothstep(-0.02,0.22+uIntensity*0.05,uv.y); float alpha = n*topFade*bottomFade; alpha = pow(alpha,1.05)*(0.55 + uIntensity*0.18);
-      float vign = smoothstep(1.35,0.10,length(p)); col *= mix(0.85,1.0,vign);
-      col = mix(vec3(0.01,0.02,0.035), col, 0.78 + 0.15*alpha);
+      vec2 uv = gl_FragCoord.xy / uRes.xy; vec2 p = (uv - 0.5); p.x *= uRes.x/uRes.y; float t=uTime;
+      // leicht nach oben wandernder Referenzrahmen
+      p.y += t*0.02;
+      // Raymarch Parameter
+      int STEPS = int( mix(16.0, 34.0, clamp(uQuality,0.0,1.0)) );
+      float accum=0.0; float accumAlpha=0.0; float stepH = 1.0/float(STEPS); float height=0.0;
+      for(int i=0;i<40;i++){ // obere Grenze > max STEPS
+        if(i>=STEPS) break;
+        float h = height;
+        // perspektivische Verdichtung: unten dichter
+        float layerWeight = mix(1.8, 0.4, h);
+        float d = densitySample(p, h, t*0.9) * layerWeight;
+        // vertikaler Fade (oben aus)
+        float topFade = smoothstep(1.05, 0.25, h + uv.y*0.4);
+        d *= topFade;
+        // Intensitätsskala
+        d *= (0.55 + uIntensity*0.35);
+        // Alpha Akkumulation (Beer-Lambert approx)
+        float a = 1.0 - exp(-d * 1.35 * stepH);
+        // Premultiplied accumulation
+        accum += (1.0 - accumAlpha) * d * stepH;
+        accumAlpha += (1.0 - accumAlpha) * a;
+        height += stepH;
+        if(accumAlpha>0.98) break;
+      }
+      accum = clamp(accum,0.0,1.0);
+      accumAlpha = clamp(accumAlpha,0.0,1.0);
+      // Farben
+      vec3 col = palette(accum);
+      // leichtes inneres Glühen bei dichterem Rauch
+      col += 0.10*pow(accum,2.1);
+      // feines Dithering
+      float g = (hash(p*vec2(323.2,173.1)+t)-0.5); col += g*0.015;
+      // radiale leichte Abschwächung (Bündelung)
+      float vign = smoothstep(1.35,0.05,length(p)); col *= mix(0.82,1.0,vign);
+      // Endalpha etwas weicher
+      float alpha = pow(accumAlpha, 1.02) * 0.78;
       gl_FragColor = vec4(col, alpha);
     }`;
 
@@ -489,7 +528,9 @@ function initSmokeBackground(){
   const uIntensity = gl.getUniformLocation(prog,'uIntensity');
   const uColA = gl.getUniformLocation(prog,'uColA');
   const uColB = gl.getUniformLocation(prog,'uColB');
-  const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.2');
+  const uQuality = gl.getUniformLocation(prog,'uQuality');
+  const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.3');
+  const quality = parseFloat(canvas.getAttribute('data-quality')||'0.65'); // 0..1
   const col1 = canvas.getAttribute('data-color1') || '#3a7bd5';
   const col2 = canvas.getAttribute('data-color2') || '#6a11cb';
   function hexToRgbNorm(h){ const m=h.replace('#',''); const v=parseInt(m.length===3?m.split('').map(c=>c+c).join(''):m,16); return [(v>>16 & 255)/255,(v>>8 & 255)/255,(v & 255)/255]; }
@@ -506,8 +547,9 @@ function initSmokeBackground(){
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime,t);
       gl.uniform1f(uIntensity, intensity);
-      gl.uniform3f(uColA, c1[0], c1[1], c1[2]);
-      gl.uniform3f(uColB, c2[0], c2[1], c2[2]);
+  gl.uniform3f(uColA, c1[0], c1[1], c1[2]);
+  gl.uniform3f(uColB, c2[0], c2[1], c2[2]);
+  gl.uniform1f(uQuality, quality);
       gl.drawArrays(gl.TRIANGLES,0,6);
       last = now;
     }

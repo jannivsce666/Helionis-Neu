@@ -17,20 +17,7 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" as="style">
     
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js';
-        
-        // Make Firebase available globally for compatibility
-        window.firebaseSDK = {
-            initializeApp,
-            getAuth,
-            getAnalytics
-        };
-    </script>
+    <!-- Firebase ESM Loader entfernt – wir benutzen jetzt einheitlich die compat Version im Body-Skript -->
 </head>
 <body>
     <!-- Ultrarealistischer WebGL Rauch -->
@@ -156,9 +143,22 @@
     </footer>
     
     <!-- Scripts -->
-        <script>
+            <script>
             // Fallback ohne ES Module Import: Nutzung globaler firebase (v8 kompatibler Ansatz) falls vorhanden
             (function(){
+                    // Falls keine globale Konfiguration vorhanden ist, hier setzen
+                    if(!window.FirebaseConfig){
+                        window.FirebaseConfig = {
+                            apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
+                            authDomain: "helionis.firebaseapp.com",
+                            databaseURL: "https://helionis-default-rtdb.firebaseio.com",
+                            projectId: "helionis",
+                            storageBucket: "helionis.firebasestorage.app",
+                            messagingSenderId: "112789846576",
+                            appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
+                            measurementId: "G-8W0GMB0F73"
+                        };
+                    }
                 const googleSigninBtn = document.getElementById('google-signin-btn');
                 const signoutBtn = document.getElementById('signout-btn');
                 const loginSection = document.getElementById('login-section');
@@ -187,19 +187,27 @@
                     }
                 }
 
-                function ensureFirebase(){
-                    if(window.firebase){ return Promise.resolve(); }
-                    return new Promise((res, rej)=>{
-                        const s = document.createElement('script');
-                        s.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
-                        s.onload = ()=>{
-                            const deps = ['auth','analytics','firestore'];
-                            let loaded=0; deps.forEach(d=>{const sd=document.createElement('script'); sd.src=`https://www.gstatic.com/firebasejs/9.22.2/firebase-${d}-compat.js`; sd.onload=()=>{loaded++; if(loaded===deps.length) res();}; sd.onerror=rej; document.head.appendChild(sd);});
-                        };
-                        s.onerror = rej;
-                        document.head.appendChild(s);
-                    });
-                }
+                        function ensureFirebase(){
+                            return new Promise((res, rej)=>{
+                                if(window.firebase && window.firebase.apps && window.firebase.apps.length){ return res(); }
+                                // Falls firebase schon geladen aber nicht initialisiert
+                                function initIfReady(){
+                                    if(window.firebase && !window.firebase.apps.length){
+                                        try { firebase.initializeApp(window.FirebaseConfig); } catch(e){ /* ignore duplicate */ }
+                                    }
+                                    if(window.firebase && window.firebase.apps.length){ return res(); }
+                                }
+                                if(window.firebase){ initIfReady(); if(window.firebase.apps.length) return; }
+                                const core = document.createElement('script');
+                                core.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
+                                core.onload = ()=>{
+                                    const deps = ['auth','analytics'];
+                                    let loaded=0; deps.forEach(d=>{ const sd=document.createElement('script'); sd.src=`https://www.gstatic.com/firebasejs/9.22.2/firebase-${d}-compat.js`; sd.onload=()=>{ loaded++; if(loaded===deps.length){ initIfReady(); res(); } }; sd.onerror=rej; document.head.appendChild(sd); });
+                                };
+                                core.onerror = rej;
+                                document.head.appendChild(core);
+                            });
+                        }
 
                 googleSigninBtn.addEventListener('click', async ()=>{
                     googleSigninBtn.disabled = true; googleSigninBtn.textContent='Anmeldung läuft...';
@@ -223,7 +231,10 @@
                 // Initial versuchen ob schon eingeloggt (z.B. aus anderem Tab)
                 ensureFirebase().then(()=>{
                     if(window.FirebaseConfig && !firebase.apps.length) firebase.initializeApp(window.FirebaseConfig);
-                    firebase.auth().onAuthStateChanged(u=>{ updateUI(u); });
+                                try {
+                                    if(!firebase.apps.length){ firebase.initializeApp(window.FirebaseConfig); }
+                                    firebase.auth().onAuthStateChanged(u=>{ updateUI(u); });
+                                } catch(e){ console.error('Firebase Init Fehler', e); }
                 }).catch(e=>console.warn('Firebase Laden fehlgeschlagen', e));
             })();
         </script>

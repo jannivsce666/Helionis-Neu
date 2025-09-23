@@ -111,5 +111,21 @@ window.forceClearLegacyCart = function(){ cart=[]; saveCart(); syncCartCount(); 
 document.addEventListener('DOMContentLoaded', syncCartCount);
 document.addEventListener('cartUpdated', syncCartCount);
 
+// Zusätzliche Sanity-Prüfung beim Laden: Falls noch Altbestand ohne addedAt Eigenschaften oder unrealistisch viele Items
+document.addEventListener('DOMContentLoaded', ()=>{
+    try {
+        const raw = JSON.parse(localStorage.getItem(CART_KEY)||'[]');
+        const noStamped = raw.filter(r=>!r.addedAt).length;
+        const looksPhantomSet = raw.length === 4 && noStamped === 4; // typisches altes Phantom-Muster
+        if(raw.length && (noStamped === raw.length || raw.length > 10 || looksPhantomSet)){
+            console.warn('[Cart] Sanity cleanup triggered – clearing suspicious stored items.');
+            cart = [];
+            saveCart();
+            syncCartCount();
+            emitCartEvent();
+        }
+    } catch(e){ console.warn('Cart sanity check failed', e); }
+});
+
 // Expose for debugging
 window.__CartDebug = { migrateLegacyCarts, PRODUCT_CATALOG };

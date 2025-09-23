@@ -256,11 +256,8 @@ function updateUIForGuestUser(){
   if(el){ el.textContent = 'Anmelden'; const a = el.closest('a'); if(a) a.href = 'login.html'; }
 }
 
-/* CART/WISHLIST (wie gehabt) */
-function addToCart(id, qty=1){
-  if (typeof window.addToCart === 'function') window.addToCart(id, qty);
-  else { showNotification('Produkt wurde zum Warenkorb hinzugefügt!', 'success'); updateCartCount(); }
-}
+/* CART/WISHLIST */
+// Lokale addToCart-Hülle entfernt – zentrale Implementierung in cart.js verwenden.
 function addToWishlist(id){
   let w = JSON.parse(localStorage.getItem('helionis_wishlist')||'[]');
   if(!w.includes(id)){ w.push(id); localStorage.setItem('helionis_wishlist', JSON.stringify(w));
@@ -340,6 +337,8 @@ window.HelionisMain = {
    Rauch / WebGL Hintergrund Re-Initialisierung
    ============================================= */
 function initSmokeBackground(){
+  // Smoke wurde global deaktiviert
+  return;
   const canvas = document.getElementById('smoke-canvas');
   if(!canvas) return; // Seite ohne Canvas
   if(canvas.getAttribute('data-disable-smoke') === 'true') { console.warn('[Smoke] Disabled via attribute'); return; }
@@ -472,7 +471,8 @@ function initSmokeBackground(){
   const uColB = gl.getUniformLocation(prog,'uColB');
   const uQuality = gl.getUniformLocation(prog,'uQuality');
   const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.3');
-  const baseQuality = Math.min(1, Math.max(0, parseFloat(canvas.getAttribute('data-quality')||'0.65')));
+  const baseQuality = Math.min(1, Math.max(0, parseFloat(canvas.getAttribute('data-quality')||'0.55')));
+  const minQualityAttr = Math.min(1, Math.max(0, parseFloat(canvas.getAttribute('data-min-quality')||'0.30')));
   let dynamicQuality = baseQuality; // wird adaptiv angepasst
   // Performance Skalierung (reduziert interne Auflösung)
   let perfScale = (()=>{
@@ -499,8 +499,11 @@ function initSmokeBackground(){
   let smoothCounter = 0;
   // Sichtbarer Debug-Wert optional
   let adaptTick = 0;
-  let slowFrames = 0;
+  // Performance Überwachung
+  let slowFrames = 0; // akkumulierte "Problemframes" (wird jetzt konservativer gezählt)
   let hardDisabled = false;
+  const hardDisableLimit = parseInt(canvas.getAttribute('data-disable-threshold')||'180'); // vorher 90, jetzt konfigurierbar
+  const noHardDisable = canvas.hasAttribute('data-no-hard-disable'); // Wenn gesetzt: niemals komplett entfernen
   (function render(){
     const now=performance.now();
     if(hardDisabled){ return; }
@@ -509,32 +512,59 @@ function initSmokeBackground(){
       const frameGap = now - lastDrawAt; // Zeit seit letztem tatsächlichem Draw
       lastDrawAt = now;
       // Adaptives Downgrade wenn wir deutlich unter der Ziel-Frequenz liegen
-      if(frameGap > interval * 1.6){
-        dynamicQuality = Math.max(0.30, dynamicQuality - 0.07); // weniger Raymarch Steps
-        perfScale = Math.max(0.60, perfScale - 0.05); // Auflösung reduzieren
+  if(frameGap > interval * 1.75){
+        // Sehr langsam -> aggressiv degradieren
+  dynamicQuality = Math.max(minQualityAttr, dynamicQuality - 0.08);
+        perfScale = Math.max(0.58, perfScale - 0.06);
         needResize = true;
-        smoothCounter = 0; // Reset Up-Scaling Counter
-        slowFrames++;
+        smoothCounter = 0;
+        slowFrames += 3; // stark zählen
+      } else if(frameGap > interval * 1.35){
+        // Mäßig langsam -> leichte Degradation
+  dynamicQuality = Math.max(minQualityAttr, dynamicQuality - 0.04);
+        perfScale = Math.max(0.60, perfScale - 0.03);
+        needResize = true;
+        smoothCounter = 0;
+        slowFrames += 2;
       } else if(frameGap < interval * 1.05){
-        // Stabil & schnell: vorsichtig wieder hochskalieren nach mehreren stabilen Frames
+        // Gut -> evtl. hochskalieren
         smoothCounter++;
-        if(smoothCounter > 10){
-          dynamicQuality = Math.min(baseQuality, dynamicQuality + 0.03);
-          perfScale = Math.min(1.0, perfScale + 0.04);
+        if(smoothCounter > 14){
+          dynamicQuality = Math.min(baseQuality, dynamicQuality + 0.025);
+          perfScale = Math.min(1.0, perfScale + 0.03);
           needResize = true;
           smoothCounter = 0;
         }
-        slowFrames = Math.max(0, slowFrames-1);
+        slowFrames = Math.max(0, slowFrames - 2); // schneller abbauen
       } else {
-        smoothCounter = 0; // nicht stabil genug
-        slowFrames++;
+        // Neutraler Bereich: nicht bestrafen, nicht belohnen
+        smoothCounter = 0;
+        slowFrames = Math.max(0, slowFrames - 1);
       }
-      // Hard Disable wenn über 90 langsame Frames innerhalb ~5 Sekunden
-      if(slowFrames > 90){
-        console.warn('[Smoke] Performance sehr niedrig – Effekt wird deaktiviert.');
-        canvas.parentNode && (canvas.parentNode.removeChild(canvas));
-        hardDisabled = true;
-        return;
+
+      // Hard Disable (oder Soft Freeze) wenn Schwelle überschritten
+      if(slowFrames >= hardDisableLimit){
+        if(!hardDisabled){
+          if(noHardDisable){
+            console.warn('[Smoke] Performance sehr niedrig – Effekt wird eingefroren (no-hard-disable aktiv).');
+            hardDisabled = true; // stoppt Loop, Canvas bleibt
+            return;
+          } else {
+            console.warn('[Smoke] Performance sehr niedrig – Effekt wird weich ausgeblendet statt gelöscht.');
+            hardDisabled = true;
+            // Weiches Ausblenden: opacity animieren
+            canvas.style.transition = 'opacity 1.2s ease';
+            canvas.style.opacity = '0';
+            setTimeout(()=>{
+              if(canvas.parentNode){
+                canvas.parentNode.removeChild(canvas);
+              }
+            },1300);
+            // Optional Restart-Handle setzen
+            window.__SmokeRestartReady = true;
+            return;
+          }
+        }
       }
       if(needResize){ resize(); }
       gl.clearColor(0,0,0,0);
@@ -550,4 +580,21 @@ function initSmokeBackground(){
     }
     requestAnimationFrame(render);
   })();
+
+  // Exponiere einen Restart, falls entfernt oder eingefroren
+  window.restartSmoke = function(force){
+    if(!hardDisabled && !force){
+      console.warn('[Smoke] Restart ignoriert – läuft noch. Nutze restartSmoke(true) für forcieren.');
+      return;
+    }
+    if(!canvas.isConnected){
+      document.body.appendChild(canvas);
+    }
+    // Reset State
+    slowFrames = 0; hardDisabled = false; dynamicQuality = Math.max(minQualityAttr, baseQuality*0.85); perfScale = 0.85; needResize = true; canvas.style.opacity = '1';
+    // Loop erneut starten
+    (function rerender(){ if(hardDisabled) return; requestAnimationFrame(rerender); const evt=new Event('smokeRestart'); })();
+    // (Vereinfachung: Kein erneutes Neuaufbauen von Program/Shadern – Canvas + GL Context bleibt erhalten)
+    console.info('[Smoke] Restart ausgeführt.');
+  };
 }

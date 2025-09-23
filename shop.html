@@ -22,7 +22,7 @@
 </head>
 <body>
     <!-- Ultrarealistischer WebGL Rauch -->
-    <canvas id="smoke-canvas"></canvas>
+    <!-- Smoke canvas entfernt -->
     <div class="no-webgl-fallback"></div>
     
     <!-- Mystische Partikel entfernt -->
@@ -125,7 +125,7 @@
                         Kraftvolle mystische Spirale zur Meditation und spirituellen Transformation. 
                         Aktiviert die Spiralenergie des Lebens und fördert inneres Wachstum.
                     </p>
-                    <button class="btn btn-primary" onclick="addToCart('mystische-spirale', 'Mystische Spirale', 149.99); event.stopPropagation();">In den Warenkorb</button>
+                    <button class="btn btn-primary" onclick="addToCart({id: 'mystische-spirale', name: 'Mystische Spirale', price: 149.99, image: 'assets/images/products/spirale.png'}); event.stopPropagation();">In den Warenkorb</button>
                 </div>
                 
                 <!-- Mystische Pyramide -->
@@ -137,7 +137,7 @@
                         Kraftvolle mystische Pyramide zur Energieverstärkung und spirituellen Heilung. 
                         Konzentriert und verstärkt spirituelle Energien harmonisch.
                     </p>
-                    <button class="btn btn-primary" onclick="addToCart('mystische-pyramide', 'Mystische Pyramide', 199.99); event.stopPropagation();">In den Warenkorb</button>
+                    <button class="btn btn-primary" onclick="addToCart({id: 'mystische-pyramide', name: 'Mystische Pyramide', price: 199.99, image: 'assets/images/products/pyramide.png'}); event.stopPropagation();">In den Warenkorb</button>
                 </div>
                 
                 <!-- Mystischer Würfel -->
@@ -149,7 +149,7 @@
                         Kraftvoller mystischer Würfel für Entscheidungsfindung und spirituelle Führung. 
                         6 verschiedene mystische Symbole für klare Antworten.
                     </p>
-                    <button class="btn btn-primary" onclick="addToCart('mystischer-wuerfel', 'Mystischer Würfel', 119.99); event.stopPropagation();">In den Warenkorb</button>
+                    <button class="btn btn-primary" onclick="addToCart({id: 'mystischer-wuerfel', name: 'Mystischer Würfel', price: 119.99, image: 'assets/images/products/cube.png'}); event.stopPropagation();">In den Warenkorb</button>
                 </div>
             </div>
             
@@ -303,59 +303,20 @@
         });
     </script>
     
-    <!-- Neue Cart-Funktionalität für PNG-Produkte -->
-    <script>
-        // Override the addToCart function for the new products
-        window.addToCart = function(productId, productName, price) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Check if product already exists in cart
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                // Map product IDs to images
-                const imageMap = {
-                    'mystische-spirale': 'assets/images/products/spirale.png',
-                    'mystische-pyramide': 'assets/images/products/pyramide.png',
-                    'mystischer-wuerfel': 'assets/images/products/cube.png'
-                };
-                
-                cart.push({
-                    id: productId,
-                    name: productName,
-                    price: price,
-                    quantity: 1,
-                    image: imageMap[productId]
-                });
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Update cart count
-            updateCartCount();
-            
-            // Show notification
-            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
-        };
-
-        // Update cart count function
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const cartCountElement = document.getElementById('cart-count');
-            if (cartCountElement) {
-                cartCountElement.textContent = totalItems;
-            }
-        }
-
-        // Initialize cart count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartCount();
-        });
-    </script>
+    <!-- Lokale Cart-Override entfernt: Nutzung der zentralen cart.js API -->
+        <script>
+            // Sicherstellen, dass die globale cart.js den Zähler aktualisiert
+            document.addEventListener('DOMContentLoaded', () => {
+                if(window.dispatchEvent){
+                    // Trigger ein künstliches Event um vorhandene Listener zu nutzen
+                    window.dispatchEvent(new Event('cartForceSync'));
+                }
+                // Falls cart.js bereits geladen hat, sofort ein manuelles Sync versuchen
+                if(window.syncCartCount){
+                    try{ window.syncCartCount(); }catch(e){ }
+                }
+            });
+        </script>
     
     <script src="assets/js/sprites.js"></script>
 </body>

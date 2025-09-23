@@ -342,6 +342,7 @@ window.HelionisMain = {
 function initSmokeBackground(){
   const canvas = document.getElementById('smoke-canvas');
   if(!canvas) return; // Seite ohne Canvas
+  if(canvas.getAttribute('data-disable-smoke') === 'true') { console.warn('[Smoke] Disabled via attribute'); return; }
   let gl = canvas.getContext('webgl',{premultipliedAlpha:false, alpha:true});
   if(!gl){ console.warn('WebGL nicht verfügbar – nur Fallback aktiv.'); return; }
 
@@ -498,8 +499,11 @@ function initSmokeBackground(){
   let smoothCounter = 0;
   // Sichtbarer Debug-Wert optional
   let adaptTick = 0;
+  let slowFrames = 0;
+  let hardDisabled = false;
   (function render(){
     const now=performance.now();
+    if(hardDisabled){ return; }
     if(now-last>=interval){
       const t=(now-start)/1000;
       const frameGap = now - lastDrawAt; // Zeit seit letztem tatsächlichem Draw
@@ -510,6 +514,7 @@ function initSmokeBackground(){
         perfScale = Math.max(0.60, perfScale - 0.05); // Auflösung reduzieren
         needResize = true;
         smoothCounter = 0; // Reset Up-Scaling Counter
+        slowFrames++;
       } else if(frameGap < interval * 1.05){
         // Stabil & schnell: vorsichtig wieder hochskalieren nach mehreren stabilen Frames
         smoothCounter++;
@@ -519,8 +524,17 @@ function initSmokeBackground(){
           needResize = true;
           smoothCounter = 0;
         }
+        slowFrames = Math.max(0, slowFrames-1);
       } else {
         smoothCounter = 0; // nicht stabil genug
+        slowFrames++;
+      }
+      // Hard Disable wenn über 90 langsame Frames innerhalb ~5 Sekunden
+      if(slowFrames > 90){
+        console.warn('[Smoke] Performance sehr niedrig – Effekt wird deaktiviert.');
+        canvas.parentNode && (canvas.parentNode.removeChild(canvas));
+        hardDisabled = true;
+        return;
       }
       if(needResize){ resize(); }
       gl.clearColor(0,0,0,0);

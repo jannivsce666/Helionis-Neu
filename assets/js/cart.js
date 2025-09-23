@@ -31,6 +31,19 @@ function migrateLegacyCarts(){
 
 let cart = migrateLegacyCarts();
 
+// Legacy / Ghost Cleanup: if all items are legacy (no addedAt) and more than 3 items -> assume stale test data & clear
+;(function ghostCleanup(){
+    try {
+        const legacyCount = cart.filter(i=>!('addedAt' in i)).length;
+        if(cart.length>3 && legacyCount === cart.length && !localStorage.getItem('helionis_cart_autocleaned')){
+            console.warn('[Cart] Detected legacy ghost items – auto clearing.');
+            cart = [];
+            saveCart();
+            localStorage.setItem('helionis_cart_autocleaned','1');
+        }
+    } catch(e){ console.warn('Ghost cleanup failed', e); }
+})();
+
 // Base product catalog (IDs) – extend as needed
 const PRODUCT_CATALOG = {
     1: { id:1, name:'Schutz-Amulett "Aegis"', price:89.90, image:'assets/images/products/amulett-schutz.svg' },
@@ -84,6 +97,8 @@ window.addToCart = function(...args){
     if(!item || !item.id){ console.warn('Invalid cart item', args); return; }
     const existing = cart.find(x=>x.id===item.id);
     if(existing) existing.quantity += item.quantity; else cart.push(item);
+        // stamp
+        try { if(!item.addedAt) item.addedAt = Date.now(); } catch(_){ }
     saveCart(); syncCartCount(); emitCartEvent();
     if(window.showNotification) window.showNotification(`${item.name} wurde zum Warenkorb hinzugefügt!`,'success');
 };
@@ -91,6 +106,7 @@ window.addToCart = function(...args){
 window.removeFromCart = function(id){ cart = cart.filter(x=>x.id!==id); saveCart(); syncCartCount(); emitCartEvent(); };
 window.clearCart = function(){ cart=[]; saveCart(); syncCartCount(); emitCartEvent(); };
 window.getCart = function(){ return [...cart]; };
+window.forceClearLegacyCart = function(){ cart=[]; saveCart(); syncCartCount(); emitCartEvent(); localStorage.removeItem('helionis_cart_autocleaned'); console.log('[Cart] Force cleared.'); };
 
 document.addEventListener('DOMContentLoaded', syncCartCount);
 document.addEventListener('cartUpdated', syncCartCount);

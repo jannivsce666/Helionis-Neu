@@ -1,17 +1,9 @@
 // Authentication System for Helionis Website
 // Handles user login, registration, and session management with Firebase integration
 
-// Initialize Firebase Configuration (to be replaced with actual config)
-const firebaseConfig = {
-    apiKey: "AIzaSyDlQFqmGGBIrttrC6Ids-bppFpeOOfWXVU",
-    authDomain: "helionis.firebaseapp.com",
-    databaseURL: "https://helionis-default-rtdb.firebaseio.com",
-    projectId: "helionis",
-    storageBucket: "helionis.firebasestorage.app",
-    messagingSenderId: "112789846576",
-    appId: "1:112789846576:web:5a8049942a7c559ca98bf5",
-    measurementId: "G-8W0GMB0F73"
-};
+// FirebaseConfig wird aus globalem Script (firebase-config.js) erwartet
+// Verhindert doppelte Initialisierung
+// Fallback: wenn nicht vorhanden, wird lokaler Modus genutzt
 
 // Firebase variables (will be initialized when Firebase SDK is loaded)
 let auth = null;
@@ -21,8 +13,8 @@ let googleProvider = null;
 function initializeFirebaseAuth() {
     if (typeof firebase !== 'undefined') {
         try {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
+            if (!firebase.apps.length && window.FirebaseConfig) {
+                firebase.initializeApp(window.FirebaseConfig);
             }
             auth = firebase.auth();
             googleProvider = new firebase.auth.GoogleAuthProvider();

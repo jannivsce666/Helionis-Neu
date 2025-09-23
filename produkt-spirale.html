@@ -163,7 +163,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('mystische-spirale', 'Mystische Spirale', 149.99)">
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addSpiralToCart()">
                             <svg class="mystical-sprite small"><use href="#cart"></use></svg>
                             In den Warenkorb
                         </button>
@@ -479,49 +479,10 @@
             event.target.classList.add('active');
         }
 
-        // Add to cart functionality
-        function addToCart(productId, productName, price) {
-            const quantity = parseInt(document.getElementById('quantity').value);
-            
-            // Get existing cart or create new one
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Check if product already exists in cart
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: productName,
-                    price: price,
-                    quantity: quantity,
-                    image: 'assets/images/products/spirale.png'
-                });
-            }
-            
-            // Save to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
-            // Update cart count in navigation
-            updateCartCount();
-            
-            // Show confirmation
-            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        function addSpiralToCart(){
+          const qty = parseInt(document.getElementById('quantity').value)||1;
+          window.addToCart({ id:'mystische-spirale', name:'Mystische Spirale', price:149.99, quantity:qty, image:'assets/images/products/spirale.png' });
         }
-
-        // Update cart count
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = totalItems;
-        }
-
-        // Initialize cart count on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartCount();
-        });
 
         // Video and image gallery functions
         function showImage(imageSrc) {

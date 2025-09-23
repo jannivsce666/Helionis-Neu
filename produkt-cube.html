@@ -163,7 +163,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart('mystischer-wuerfel', 'Mystischer Würfel', 119.99)">
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addCubeToCart()">
                             <svg class="mystical-sprite small"><use href="#cart"></use></svg>
                             In den Warenkorb
                         </button>
@@ -505,39 +505,11 @@
             event.target.classList.add('active');
         }
 
-        // Add to cart functionality
-        function addToCart(productId, productName, price) {
-            const quantity = parseInt(document.getElementById('quantity').value);
-            
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: productName,
-                    price: price,
-                    quantity: quantity,
-                    image: 'assets/images/products/cube.png'
-                });
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-            alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+        // Zentrale Warenkorb-Funktion wird aus cart.js genutzt.
+        function addCubeToCart(){
+          const qty = parseInt(document.getElementById('quantity').value)||1;
+          window.addToCart({ id:'mystischer-wuerfel', name:'Mystischer Würfel', price:119.99, quantity:qty, image:'assets/images/products/cube.png' });
         }
-
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = totalItems;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartCount();
-        });
 
         // Video and image gallery functions
         function showImage(imageSrc) {

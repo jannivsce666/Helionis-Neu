@@ -7,7 +7,9 @@
     "start": "python -m http.server 8000",
     "serve": "npx serve .",
     "deploy": "echo 'Deploy to GitHub Pages - push to main branch'",
-    "deploy:git": "git add . && git commit -m 'chore: update site' && git push origin main"
+    "deploy:git": "git add . && git commit -m 'chore: update site' && git push origin main",
+    "init:git": "git init && git add . && git commit -m 'chore: initial commit' && git branch -M main && git remote add origin https://github.com/jannivsce666/helionisneu.git && git push -u origin main",
+    "push": "git push origin main"
   },
   "repository": {
     "type": "git",

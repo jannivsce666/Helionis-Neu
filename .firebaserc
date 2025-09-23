@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "helionis-website"
+  },
+  "targets": {
+    "helionis-website": {
+      "hosting": {
+        "helionis": [
+          "helionis-website"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

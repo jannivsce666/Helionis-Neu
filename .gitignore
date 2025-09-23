@@ -1,53 +1,62 @@
-# Node / Frontend
+# Dependencies
 node_modules/
-.npm/
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
 
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.pytest_cache/
-.venv/
-venv/
-.env
-.env.*
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon?
-
-# VSCode
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-
-# Firebase & Hosting build artifacts
-.firebase/
-firebase-debug.log
-
-# Local caches
-.cache/
-.parcel-cache/
-.next/
+# Production builds
 dist/
 build/
 
-# Coverage / Reports
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Temporary files
+*.tmp
+*.temp
 coverage/
 *.lcov
 
-# Misc
-*.swp
-*.swo
-Thumbs.db
+# Firebase
+.firebase/
+firebase-debug.log
 
 # Generated placeholders
 placeholder_*.png
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Editor files
+*~
+*.sublime-*
+.eslintcache

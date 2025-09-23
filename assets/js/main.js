@@ -447,72 +447,89 @@ function initSmokeBackground(){
   //  * Sanfte Wirbel durch rotierende Offsets
   //  * Leichte Körnung + weiche Alpha-Ausblendung oben/unten
   //  * Halbtransparenz + Blending (unten im JS aktiviert)
-  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;
+  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;
+    // ---- Utility Noise ----
     float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453123); }
     float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); 
       return mix(mix(hash(i+vec2(0,0)),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
-    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.07; a*=0.52; } return r; }
+    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.03; a*=0.52; } return r; }
     
-    vec3 bluePalette(float x){
-      // Tiefes Nachtblau -> mystisches Blau -> cyan leuchtender Rand
-      vec3 a = vec3(0.015, 0.030, 0.070);
-      vec3 b = vec3(0.030, 0.180, 0.420);
-      vec3 c = vec3(0.050, 0.650, 0.950);
-      vec3 col = mix(a,b, smoothstep(0.05,0.75,x));
-      col = mix(col,c, smoothstep(0.55,0.95,x));
+    // Domain-Warp Funktion für mehr organische Strukturen
+    vec2 domainWarp(vec2 p, float t){
+      float w1 = fbm(p*1.2 + vec2(0.0, t*0.10));
+      float w2 = fbm(p*2.1 - vec2(t*0.07, 0.0));
+      float w3 = fbm(p*3.7 + vec2(t*0.03));
+      return p + vec2(w1 - w2, w2 - w3) * 0.55; // 0.55 = Warp-Stärke
+    }
+    
+    vec3 palette(float x){
+      // Tiefe Blau/Cyan Palette mit leichtem kalten Glühen
+      vec3 d = vec3(0.005,0.015,0.035); // fast Schwarz mit Blau
+      vec3 m = vec3(0.030,0.190,0.480);
+      vec3 h = vec3(0.120,0.780,0.980);
+      vec3 col = mix(d, m, smoothstep(0.04,0.65,x));
+      col = mix(col, h, smoothstep(0.55,0.95,x));
       return col;
     }
     
     void main(){
       vec2 uv = gl_FragCoord.xy / uRes.xy;
-      // Normalisierte Mitte + korrekte Aspect-Korrektur
+      // Zentrieren + Aspect
       vec2 p = (uv - 0.5);
       p.x *= uRes.x / uRes.y;
       float t = uTime;
       
-      // Aufsteigender Drift: verschiebt Sampling nach oben
+      // Grundaufstieg schneller & deutlicher
       vec2 flow = p;
-      // Basis-Aufstiegsgeschwindigkeit
-      flow.y += t * 0.05; 
-      // Leichter seitlicher Drift (sinusförmig)
-      flow.x += sin(t*0.07 + p.y*2.0)*0.03;
+      flow.y += t * (0.10 + uIntensity*0.03);
+      // Zerklüftete seitliche Drift
+      flow.x += sin(t*0.25 + p.y*3.0)*0.05 + sin(t*0.07 + p.y*6.0)*0.015;
       
-      // Wirbel (Rotation leicht animiert)
-      float ang = t*0.05;
-      mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
+      // Leichte dynamische Rotation
+      float ang = t*0.08; mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
       flow *= rot;
       
-      // fBM mit vertikalem Layer-Offset (verstärkt Aufstiegs-Gefühl)
-      float n = 0.0; 
-      float amp = 1.0;
-      vec2 pp = flow * 1.1;
-      for(int i=0;i<5;i++){
-        float layer = fbm(pp + vec2(0.0, t * (0.08 + float(i)*0.015)));
-        n += layer * amp;
-        pp *= 1.85;
-        amp *= 0.55;
-      }
-      n /= 2.2; // grobe Normalisierung
+      // Domain Warp anwenden (zweistufig für Tiefenwirkung)
+      vec2 w1 = domainWarp(flow*1.1, t);
+      vec2 w2 = domainWarp(flow*0.55 + vec2(0.0, t*0.05), t*0.7);
+      vec2 q = mix(w1, w2, 0.5);
       
-      // Kontrast & weiche Verdichtung (macht Rauch definierter)
-      n = smoothstep(0.15, 0.95, n);
+      // Mehrschichtige fBM Mischung (Differenz zur Schärfung)
+      float base = fbm(q*1.2);
+      float detail = fbm(q*3.5 + t*0.05);
+      float shape = fbm(q*0.7 - t*0.02);
+      float n = base*0.55 + detail*0.35 + shape*0.45 - detail*0.25; // differenzierter Kontrast
+      n = clamp(n, 0.0, 1.0);
+      
+      // Dichte verstärken und definierter machen
+      n = pow(n, 1.15);
+      n = smoothstep(0.10, 0.95, n);
+      // Intensitätsskala vom User
+      n *= (0.85 + uIntensity*0.65);
       
       // Farbgebung
-      vec3 col = bluePalette(n);
-      // Leichter Nebel-Glow abhängig von Dichte
-      col += 0.08 * pow(n, 2.0);
-      // Feine Körnung
-      col += (hash(p + t) - 0.5) * 0.02;
+      vec3 col = palette(n);
+      // Inneres Leuchten verstärken
+      col += 0.20 * pow(n, 2.5);
+      // Cool tint in highlights
+      col = mix(col, vec3(0.55,0.85,1.0), smoothstep(0.75,1.0,n)*0.25);
       
-      // Alpha abhängig von Dichte & vertikalem Verlauf (oben sanft ausblenden)
-      float vFadeTop = smoothstep(0.9, 0.55, uv.y);   // oben aus
-      float vFadeBottom = smoothstep(-0.05, 0.15, uv.y); // unten sanfter Start
-      float alpha = n * vFadeTop * vFadeBottom;
-      alpha = pow(alpha, 1.1) * 0.85; // leichte Gamma-Korrektur + globale Deckkraft
+      // Körnung / volumetrisches Flimmern
+      float grain = (hash(p*vec2(120.13,97.17) + t*0.5) - 0.5);
+      col += grain * 0.035;
       
-      // Vignette (leicht, damit Ränder nicht abrupt)
-      float vign = smoothstep(1.15, 0.15, length(p));
-      col *= vign;
+      // Vertikales Alpha: dichter unten, sanft oben weg
+      float topFade = smoothstep(0.92, 0.55, uv.y);
+      float bottomFade = smoothstep(-0.02, 0.22 + uIntensity*0.05, uv.y);
+      float alpha = n * topFade * bottomFade;
+      alpha = pow(alpha, 1.05) * (0.90 + uIntensity*0.15);
+      
+      // Weniger starke radiale Vignette (nur leicht bündeln)
+      float vign = smoothstep(1.35, 0.10, length(p));
+      col *= mix(0.85,1.0,vign);
+      
+      // Leichter Nebelschleier für filmischen Look
+      col = mix(vec3(0.01,0.02,0.035), col, 0.85 + 0.10*alpha);
       
       gl_FragColor = vec4(col, alpha);
     }`;
@@ -534,6 +551,9 @@ function initSmokeBackground(){
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1, 1,-1,1,1,-1,1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog,'aPos'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
   const uRes = gl.getUniformLocation(prog,'uRes'); const uTime = gl.getUniformLocation(prog,'uTime');
+  const uIntensity = gl.getUniformLocation(prog,'uIntensity');
+  // Intensität kann über data-intensity am Canvas gesetzt werden (z.B. <canvas id="smoke-canvas" data-intensity="1.4">)
+  const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.25');
   function resize(){ const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr; gl.viewport(0,0,canvas.width,canvas.height);} resize();
   window.addEventListener('resize', resize);
   let start=performance.now();
@@ -542,7 +562,8 @@ function initSmokeBackground(){
     gl.clearColor(0,0,0,0); // Transparent lassen
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2f(uRes, canvas.width, canvas.height);
-    gl.uniform1f(uTime,t);
+  gl.uniform1f(uTime,t);
+  gl.uniform1f(uIntensity, intensity);
     gl.drawArrays(gl.TRIANGLES,0,6);
     requestAnimationFrame(render);
   })();

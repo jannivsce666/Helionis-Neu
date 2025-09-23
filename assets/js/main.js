@@ -471,18 +471,58 @@ function initSmokeBackground(){
   const uColB = gl.getUniformLocation(prog,'uColB');
   const uQuality = gl.getUniformLocation(prog,'uQuality');
   const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.3');
-  const quality = parseFloat(canvas.getAttribute('data-quality')||'0.65'); // 0..1
+  const baseQuality = Math.min(1, Math.max(0, parseFloat(canvas.getAttribute('data-quality')||'0.65')));
+  let dynamicQuality = baseQuality; // wird adaptiv angepasst
+  // Performance Skalierung (reduziert interne Auflösung)
+  let perfScale = (()=>{
+    const v = parseFloat(canvas.getAttribute('data-scale')||'1');
+    return isNaN(v)?1:Math.min(1, Math.max(0.5, v));
+  })();
+  let needResize = true;
   const col1 = canvas.getAttribute('data-color1') || '#3a7bd5';
   const col2 = canvas.getAttribute('data-color2') || '#6a11cb';
   function hexToRgbNorm(h){ const m=h.replace('#',''); const v=parseInt(m.length===3?m.split('').map(c=>c+c).join(''):m,16); return [(v>>16 & 255)/255,(v>>8 & 255)/255,(v & 255)/255]; }
   const c1 = hexToRgbNorm(col1); const c2 = hexToRgbNorm(col2);
-  function resize(){ const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr; gl.viewport(0,0,canvas.width,canvas.height);} resize();
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    const w = innerWidth, h = innerHeight;
+    canvas.width = Math.floor(w * dpr * perfScale);
+    canvas.height = Math.floor(h * dpr * perfScale);
+    gl.viewport(0,0,canvas.width,canvas.height);
+    needResize = false;
+  }
+  resize();
   window.addEventListener('resize', resize);
-  let start=performance.now(); let last=0; const interval=1000/30; // 30 FPS
+  let start=performance.now(); let last=0; const interval=1000/30; // Ziel: 30 FPS
+  let lastDrawAt = start;
+  let smoothCounter = 0;
+  // Sichtbarer Debug-Wert optional
+  let adaptTick = 0;
   (function render(){
     const now=performance.now();
     if(now-last>=interval){
       const t=(now-start)/1000;
+      const frameGap = now - lastDrawAt; // Zeit seit letztem tatsächlichem Draw
+      lastDrawAt = now;
+      // Adaptives Downgrade wenn wir deutlich unter der Ziel-Frequenz liegen
+      if(frameGap > interval * 1.6){
+        dynamicQuality = Math.max(0.30, dynamicQuality - 0.07); // weniger Raymarch Steps
+        perfScale = Math.max(0.60, perfScale - 0.05); // Auflösung reduzieren
+        needResize = true;
+        smoothCounter = 0; // Reset Up-Scaling Counter
+      } else if(frameGap < interval * 1.05){
+        // Stabil & schnell: vorsichtig wieder hochskalieren nach mehreren stabilen Frames
+        smoothCounter++;
+        if(smoothCounter > 10){
+          dynamicQuality = Math.min(baseQuality, dynamicQuality + 0.03);
+          perfScale = Math.min(1.0, perfScale + 0.04);
+          needResize = true;
+          smoothCounter = 0;
+        }
+      } else {
+        smoothCounter = 0; // nicht stabil genug
+      }
+      if(needResize){ resize(); }
       gl.clearColor(0,0,0,0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(uRes, canvas.width, canvas.height);
@@ -490,7 +530,7 @@ function initSmokeBackground(){
       gl.uniform1f(uIntensity, intensity);
   gl.uniform3f(uColA, c1[0], c1[1], c1[2]);
   gl.uniform3f(uColB, c2[0], c2[1], c2[2]);
-  gl.uniform1f(uQuality, quality);
+  gl.uniform1f(uQuality, dynamicQuality);
       gl.drawArrays(gl.TRIANGLES,0,6);
       last = now;
     }

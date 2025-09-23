@@ -447,90 +447,24 @@ function initSmokeBackground(){
   //  * Sanfte Wirbel durch rotierende Offsets
   //  * Leichte Körnung + weiche Alpha-Ausblendung oben/unten
   //  * Halbtransparenz + Blending (unten im JS aktiviert)
-  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;
-    // ---- Utility Noise ----
+  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;uniform vec3 uColA;uniform vec3 uColB;
     float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453123); }
-    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); 
-      return mix(mix(hash(i+vec2(0,0)),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
-    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.03; a*=0.52; } return r; }
-    
-    // Domain-Warp Funktion für mehr organische Strukturen
-    vec2 domainWarp(vec2 p, float t){
-      float w1 = fbm(p*1.2 + vec2(0.0, t*0.10));
-      float w2 = fbm(p*2.1 - vec2(t*0.07, 0.0));
-      float w3 = fbm(p*3.7 + vec2(t*0.03));
-      return p + vec2(w1 - w2, w2 - w3) * 0.55; // 0.55 = Warp-Stärke
-    }
-    
-    vec3 palette(float x){
-      // Tiefe Blau/Cyan Palette mit leichtem kalten Glühen
-      vec3 d = vec3(0.005,0.015,0.035); // fast Schwarz mit Blau
-      vec3 m = vec3(0.030,0.190,0.480);
-      vec3 h = vec3(0.120,0.780,0.980);
-      vec3 col = mix(d, m, smoothstep(0.04,0.65,x));
-      col = mix(col, h, smoothstep(0.55,0.95,x));
-      return col;
-    }
-    
+    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
+    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.02; a*=0.52;} return r; }
+    vec2 warp(vec2 p,float t){ float w1=fbm(p*1.1+vec2(0.,t*0.09)); float w2=fbm(p*2.0-vec2(t*0.06,0.)); return p + vec2(w1-w2, w2-w1)*0.50; }
+    vec3 palette(float x){ vec3 base=vec3(0.015,0.02,0.035); vec3 blend=mix(uColA,uColB,smoothstep(0.12,0.88,x)); blend=mix(blend, vec3(0.80,0.85,1.0), smoothstep(0.80,1.0,x)*0.14); return mix(base, blend, 0.80); }
     void main(){
-      vec2 uv = gl_FragCoord.xy / uRes.xy;
-      // Zentrieren + Aspect
-      vec2 p = (uv - 0.5);
-      p.x *= uRes.x / uRes.y;
-      float t = uTime;
-      
-      // Grundaufstieg schneller & deutlicher
-      vec2 flow = p;
-      flow.y += t * (0.10 + uIntensity*0.03);
-      // Zerklüftete seitliche Drift
-      flow.x += sin(t*0.25 + p.y*3.0)*0.05 + sin(t*0.07 + p.y*6.0)*0.015;
-      
-      // Leichte dynamische Rotation
-      float ang = t*0.08; mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
-      flow *= rot;
-      
-      // Domain Warp anwenden (zweistufig für Tiefenwirkung)
-      vec2 w1 = domainWarp(flow*1.1, t);
-      vec2 w2 = domainWarp(flow*0.55 + vec2(0.0, t*0.05), t*0.7);
-      vec2 q = mix(w1, w2, 0.5);
-      
-      // Mehrschichtige fBM Mischung (Differenz zur Schärfung)
-      float base = fbm(q*1.2);
-      float detail = fbm(q*3.5 + t*0.05);
-      float shape = fbm(q*0.7 - t*0.02);
-      float n = base*0.55 + detail*0.35 + shape*0.45 - detail*0.25; // differenzierter Kontrast
-      n = clamp(n, 0.0, 1.0);
-      
-      // Dichte verstärken und definierter machen
-      n = pow(n, 1.15);
-      n = smoothstep(0.10, 0.95, n);
-      // Intensitätsskala vom User
-      n *= (0.85 + uIntensity*0.65);
-      
-      // Farbgebung
-      vec3 col = palette(n);
-      // Inneres Leuchten verstärken
-      col += 0.20 * pow(n, 2.5);
-      // Cool tint in highlights
-      col = mix(col, vec3(0.55,0.85,1.0), smoothstep(0.75,1.0,n)*0.25);
-      
-      // Körnung / volumetrisches Flimmern
-      float grain = (hash(p*vec2(120.13,97.17) + t*0.5) - 0.5);
-      col += grain * 0.035;
-      
-      // Vertikales Alpha: dichter unten, sanft oben weg
-      float topFade = smoothstep(0.92, 0.55, uv.y);
-      float bottomFade = smoothstep(-0.02, 0.22 + uIntensity*0.05, uv.y);
-      float alpha = n * topFade * bottomFade;
-      alpha = pow(alpha, 1.05) * (0.90 + uIntensity*0.15);
-      
-      // Weniger starke radiale Vignette (nur leicht bündeln)
-      float vign = smoothstep(1.35, 0.10, length(p));
-      col *= mix(0.85,1.0,vign);
-      
-      // Leichter Nebelschleier für filmischen Look
-      col = mix(vec3(0.01,0.02,0.035), col, 0.85 + 0.10*alpha);
-      
+      vec2 uv = gl_FragCoord.xy / uRes.xy; vec2 p = uv - 0.5; p.x *= uRes.x / uRes.y; float t=uTime;
+      vec2 flow=p; flow.y += t*(0.055 + uIntensity*0.018); flow.x += sin(t*0.22 + p.y*3.0)*0.045 + sin(t*0.065 + p.y*5.5)*0.014;
+      float ang=t*0.06; mat2 R=mat2(cos(ang),-sin(ang),sin(ang),cos(ang)); flow*=R;
+      vec2 q = mix(warp(flow*1.05,t), warp(flow*0.55+vec2(0.,t*0.045), t*0.7), 0.55);
+      float base=fbm(q*1.15); float detail=fbm(q*3.4 + t*0.05); float shape=fbm(q*0.65 - t*0.018);
+      float n = base*0.55 + detail*0.34 + shape*0.42 - detail*0.20; n=clamp(n,0.,1.); n=pow(n,1.15); n=smoothstep(0.20,0.90,n); n*= (0.65 + uIntensity*0.40);
+      vec3 col = palette(n); col += 0.11*pow(n,2.3); col = mix(col, vec3(0.60,0.70,1.0), smoothstep(0.80,1.0,n)*0.15);
+      float grain = (hash(p*vec2(120.13,97.17)+t*0.5)-0.5); col += grain * 0.018;
+      float topFade=smoothstep(0.92,0.55,uv.y); float bottomFade=smoothstep(-0.02,0.22+uIntensity*0.05,uv.y); float alpha = n*topFade*bottomFade; alpha = pow(alpha,1.05)*(0.55 + uIntensity*0.18);
+      float vign = smoothstep(1.35,0.10,length(p)); col *= mix(0.85,1.0,vign);
+      col = mix(vec3(0.01,0.02,0.035), col, 0.78 + 0.15*alpha);
       gl_FragColor = vec4(col, alpha);
     }`;
 
@@ -550,21 +484,33 @@ function initSmokeBackground(){
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1, 1,-1,1,1,-1,1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog,'aPos'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  const uRes = gl.getUniformLocation(prog,'uRes'); const uTime = gl.getUniformLocation(prog,'uTime');
+  const uRes = gl.getUniformLocation(prog,'uRes');
+  const uTime = gl.getUniformLocation(prog,'uTime');
   const uIntensity = gl.getUniformLocation(prog,'uIntensity');
-  // Intensität kann über data-intensity am Canvas gesetzt werden (z.B. <canvas id="smoke-canvas" data-intensity="1.4">)
-  const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.25');
+  const uColA = gl.getUniformLocation(prog,'uColA');
+  const uColB = gl.getUniformLocation(prog,'uColB');
+  const intensity = parseFloat(canvas.getAttribute('data-intensity')||'1.2');
+  const col1 = canvas.getAttribute('data-color1') || '#3a7bd5';
+  const col2 = canvas.getAttribute('data-color2') || '#6a11cb';
+  function hexToRgbNorm(h){ const m=h.replace('#',''); const v=parseInt(m.length===3?m.split('').map(c=>c+c).join(''):m,16); return [(v>>16 & 255)/255,(v>>8 & 255)/255,(v & 255)/255]; }
+  const c1 = hexToRgbNorm(col1); const c2 = hexToRgbNorm(col2);
   function resize(){ const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr; gl.viewport(0,0,canvas.width,canvas.height);} resize();
   window.addEventListener('resize', resize);
-  let start=performance.now();
+  let start=performance.now(); let last=0; const interval=1000/30; // 30 FPS
   (function render(){
-    const t=(performance.now()-start)/1000;
-    gl.clearColor(0,0,0,0); // Transparent lassen
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-  gl.uniform1f(uTime,t);
-  gl.uniform1f(uIntensity, intensity);
-    gl.drawArrays(gl.TRIANGLES,0,6);
+    const now=performance.now();
+    if(now-last>=interval){
+      const t=(now-start)/1000;
+      gl.clearColor(0,0,0,0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime,t);
+      gl.uniform1f(uIntensity, intensity);
+      gl.uniform3f(uColA, c1[0], c1[1], c1[2]);
+      gl.uniform3f(uColB, c2[0], c2[1], c2[2]);
+      gl.drawArrays(gl.TRIANGLES,0,6);
+      last = now;
+    }
     requestAnimationFrame(render);
   })();
 }

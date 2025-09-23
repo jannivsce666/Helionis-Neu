@@ -40,8 +40,7 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-secondary);
-  /* Etwas dunkler + zarter Verlauf für besseren Blaurauch-Kontrast */
-  background: radial-gradient(circle at 50% 65%, #0d1621 0%, #071018 55%, #050b12 100%);
+  background: #0d1117; /* dunkle Basis laut Anforderung */
   color: var(--silver);
   line-height: 1.6;
   overflow-x: hidden;
@@ -66,9 +65,10 @@ body {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -2;
+  z-index: -1; /* hinter Content, vor Fallback */
   display: block;
   pointer-events: none;
+  filter: saturate(105%) brightness(105%);
 }
 
 /* Sanfter CSS-Fallback, falls WebGL ausfällt */

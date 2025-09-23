@@ -142,57 +142,6 @@ window.showNotification = function(message, type = 'success') {
         document.head.appendChild(style);
     }
 }
-gl.shaderSource(sh, src); gl.compileShader(sh);
-    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-      console.error(gl.getShaderInfoLog(sh));
-      return null;
-    }
-    return sh;
-
-  const vs = compile(gl.VERTEX_SHADER, vertSrc);
-  const fs = compile(gl.FRAGMENT_SHADER, fragSrc);
-
-  const prog = gl.createProgram();
-  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    console.error(gl.getProgramInfoLog(prog));
-    return;
-  }
-  gl.useProgram(prog);
-
-  // Fullscreen quad
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1, -1,  1, -1,  -1, 1,
-     1, -1,  1,  1,  -1, 1
-  ]), gl.STATIC_DRAW);
-
-  const loc = gl.getAttribLocation(prog, 'aPos');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-  const uRes = gl.getUniformLocation(prog, 'uRes');
-  const uTime = gl.getUniformLocation(prog, 'uTime');
-
-  function onResize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Qualität vs. Performance
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-  }
-  onResize();
-  window.addEventListener('resize', onResize);
-
-  let start = performance.now();
-  function render() {
-    const t = (performance.now() - start) / 1000;
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-    gl.uniform1f(uTime, t);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    requestAnimationFrame(render);
-  }
-  render();
 
 /* ============== NAVIGATION ============== */
 function initializeNavigation() {
@@ -532,8 +481,11 @@ function initSmokeBackground(){
       float vign = smoothstep(1.40,0.05,length(p));
       col *= mix(0.88,1.02,vign);
       // Kombiniertes Alpha (Option 1: etwas aggressiver & weniger Gamma)
-      float alpha = 1.0 - (1.0 - alphaF)*(1.0 - alphaN);
-      alpha = pow(alpha, 0.92) * 0.95; // mehr sichtbare Dichte
+  float alpha = 1.0 - (1.0 - alphaF)*(1.0 - alphaN);
+  alpha = pow(alpha, 0.88) * 1.05; // stärker & weniger ausgewaschen
+  alpha = clamp(alpha, 0.0, 0.92);
+  // Mindest-Sichtbarkeit falls extrem niedrige Intensität
+  alpha = max(alpha, 0.06);
       // Sehr leichte Aufhellung bei hoher alpha für milchigen Rauch
       col += 0.06 * smoothstep(0.25,0.95,alpha);
       gl_FragColor = vec4(col, alpha);

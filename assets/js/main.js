@@ -440,50 +440,81 @@ function initSmokeBackground(){
   if(!gl){ console.warn('WebGL nicht verfügbar – nur Fallback aktiv.'); return; }
 
   const vertSrc = `attribute vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}`;
-  // Fragment-Shader: restaurierter grün/türkiser Nebel
-  // Hinweis: Wenn du wieder Blau testen willst, unten einfach "#define PALETTE_GREEN" auskommentieren
-  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime; 
-    // ======= Noise Basis =======
-    float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453); }
+  // Neuer Fragment-Shader: Aufsteigender blauer Rauch / Nebel
+  // Features:
+  //  * Vertikaler Drift (Rauch steigt langsam nach oben)
+  //  * Mehrschichtige Fractal Noise (fBM)
+  //  * Sanfte Wirbel durch rotierende Offsets
+  //  * Leichte Körnung + weiche Alpha-Ausblendung oben/unten
+  //  * Halbtransparenz + Blending (unten im JS aktiviert)
+  const fragSrc = `precision mediump float;uniform vec2 uRes;uniform float uTime;
+    float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3,289.1)))*43758.5453123); }
     float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); 
-      return mix(mix(hash(i+vec2(0.,0.)),hash(i+vec2(1.,0.)),f.x), mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x), f.y); }
+      return mix(mix(hash(i+vec2(0,0)),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
+    float fbm(vec2 p){ float a=0.55; float r=0.; for(int i=0;i<6;i++){ r+=noise(p)*a; p*=2.07; a*=0.52; } return r; }
     
-    // ======= Palette Switch =======
-    #define PALETTE_GREEN 1
-    
-    vec3 palette(float n){
-      #ifdef PALETTE_GREEN
-        // Dunkelgrün -> Türkis -> sanftes Glühen
-        vec3 a = vec3(0.007, 0.055, 0.050);   // sehr dunkel (nahe Schwarz mit Grün)
-        vec3 b = vec3(0.050, 0.320, 0.250);   // sattes Grün/Türkis
-        vec3 c = vec3(0.180, 0.820, 0.650);   // leuchtender Akzent
-      #else
-        // Alternative Blaupalette (falls später benötigt)
-        vec3 a = vec3(0.010, 0.020, 0.070);
-        vec3 b = vec3(0.050, 0.200, 0.550);
-        vec3 c = vec3(0.150, 0.650, 0.950);
-      #endif
-      vec3 col = mix(a, b, n);
-      // Sichtbarkeit verstärken: Übergang zum Akzent früher einsetzen
-      col = mix(col, c, smoothstep(0.55, 0.95, n));
+    vec3 bluePalette(float x){
+      // Tiefes Nachtblau -> mystisches Blau -> cyan leuchtender Rand
+      vec3 a = vec3(0.015, 0.030, 0.070);
+      vec3 b = vec3(0.030, 0.180, 0.420);
+      vec3 c = vec3(0.050, 0.650, 0.950);
+      vec3 col = mix(a,b, smoothstep(0.05,0.75,x));
+      col = mix(col,c, smoothstep(0.55,0.95,x));
       return col;
     }
     
-    void main(){ 
-      vec2 uv = gl_FragCoord.xy / uRes.xy; 
-      vec2 p = (uv - 0.5); p.x *= uRes.x / uRes.y; 
-      float t = uTime * 0.035; 
-      float n = 0.0; float amp=0.65; vec2 pp=p*1.35; 
-      for(int i=0;i<5;i++){ n += noise(pp + t)*amp; pp*=1.85; amp*=0.55; }
-      n /= 1.0; // Normierung (locker)
-      // Leichter Zentrumsglow reduziert, damit Ränder nicht zu dunkel werden
-      float vign = smoothstep(0.8, 0.05, length(p));
-      vec3 col = palette(n);
-      // Feinhelligkeit – macht Nebel sichtbarer ohne alles auszuwaschen
-      col += (1.0 - vign) * 0.08;
-      // Leichte Nebelschleier-Körnung
-      col += (hash(p + t) - 0.5) * 0.015;
-      gl_FragColor = vec4(col, 1.0); 
+    void main(){
+      vec2 uv = gl_FragCoord.xy / uRes.xy;
+      // Normalisierte Mitte + korrekte Aspect-Korrektur
+      vec2 p = (uv - 0.5);
+      p.x *= uRes.x / uRes.y;
+      float t = uTime;
+      
+      // Aufsteigender Drift: verschiebt Sampling nach oben
+      vec2 flow = p;
+      // Basis-Aufstiegsgeschwindigkeit
+      flow.y += t * 0.05; 
+      // Leichter seitlicher Drift (sinusförmig)
+      flow.x += sin(t*0.07 + p.y*2.0)*0.03;
+      
+      // Wirbel (Rotation leicht animiert)
+      float ang = t*0.05;
+      mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
+      flow *= rot;
+      
+      // fBM mit vertikalem Layer-Offset (verstärkt Aufstiegs-Gefühl)
+      float n = 0.0; 
+      float amp = 1.0;
+      vec2 pp = flow * 1.1;
+      for(int i=0;i<5;i++){
+        float layer = fbm(pp + vec2(0.0, t * (0.08 + float(i)*0.015)));
+        n += layer * amp;
+        pp *= 1.85;
+        amp *= 0.55;
+      }
+      n /= 2.2; // grobe Normalisierung
+      
+      // Kontrast & weiche Verdichtung (macht Rauch definierter)
+      n = smoothstep(0.15, 0.95, n);
+      
+      // Farbgebung
+      vec3 col = bluePalette(n);
+      // Leichter Nebel-Glow abhängig von Dichte
+      col += 0.08 * pow(n, 2.0);
+      // Feine Körnung
+      col += (hash(p + t) - 0.5) * 0.02;
+      
+      // Alpha abhängig von Dichte & vertikalem Verlauf (oben sanft ausblenden)
+      float vFadeTop = smoothstep(0.9, 0.55, uv.y);   // oben aus
+      float vFadeBottom = smoothstep(-0.05, 0.15, uv.y); // unten sanfter Start
+      float alpha = n * vFadeTop * vFadeBottom;
+      alpha = pow(alpha, 1.1) * 0.85; // leichte Gamma-Korrektur + globale Deckkraft
+      
+      // Vignette (leicht, damit Ränder nicht abrupt)
+      float vign = smoothstep(1.15, 0.15, length(p));
+      col *= vign;
+      
+      gl_FragColor = vec4(col, alpha);
     }`;
 
   function compile(type, src){
@@ -496,6 +527,9 @@ function initSmokeBackground(){
   const prog = gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
   if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(prog)); return; }
   gl.useProgram(prog);
+  // Blending für halbtransparenten Rauch aktivieren
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
   const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1, 1,-1,1,1,-1,1]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog,'aPos'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
@@ -503,5 +537,13 @@ function initSmokeBackground(){
   function resize(){ const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr; gl.viewport(0,0,canvas.width,canvas.height);} resize();
   window.addEventListener('resize', resize);
   let start=performance.now();
-  (function render(){ const t=(performance.now()-start)/1000; gl.uniform2f(uRes, canvas.width, canvas.height); gl.uniform1f(uTime,t); gl.drawArrays(gl.TRIANGLES,0,6); requestAnimationFrame(render); })();
+  (function render(){
+    const t=(performance.now()-start)/1000;
+    gl.clearColor(0,0,0,0); // Transparent lassen
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime,t);
+    gl.drawArrays(gl.TRIANGLES,0,6);
+    requestAnimationFrame(render);
+  })();
 }

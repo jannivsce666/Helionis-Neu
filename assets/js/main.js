@@ -448,62 +448,94 @@ function initSmokeBackground(){
   //  * Leichte Körnung + weiche Alpha-Ausblendung oben/unten
   //  * Halbtransparenz + Blending (unten im JS aktiviert)
   const fragSrc = `precision highp float;uniform vec2 uRes;uniform float uTime;uniform float uIntensity;uniform vec3 uColA;uniform vec3 uColB;uniform float uQuality;
-    // --- Hash & Noise (simple value noise) ---
+    // =============================================
+    // VOL. SMOKE v2  (Option 1 + Option 2)
+    //  * Sichtbarkeits-Boost (höhere Dichte & Alpha)
+    //  * Dual-Layer (ferner & naher Rauch) für Tiefe
+    //  * Leicht aufgehellte Palette für mehr Kontrast
+    // =============================================
     float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453123); }
-    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f);
-      return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x), mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x), f.y); }
-    float fbm(vec2 p){ float a=.55; float r=0.; for(int i=0;i<5;i++){ r+=noise(p)*a; p*=2.03; a*=0.55;} return r; }
-    vec2 curl(vec2 p){ // approximate curl of noise field for swirling
-      const float e=.01; float n1=fbm(p+vec2(0,e)); float n2=fbm(p-vec2(0,e)); float n3=fbm(p+vec2(e,0)); float n4=fbm(p-vec2(e,0));
-      return vec2(n1-n2, n4-n3); }
-    vec3 palette(float x){ vec3 base=vec3(0.012,0.016,0.030); vec3 mid=mix(uColA,uColB, clamp(x*0.9,0.0,1.0)); vec3 hi=vec3(0.82,0.85,1.0); vec3 c=mix(base, mid, smoothstep(0.05,0.85,x)); c=mix(c, hi, smoothstep(0.78,1.0,x)*0.12); return c; }
-    // Raymarch durch pseudo-volumetrischen Nebel (2.5D)
-    float densitySample(vec2 basePos, float height, float t){
-      // Domain warp + curl swirl
-      vec2 p = basePos*1.1 + vec2(0.0, t*0.05) + vec2(0.0, height*0.35);
-      vec2 w = p + curl(p*0.8 + t*0.05)*0.55;
-      float d = fbm(w*1.2) * 0.7 + fbm(w*3.0)*0.3;
-      d = smoothstep(0.25,0.95,d);
+    float noise(vec2 p){ vec2 i=floor(p); vec2 f=fract(p); f=f*f*(3.0-2.0*f); return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
+    float fbm(vec2 p){ float a=.55; float r=0.; for(int i=0;i<5;i++){ r+=noise(p)*a; p*=2.07; a*=0.53;} return r; }
+    vec2 curl(vec2 p){ const float e=.01; float n1=fbm(p+vec2(0,e)); float n2=fbm(p-vec2(0,e)); float n3=fbm(p+vec2(e,0)); float n4=fbm(p-vec2(e,0)); return vec2(n1-n2, n4-n3); }
+    vec3 palette(float x){
+      x = clamp(x,0.0,1.0);
+      vec3 base=vec3(0.020,0.028,0.050);
+      vec3 mid=mix(uColA,uColB, smoothstep(0.05,0.95,x));
+      vec3 hi=vec3(0.90,0.92,1.0);
+      vec3 c=mix(base, mid, smoothstep(0.04,0.85,x));
+      c=mix(c, hi, smoothstep(0.75,1.0,x)*0.18);
+      // leichte Entsättigung bei sehr hoher Dichte für Nebel-Look
+      float desat = smoothstep(0.6,1.0,x)*0.25;
+      float g = dot(c, vec3(0.299,0.587,0.114));
+      c = mix(c, vec3(g), desat);
+      return c;
+    }
+    float densitySample(vec2 basePos, float height, float t, float layerScale, float rise, float swirl, float warp){
+      vec2 p = basePos * layerScale + vec2(0.0, t*rise) + vec2(0.0, height*0.40*layerScale);
+      vec2 w = p + curl(p*warp + t*swirl)*0.65;
+      float d = fbm(w*1.15) * 0.7 + fbm(w*2.8)*0.35;
+      d = smoothstep(0.22,0.93,d);
       return d;
     }
     void main(){
-      vec2 uv = gl_FragCoord.xy / uRes.xy; vec2 p = (uv - 0.5); p.x *= uRes.x/uRes.y; float t=uTime;
-      // leicht nach oben wandernder Referenzrahmen
-      p.y += t*0.02;
-      // Raymarch Parameter
-      int STEPS = int( mix(16.0, 34.0, clamp(uQuality,0.0,1.0)) );
-      float accum=0.0; float accumAlpha=0.0; float stepH = 1.0/float(STEPS); float height=0.0;
-      for(int i=0;i<40;i++){ // obere Grenze > max STEPS
+      vec2 uv = gl_FragCoord.xy / uRes.xy;
+      vec2 p = (uv - 0.5); p.x *= uRes.x/uRes.y; float t=uTime;
+      // sanfter globaler Drift nach oben (etwas schneller für bessere Wahrnehmung)
+      p.y += t*0.028;
+      // adaptive Schrittanzahl – leicht reduziert wegen zweiter Ebene
+      int STEPS = int( mix(14.0, 30.0, clamp(uQuality,0.0,1.0)) );
+      float stepH = 1.0/float(STEPS);
+      float h = 0.0;
+      // Akkumulatoren: fern & nah
+      float accumF=0.0; float alphaF=0.0; // far layer (breiter, weicher)
+      float accumN=0.0; float alphaN=0.0; // near layer (detailreicher)
+      for(int i=0;i<40;i++){
         if(i>=STEPS) break;
-        float h = height;
-        // perspektivische Verdichtung: unten dichter
-        float layerWeight = mix(1.8, 0.4, h);
-        float d = densitySample(p, h, t*0.9) * layerWeight;
-        // vertikaler Fade (oben aus)
-        float topFade = smoothstep(1.05, 0.25, h + uv.y*0.4);
-        d *= topFade;
-        // Intensitätsskala
-        d *= (0.55 + uIntensity*0.35);
-        // Alpha Akkumulation (Beer-Lambert approx)
-        float a = 1.0 - exp(-d * 1.35 * stepH);
-        // Premultiplied accumulation
-        accum += (1.0 - accumAlpha) * d * stepH;
-        accumAlpha += (1.0 - accumAlpha) * a;
-        height += stepH;
-        if(accumAlpha>0.98) break;
+        // Basis-Gewichtung (unten dichter)
+        float depthWeight = mix(1.95, 0.45, h);
+        // Ferne Ebene (ruhiger, größer skaliert)
+        float dF = densitySample(p*0.85, h, t*0.85, 1.05, 0.045, 0.035, 0.75) * depthWeight;
+        // Nahe Ebene (feinere Wirbel, etwas schnellerer Rise)
+        float dN = densitySample(p*1.25 + vec2(0.07*sin(t*0.07),0.0), h, t*1.10, 1.35, 0.060, 0.055, 0.95) * depthWeight;
+        // vertikaler Fade (oben fast aus)
+        float topFade = smoothstep(1.08, 0.20, h + uv.y*0.42);
+        dF *= topFade; dN *= topFade;
+        // Intensitäts-Boost (Option 1) – erhöht Basis + reagiert stärker auf uIntensity
+        float boost = (0.75 + uIntensity*0.55);
+        dF *= boost * 0.72; // ferne Ebene etwas schwächer
+        dN *= boost * 1.05;
+        // Alpha / Beer-Lambert
+        float aF = 1.0 - exp(-dF * 1.25 * stepH);
+        float aN = 1.0 - exp(-dN * 1.35 * stepH);
+        accumF += (1.0 - alphaF) * dF * stepH;
+        accumN += (1.0 - alphaN) * dN * stepH;
+        alphaF += (1.0 - alphaF) * aF;
+        alphaN += (1.0 - alphaN) * aN;
+        h += stepH;
+        if(alphaN > 0.985 && alphaF > 0.985) break;
       }
-      accum = clamp(accum,0.0,1.0);
-      accumAlpha = clamp(accumAlpha,0.0,1.0);
-      // Farben
-      vec3 col = palette(accum);
-      // leichtes inneres Glühen bei dichterem Rauch
-      col += 0.10*pow(accum,2.1);
-      // feines Dithering
-      float g = (hash(p*vec2(323.2,173.1)+t)-0.5); col += g*0.015;
-      // radiale leichte Abschwächung (Bündelung)
-      float vign = smoothstep(1.35,0.05,length(p)); col *= mix(0.82,1.0,vign);
-      // Endalpha etwas weicher
-      float alpha = pow(accumAlpha, 1.02) * 0.78;
+      accumF = clamp(accumF,0.0,1.0); accumN = clamp(accumN,0.0,1.0);
+      alphaF = clamp(alphaF,0.0,1.0); alphaN = clamp(alphaN,0.0,1.0);
+      // Farben je Ebene
+      vec3 colF = palette(accumF * 0.90);
+      vec3 colN = palette(accumN * 1.10);
+      // leichtes inneres Glühen in der Nah-Ebene
+      colN += 0.14 * pow(accumN,2.0);
+      // Noise Dithering (einmal berechnen)
+      float grain = (hash(p*vec2(323.2,173.1)+t)-0.5);
+      colF += grain*0.010; colN += grain*0.016;
+      // Mischung der Ebenen (Near stärker, aber Far trägt Tiefe)
+      float mixFac = 0.58; // Anteil der Nah-Ebene
+      vec3 col = mix(colF, colN, mixFac);
+      // Vignette / leichte Bündelung
+      float vign = smoothstep(1.40,0.05,length(p));
+      col *= mix(0.88,1.02,vign);
+      // Kombiniertes Alpha (Option 1: etwas aggressiver & weniger Gamma)
+      float alpha = 1.0 - (1.0 - alphaF)*(1.0 - alphaN);
+      alpha = pow(alpha, 0.92) * 0.95; // mehr sichtbare Dichte
+      // Sehr leichte Aufhellung bei hoher alpha für milchigen Rauch
+      col += 0.06 * smoothstep(0.25,0.95,alpha);
       gl_FragColor = vec4(col, alpha);
     }`;
 

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "python -m http.server 8000",
     "serve": "npx serve .",
-    "deploy": "echo 'Deploy to GitHub Pages - push to main branch'"
+    "deploy": "echo 'Deploy to GitHub Pages - push to main branch'",
+    "deploy:git": "git add . && git commit -m 'chore: update site' && git push origin main"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,6 @@
   ],
   "author": "jannivsce666",
   "license": "UNLICENSED",
-  "homepage": "https://jannivsce666.github.io/helionisneu/"
+  "homepage": "https://jannivsce666.github.io/helionisneu/",
+  "private": true
 }

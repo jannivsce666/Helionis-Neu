@@ -48,51 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Create mystical particles effect
 function createMysticalParticles() {
-    const particlesContainer = document.getElementById('particles');
-    if (!particlesContainer) return;
-    
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.cssText = `
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 215, 0, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float ${Math.random() * 3 + 2}s infinite ease-in-out;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation-delay: ${Math.random() * 2}s;
-        `;
-        particlesContainer.appendChild(particle);
-    }
-    
-    // Add CSS animation for particles
-    if (!document.getElementById('particle-styles')) {
-        const style = document.createElement('style');
-        style.id = 'particle-styles';
-        style.textContent = `
-            .mystical-particles {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: 1;
-            }
-            
-            @keyframes float {
-                0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
-                10% { opacity: 1; }
-                90% { opacity: 1; }
-                50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
-            }
-        `;
-        document.head.appendChild(style);
-    }
+  // Deaktiviert – Partikel entfernt laut Benutzerwunsch
+  return;
 }
 
 // Utility functions

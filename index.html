@@ -30,7 +30,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
     </noscript>
 
-    <!-- Mystic blue theme + slideshow styles -->
+  <!-- Mystic blue theme + slideshow styles -->
     <style>
       /* Mystic-blue palette */
       body.theme-mystic{
@@ -45,8 +45,8 @@
       .mystical-glow{box-shadow:0 0 18px #6aa9ff55, inset 0 0 24px #6aa9ff33}
 
       /* Slideshow layout */
-      .slideshow{position:relative;max-width:1100px;margin:0 auto;padding:12px 56px}
-      .slides{list-style:none;margin:0;padding:0;display:flex;gap:16px;overflow:hidden;border-radius:16px}
+  .slideshow{position:relative;max-width:1100px;margin:0 auto;padding:12px 56px;overflow:hidden}
+  .slides{list-style:none;margin:0;padding:0;display:flex;gap:0;border-radius:16px}
       .slide{min-width:100%;position:relative}
       .slide img{width:100%;height:460px;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.02)}
       .caption{position:absolute;left:16px;bottom:16px;background:linear-gradient(180deg,#0a1630cc,#0a1630aa);border:1px solid #6aa9ff33;border-radius:12px;padding:10px 12px}
@@ -59,7 +59,7 @@
       .nav-btn.right{right:8px}
       .nav-btn.right::before{content:"›";font-size:28px;line-height:52px;text-align:center}
 
-      .dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
+  .dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
       .dots button{width:9px;height:9px;border-radius:50%;border:none;background:#6aa9ff33;cursor:pointer}
       .dots button.active{background:#6aa9ff}
 
@@ -305,6 +305,10 @@
         const dotsWrap = document.getElementById('dots');
         let index = 0, lock = false;
 
+        function viewportWidth(){
+          const vp = track.parentElement; return vp ? vp.clientWidth : window.innerWidth;
+        }
+
         function updateDots(){
           if(!dotsWrap) return;
           dotsWrap.innerHTML = '';
@@ -315,13 +319,19 @@
             dotsWrap.appendChild(b);
           });
         }
-        function go(i){
+        function go(i, instant=false){
           if(lock) return;
-          lock = true;
+          lock = !instant;
           index = (i + slides.length) % slides.length;
-          track.style.transform = `translateX(${-index*100}%)`;
-          track.style.transition = 'transform 380ms ease-in-out';
-          setTimeout(()=>{ track.style.transition=''; lock=false; updateDots(); }, 420);
+          const x = -index * viewportWidth();
+          track.style.transform = `translateX(${x}px)`;
+          if(!instant){
+            track.style.transition = 'transform 380ms ease-in-out';
+            setTimeout(()=>{ track.style.transition=''; lock=false; updateDots(); }, 420);
+          } else {
+            track.style.transition = '';
+            lock = false; updateDots();
+          }
         }
         function nudge(d){ go(index + d); }
         // layout
@@ -329,9 +339,11 @@
         slides.forEach(s => s.style.minWidth='100%');
 
         updateDots();
+        go(0, true);
         prev && prev.addEventListener('click', ()=>nudge(-1));
         next && next.addEventListener('click', ()=>nudge(1));
         document.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft')nudge(-1); if(e.key==='ArrowRight')nudge(1); });
+        window.addEventListener('resize', ()=> go(index, true));
       })();
     </script>
     

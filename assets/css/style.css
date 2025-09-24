@@ -4,6 +4,12 @@
 /* Reset */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Global link reset: no default blue/purple links anywhere */
+a { color: var(--silver); text-decoration: none; }
+a:visited { color: var(--silver); }
+a:hover { color: var(--silver-light); }
+a:focus { outline: 2px solid var(--glass-border); outline-offset: 2px; }
+
 /* Basis-Variablen – kalibriert auf das Kreuzbild */
 :root {
   --primary: #FFD700;
@@ -203,6 +209,11 @@ body {
 .footer-section h3 { font-family: var(--font-primary); color: var(--silver-light); margin-bottom: 1rem; }
 .footer-section a { color: var(--silver); text-decoration: none; display: block; margin-bottom: .5rem; transition: color .3s; }
 .footer-section a:hover { color: var(--silver-light); }
+
+/* Reviews (refined look, no star emojis) */
+.product-rating { display:flex; align-items:center; gap:.5rem; }
+.product-rating .stars { display:flex; gap:.15rem; }
+.product-rating .rating-count { color: var(--silver); font-size: .95rem; }
 .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--glass-border); color: var(--silver); }
 
 /* RESPONSIVE */

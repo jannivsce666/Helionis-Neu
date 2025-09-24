@@ -84,22 +84,10 @@
                     <div class="main-image">
                         <div class="media-frame">
                             <img src="assets/images/products/cube.png" alt="Mystischer Würfel" id="main-product-image">
-                            <div class="video-overlay">
-                                <video autoplay muted loop playsinline class="product-video">
-                                    <source src="assets/images/videos/cube.mp4" type="video/mp4">
-                                    Ihr Browser unterstützt keine Videos.
-                                </video>
-                            </div>
                         </div>
                     </div>
                     <div class="image-thumbnails">
                         <img src="assets/images/products/cube.png" alt="Mystischer Würfel - Hauptansicht" class="thumbnail active" onclick="showImage('assets/images/products/cube.png')">
-                        <div class="video-thumbnail" onclick="showVideo()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <span>Video</span>
-                        </div>
                     </div>
                 </div>
 
@@ -392,32 +380,7 @@
                 </div>
             </div>
 
-            <!-- Related Products -->
-            <section class="related-products">
-                <h3>Weitere mystische Objekte</h3>
-                <div class="related-grid">
-                    <div class="related-card">
-                        <div class="thumb-wrapper">
-                            <img src="assets/images/products/spirale.png" alt="Mystische Spirale">
-                        </div>
-                        <div class="rc-body">
-                            <h4>Mystische Spirale</h4>
-                            <div class="rc-price">149,99 €</div>
-                            <a href="produkt-spirale.html" class="btn-mini">DETAILS</a>
-                        </div>
-                    </div>
-                    <div class="related-card">
-                        <div class="thumb-wrapper">
-                            <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide">
-                        </div>
-                        <div class="rc-body">
-                            <h4>Mystische Pyramide</h4>
-                            <div class="rc-price">199,99 €</div>
-                            <a href="produkt-pyramide.html" class="btn-mini">DETAILS</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
         </div>
     </main>
 
@@ -511,92 +474,19 @@
           window.addToCart({ id:'mystischer-wuerfel', name:'Mystischer Würfel', price:119.99, quantity:qty, image:'assets/images/products/cube.png' });
         }
 
-        // Video and image gallery functions
+        // Bild-Anzeige (Video entfernt)
         function showImage(imageSrc) {
             const mainImage = document.getElementById('main-product-image');
-            const videoOverlay = document.querySelector('.video-overlay');
-            
             mainImage.src = imageSrc;
             mainImage.style.display = 'block';
-            videoOverlay.style.display = 'none';
-        }
-
-        function showVideo() {
-            const mainImage = document.getElementById('main-product-image');
-            const videoOverlay = document.querySelector('.video-overlay');
-            
-            mainImage.style.display = 'none';
-            videoOverlay.style.display = 'block';
         }
     </script>
     
     <style>
-        /* Modern Video Styles */
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .product-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .video-thumbnail {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--teal-dark), var(--teal-medium));
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--silver-light);
-            font-size: 0.75rem;
-            gap: 4px;
-        }
-
-        .video-thumbnail:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(26, 107, 90, 0.3);
-        }
-
-        .video-thumbnail.active {
-            border: 2px solid var(--gold-accent);
-            box-shadow: 0 0 10px rgba(230, 192, 123, 0.4);
-        }
-
-        .main-image {
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .image-thumbnails {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-            flex-wrap: wrap;
-        }
-
-        .thumbnail {
-            transition: all 0.3s ease;
-            border-radius: 8px;
-        }
-
-        .thumbnail:hover, .video-thumbnail:hover {
-            transform: scale(1.05);
-        }
+        .main-image { position: relative; overflow: hidden; border-radius: 12px; }
+        .image-thumbnails { display:flex; gap:12px; margin-top:16px; flex-wrap:wrap; }
+        .thumbnail { transition: all .3s ease; border-radius:8px; }
+        .thumbnail:hover { transform: scale(1.05); }
     </style>
 </body>
 </html>

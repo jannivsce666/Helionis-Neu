@@ -84,22 +84,10 @@
                     <div class="main-image">
                         <div class="media-frame">
                             <img src="assets/images/products/spirale.png" alt="Mystische Spirale" id="main-product-image">
-                            <div class="video-overlay">
-                                <video autoplay muted loop playsinline class="product-video">
-                                    <source src="assets/images/videos/spirale.mp4" type="video/mp4">
-                                    Ihr Browser unterstützt keine Videos.
-                                </video>
-                            </div>
                         </div>
                     </div>
                     <div class="image-thumbnails">
                         <img src="assets/images/products/spirale.png" alt="Mystische Spirale - Hauptansicht" class="thumbnail active" onclick="showImage('assets/images/products/spirale.png')">
-                        <div class="video-thumbnail" onclick="showVideo()">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                            <span>Video</span>
-                        </div>
                     </div>
                 </div>
 
@@ -361,32 +349,7 @@
                 </div>
             </div>
 
-            <!-- Related Products -->
-            <section class="related-products">
-                <h3>Weitere mystische Objekte</h3>
-                <div class="related-grid">
-                    <div class="related-card">
-                        <div class="thumb-wrapper">
-                            <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide">
-                        </div>
-                        <div class="rc-body">
-                            <h4>Mystische Pyramide</h4>
-                            <div class="rc-price">199,99 €</div>
-                            <a href="produkt-pyramide.html" class="btn-mini">DETAILS</a>
-                        </div>
-                    </div>
-                    <div class="related-card">
-                        <div class="thumb-wrapper">
-                            <img src="assets/images/products/cube.png" alt="Mystischer Würfel">
-                        </div>
-                        <div class="rc-body">
-                            <h4>Mystischer Würfel</h4>
-                            <div class="rc-price">119,99 €</div>
-                            <a href="produkt-cube.html" class="btn-mini">DETAILS</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
         </div>
     </main>
 
@@ -484,22 +447,11 @@
           window.addToCart({ id:'mystische-spirale', name:'Mystische Spirale', price:149.99, quantity:qty, image:'assets/images/products/spirale.png' });
         }
 
-        // Video and image gallery functions
+        // Bild-Anzeige (Video entfernt)
         function showImage(imageSrc) {
             const mainImage = document.getElementById('main-product-image');
-            const videoOverlay = document.querySelector('.video-overlay');
-            
             mainImage.src = imageSrc;
             mainImage.style.display = 'block';
-            videoOverlay.style.display = 'none';
-        }
-
-        function showVideo() {
-            const mainImage = document.getElementById('main-product-image');
-            const videoOverlay = document.querySelector('.video-overlay');
-            
-            mainImage.style.display = 'none';
-            videoOverlay.style.display = 'block';
         }
     </script>
 </body>

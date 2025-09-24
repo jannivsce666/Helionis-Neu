@@ -4,6 +4,10 @@
   --product-grid-gap: 3rem;
 }
 
+/* Fix: Bild nicht von Navigation überdecken */
+.main-content { padding-top: 120px; }
+@media (max-width: 860px){ .main-content { padding-top: 100px; } }
+
 .product-detail {
   display: grid;
   grid-template-columns: 1.1fr 1fr;

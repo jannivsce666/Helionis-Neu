@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helionis - Mystische Spiritualität & Esoterik</title>
+    <title>Helionis – Mystische Teelichthalter</title>
+    <link rel="stylesheet" href="./styles.css" />
     <meta name="description" content="Entdecken Sie die Welt der Spiritualität mit Helionis. Mystische Amulette, Pyramiden, Horoskope und spirituelle Beratung für Ihre persönliche Transformation.">
     <meta name="keywords" content="Spiritualität, Esoterik, Amulette, Pyramiden, Horoskope, Orakel, mystisch">
     
@@ -28,8 +29,45 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap">
     </noscript>
+
+    <!-- Mystic blue theme + slideshow styles -->
+    <style>
+      /* Mystic-blue palette */
+      body.theme-mystic{
+        background:
+          radial-gradient(1200px 800px at 10% -10%, #11265a55, transparent 70%),
+          radial-gradient(900px 700px at 90% 10%, #0e2a5e44, transparent 70%),
+          radial-gradient(1200px 800px at 50% 120%, #0a215799, transparent 70%),
+          linear-gradient(160deg, #0b1e44, #060b1a);
+        color: #e8f0ff;
+      }
+      .btn.btn-primary{background:linear-gradient(180deg,#1e3a7a,#132a5a);border-color:#6aa9ff66}
+      .mystical-glow{box-shadow:0 0 18px #6aa9ff55, inset 0 0 24px #6aa9ff33}
+
+      /* Slideshow layout */
+      .slideshow{position:relative;max-width:1100px;margin:0 auto;padding:12px 56px}
+      .slides{list-style:none;margin:0;padding:0;display:flex;gap:16px;overflow:hidden;border-radius:16px}
+      .slide{min-width:100%;position:relative}
+      .slide img{width:100%;height:460px;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.02)}
+      .caption{position:absolute;left:16px;bottom:16px;background:linear-gradient(180deg,#0a1630cc,#0a1630aa);border:1px solid #6aa9ff33;border-radius:12px;padding:10px 12px}
+      .caption h3{margin:0 0 4px 0}.caption p{margin:0;color:#9bb0d1}
+
+      .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;border:1px solid #6aa9ff55;background:radial-gradient(120% 120% at 50% 50%,#153061,#0b1c3d);color:#cfe2ff;cursor:pointer}
+      .nav-btn::before{content:"";display:block}
+      .nav-btn.left{left:8px}
+      .nav-btn.left::before{content:"‹";font-size:28px;line-height:52px;text-align:center}
+      .nav-btn.right{right:8px}
+      .nav-btn.right::before{content:"›";font-size:28px;line-height:52px;text-align:center}
+
+      .dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
+      .dots button{width:9px;height:9px;border-radius:50%;border:none;background:#6aa9ff33;cursor:pointer}
+      .dots button.active{background:#6aa9ff}
+
+      @media (max-width: 860px){.slide img{height:360px}.slideshow{padding:12px 48px}}
+      @media (max-width: 520px){.slide img{height:280px}.slideshow{padding:12px 40px}.nav-btn{width:46px;height:46px}.nav-btn::before{line-height:46px}}
+    </style>
 </head>
-<body>
+<body class="theme-mystic">
     <!-- Ultrarealistischer WebGL Rauch -->
     <!-- Smoke canvas entfernt -->
     <div class="no-webgl-fallback"></div>
@@ -51,23 +89,23 @@
     
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">HELIONIS</a>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="/" class="nav-link">Start</a></li>
-                <li><a href="shop.html" class="nav-link">Shop</a></li>
-                <li><a href="about.html" class="nav-link">Über uns</a></li>
-                <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
-                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
-            </ul>
-            
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+      <div class="nav-container">
+        <a href="index.html" class="logo">HELIONIS</a>
+        
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="index.html" class="nav-link">Start</a></li>
+          <li><a href="shop.html" class="nav-link">Shop</a></li>
+          <li><a href="about.html" class="nav-link">Über uns</a></li>
+          <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+          <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+        </ul>
+        
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+      </div>
     </nav>
     
     <!-- Hero Section -->
@@ -111,43 +149,71 @@
         </div>
     </section>
     
-    <!-- Featured Products (aktualisiert) -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Ausgewählte Objekte</h2>
-            <div class="product-grid">
-                <div class="product-card" onclick="location.href='produkt-spirale.html'">
-                    <img src="assets/images/products/spirale.png" alt="Mystische Spirale" class="product-image" loading="lazy">
-                    <h3 class="product-title">Mystische Spirale</h3>
-                    <p class="product-price">149,99 €</p>
-                    <p class="product-description">
-                        Kraftvolles Meditationsobjekt zur Aktivierung von Klarheit, Fokus und innerem Wachstum.
-                    </p>
-                    <a href="produkt-spirale.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
-                </div>
-                <div class="product-card" onclick="location.href='produkt-pyramide.html'">
-                    <img src="assets/images/products/pyramide.png" alt="Mystische Pyramide" class="product-image" loading="lazy">
-                    <h3 class="product-title">Mystische Pyramide</h3>
-                    <p class="product-price">199,99 €</p>
-                    <p class="product-description">
-                        Energetisches Kraftzentrum zur Harmonisierung von Raumenergie und spiritueller Vertiefung.
-                    </p>
-                    <a href="produkt-pyramide.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
-                </div>
-                <div class="product-card" onclick="location.href='produkt-cube.html'">
-                    <img src="assets/images/products/cube.png" alt="Mystischer Würfel" class="product-image" loading="lazy">
-                    <h3 class="product-title">Mystischer Würfel</h3>
-                    <p class="product-price">119,99 €</p>
-                    <p class="product-description">
-                        Strukturierendes Orakelwerkzeug für klare Impulse bei Entscheidungen und Reflexion.
-                    </p>
-                    <a href="produkt-cube.html" class="btn btn-primary" onclick="event.stopPropagation();">Details</a>
-                </div>
+    <!-- Slideshow Section -->
+    <section class="slideshow" aria-label="Produkte Slideshow">
+      <button class="nav-btn left" aria-label="Vorheriges Produkt" data-dir="-1"></button>
+      <ul class="slides" id="slides">
+        <li class="slide">
+          <a href="./product.html?id=aurora">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="Teelichthalter Aurora – tiefes Blau mit schimmernden Adern" />
+            <div class="caption">
+              <h3>Aurora</h3>
+              <p>Tiefes Blau, schimmernde Adern – sanfte Schutzschwingung.</p>
             </div>
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="shop.html" class="btn btn-secondary">Zum Shop</a>
+          </a>
+        </li>
+        <li class="slide">
+          <a href="./product.html?id=seraphim">
+            <img src="https://images.unsplash.com/photo-1520978792480-8e2a5a1a48e5?q=80&w=1200&auto=format&fit=crop" alt="Teelichthalter Seraphim – kobaltblau mit feinem Nebelglanz" />
+            <div class="caption">
+              <h3>Seraphim</h3>
+              <p>Kobaltblau, feiner Nebelglanz – klärende Nachtenergie.</p>
             </div>
-        </div>
+          </a>
+        </li>
+        <li class="slide">
+          <a href="./product.html?id=nebulis">
+            <img src="https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?q=80&w=1200&auto=format&fit=crop" alt="Teelichthalter Nebulis – indigoblau mit sternenhaftem Funkeln" />
+            <div class="caption">
+              <h3>Nebulis</h3>
+              <p>Indigoblau, sternenhaftes Funkeln – tiefe Einkehr.</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- NEW: Engel I -->
+        <li class="slide">
+          <a href="./product.html?id=engel1">
+            <img src="./assets/images/engel1.png" alt="Teelichthalter Engel I – gefärbtes Resin in mystischem Blau" />
+            <div class="caption">
+              <h3>Engel I</h3>
+              <p>Gefärbtes Resin, sanfter Schein – ein leiser Schutzgesang.</p>
+            </div>
+          </a>
+        </li>
+        <!-- NEW: Engel II -->
+        <li class="slide">
+          <a href="./product.html?id=engel2">
+            <img src="./assets/images/engel2.png" alt="Teelichthalter Engel II – gefärbtes Resin mit himmlischem Glanz" />
+            <div class="caption">
+              <h3>Engel II</h3>
+              <p>Indigoblaue Tiefe – Engel wachen an deiner Seite.</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <button class="nav-btn right" aria-label="Nächstes Produkt" data-dir="1"></button>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </section>
+    
+    <!-- About Teelichthalter -->
+    <section class="about">
+      <h2>Esoterische Note</h2>
+      <p>
+        Diese von Hand gefärbten Resin-Teelichthalter tragen die stille Frequenz des
+        Himmels: ein Schutzmantel in mystischem Blau. Wenn die Flamme erwacht, werden
+        Wünsche geerdet und Gedanken geklärt – Engel wachen an deiner Seite.
+      </p>
     </section>
     
     <!-- Newsletter -->
@@ -218,6 +284,47 @@
     <script src="assets/js/sprites.js"></script>
     <script src="assets/js/cart.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <!-- Lightweight slideshow logic -->
+    <script>
+      (function(){
+        const track = document.getElementById('slides');
+        if(!track) return;
+        const slides = Array.from(track.children);
+        const prev = document.querySelector('.nav-btn.left');
+        const next = document.querySelector('.nav-btn.right');
+        const dotsWrap = document.getElementById('dots');
+        let index = 0, lock = false;
+
+        function updateDots(){
+          if(!dotsWrap) return;
+          dotsWrap.innerHTML = '';
+          slides.forEach((_, i)=>{
+            const b = document.createElement('button');
+            if(i === index) b.classList.add('active');
+            b.addEventListener('click', ()=>go(i));
+            dotsWrap.appendChild(b);
+          });
+        }
+        function go(i){
+          if(lock) return;
+          lock = true;
+          index = (i + slides.length) % slides.length;
+          track.style.transform = `translateX(${-index*100}%)`;
+          track.style.transition = 'transform 380ms ease-in-out';
+          setTimeout(()=>{ track.style.transition=''; lock=false; updateDots(); }, 420);
+        }
+        function nudge(d){ go(index + d); }
+        // layout
+        track.style.display='flex';
+        slides.forEach(s => s.style.minWidth='100%');
+
+        updateDots();
+        prev && prev.addEventListener('click', ()=>nudge(-1));
+        next && next.addEventListener('click', ()=>nudge(1));
+        document.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft')nudge(-1); if(e.key==='ArrowRight')nudge(1); });
+      })();
+    </script>
     
     <!-- Firebase and Auth (only load if needed) -->
     <script type="module">

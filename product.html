@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Helionis – Teelichthalter</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body{
+      background:
+        radial-gradient(1200px 800px at 10% -10%, #11265a55, transparent 70%),
+        radial-gradient(900px 700px at 90% 10%, #0e2a5e44, transparent 70%),
+        radial-gradient(1200px 800px at 50% 120%, #0a215799, transparent 70%),
+        linear-gradient(160deg, #0b1e44, #060b1a);
+      color:#e8f0ff
+    }
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px;display:grid;gap:24px;grid-template-columns:1.2fr 1fr}
+    .media img{width:100%;height:auto;border-radius:16px;border:1px solid #6aa9ff33;box-shadow:0 18px 36px #031128aa, 0 0 24px #6aa9ff22}
+    .muted{color:#9bb0d1}
+    .btn{display:inline-block;margin-top:12px;padding:10px 16px;border-radius:10px;background:linear-gradient(180deg,#1e3a7a,#132a5a);color:#e8f0ff;text-decoration:none;border:1px solid #6aa9ff55}
+    @media (max-width:860px){.wrap{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header style="padding:18px 16px;text-align:center">
+    <a href="./index.html" style="color:#cfe2ff;text-decoration:none">← Zurück</a>
+    <h1 id="page-title" style="margin:8px 0 0 0">Mystische Teelichthalter</h1>
+  </header>
+
+  <main class="wrap">
+    <div class="media">
+      <img id="product-image" alt="Teelichthalter aus gefärbtem Resin" />
+    </div>
+    <div>
+      <h2 id="product-name">Mystischer Teelichthalter</h2>
+      <p id="product-desc" class="muted">
+        Handgegossenes Resin, in Blautönen gefärbt. Die Flamme weckt stille Führung – Engel umhüllen den Raum mit Schutz und Klarheit.
+      </p>
+      <ul class="muted" style="line-height:1.8">
+        <li>Material: Resin (gefärbt)</li>
+        <li>Verwendung: Teelichter</li>
+        <li>Schwingung: Schutz, Klarheit, Einkehr</li>
+      </ul>
+      <a class="btn" href="./index.html">Weitere Modelle ansehen</a>
+    </div>
+  </main>
+
+  <script>
+    const map = {
+      aurora: {
+        name: "Aurora",
+        img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop",
+        desc: "Tiefes Blau mit schimmernden Adern – sanfter Schutz und lichtvolle Ruhe."
+      },
+      seraphim: {
+        name: "Seraphim",
+        img: "https://images.unsplash.com/photo-1520978792480-8e2a5a1a48e5?q=80&w=1200&auto=format&fit=crop",
+        desc: "Kobaltblauer Nebelglanz – klärt die Nacht und beruhigt den Geist."
+      },
+      nebulis: {
+        name: "Nebulis",
+        img: "https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?q=80&w=1200&auto=format&fit=crop",
+        desc: "Indigoblaues Sternenflirren – führt in tiefe Einkehr."
+      },
+      engel1: {
+        name: "Engel I",
+        img: "./assets/images/engel1.png",
+        desc: "Gefärbter Resin-Teelichthalter: Mit dem ersten Flackern hebt sich ein stiller Schutzpsalm – Herz und Intuition finden Heim."
+      },
+      engel2: {
+        name: "Engel II",
+        img: "./assets/images/engel2.png",
+        desc: "Indigoblaue Weite im Harz – Engel hüllen Wünsche in himmlische Stille und leiten sie sanft den Sternen entgegen."
+      }
+    };
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    const p = map[id] || map.engel1;
+
+    document.title = `Helionis – ${p.name}`;
+    document.getElementById("page-title").textContent = p.name;
+    document.getElementById("product-name").textContent = p.name;
+    document.getElementById("product-image").src = p.img;
+    document.getElementById("product-image").alt = `Teelichthalter ${p.name} aus gefärbtem Resin`;
+    document.getElementById("product-desc").textContent = p.desc;
+  </script>
+</body>
+</html>
+</body>
+</html>

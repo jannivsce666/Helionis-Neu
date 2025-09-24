@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engel I – Teelichthalter | Helionis</title>
+  <meta name="description" content="Engel I – handgegossener Resin-Teelichthalter, zart besprüht. Sanfter Schutzklang für Herz und Raum.">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/sprites.css">
+</head>
+<body>
+  <div class="no-webgl-fallback"></div>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">HELIONIS</a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="/" class="nav-link">Start</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="about.html" class="nav-link">Über uns</a></li>
+        <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite"><use href="#cart"></use></svg> <span class="cart-count" id="cart-count">0</span></a></li>
+      </ul>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <section style="padding-top: 120px; padding-bottom: 2rem;">
+    <div class="container">
+      <nav style="color: var(--silver); font-size: 0.9rem;">
+        <a href="/" style="color: var(--silver); text-decoration: none;">Start</a>
+        <span style="margin: 0 0.5rem;">›</span>
+        <a href="shop.html" style="color: var(--silver); text-decoration: none;">Shop</a>
+        <span style="margin: 0 0.5rem;">›</span>
+        <span style="color: var(--mystical-green-light);">Engel I – Teelichthalter</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem;">
+        <div>
+          <div style="position: relative;">
+            <img src="assets/images/products/engel1.png" alt="Engel I – handbemalter Resin-Teelichthalter" style="width: 100%; height: 500px; object-fit: cover; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--shadow-glass);" loading="lazy">
+            <div style="position: absolute; top: 1rem; right: 1rem; background: var(--mystical-green); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
+              <svg class="mystical-sprite sparkle-accent"><use href="#sparkle"></use></svg> Energetisch gereinigt
+            </div>
+          </div>
+        </div>
+        <div>
+          <h1 class="hero-title" style="font-size: 2.2rem; margin-bottom: 0.5rem;">Engel I – Teelichthalter</h1>
+          <p class="product-price" style="font-size: 1.8rem; margin-bottom: 1.5rem;">€59,99</p>
+
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <h3 class="card-title">Beschreibung</h3>
+            <p style="color: var(--silver); line-height: 1.8;">
+              Aus feinem Resin gegossen, von Hand nachbearbeitet und sanft besprüht. Wenn das Teelicht entzündet wird,
+              sammelt sich das Licht in den Flügeln – ein stiller Schutzgesang, der Räume beruhigt und Herzenergie stärkt.
+            </p>
+          </div>
+
+          <div class="card" style="margin-bottom: 1.5rem;">
+            <h3 class="card-title">Spirituelle Eigenschaften</h3>
+            <ul style="color: var(--silver); line-height: 1.8; padding-left: 1.5rem;">
+              <li>Sanfte Schutzfrequenz – ruft innere Ruhe und Geborgenheit</li>
+              <li>Klärt Gedanken durch ruhiges Kerzenlicht</li>
+              <li>Stützt nächtliche Rituale und Gebete</li>
+              <li>Segnet Räume mit stiller Engel-Präsenz</li>
+            </ul>
+          </div>
+
+          <div class="card mystical-glow">
+            <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1rem;">
+              <label for="qty" class="form-label" style="margin-bottom:0;">Anzahl:</label>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn" onclick="chg(-1)">-</button>
+                <input type="number" id="qty" class="quantity-input" value="1" min="1" max="10">
+                <button type="button" class="quantity-btn" onclick="chg(1)">+</button>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;" id="buy">In den Warenkorb - <span id="sum">€59,99</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Helionis</h3>
+        <p style="color: var(--silver); line-height: 1.6;">Ihre Quelle für authentische spirituelle Produkte.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Shop</h3>
+        <a href="shop.html?category=teelichthalter">Teelichthalter</a>
+        <a href="shop.html?category=deko">Deko</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2024 Helionis. Alle Rechte vorbehalten.</p></div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script>
+    const price = 59.99;
+    function fmt(n){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n)}
+    function chg(d){ const el=document.getElementById('qty'); let v=Math.min(10,Math.max(1, parseInt(el.value||'1')+d)); el.value=v; document.getElementById('sum').textContent=fmt(v*price); }
+    document.getElementById('qty').addEventListener('change', ()=>chg(0));
+    document.getElementById('buy').addEventListener('click', ()=>{
+      const q = Math.max(1, parseInt(document.getElementById('qty').value)||1);
+      addToCart({id:'engel-1', name:'Engel I – Teelichthalter', price:price, quantity:q, image:'assets/images/products/engel1.png'});
+    });
+  </script>
+  <script src="assets/js/sprites.js"></script>
+</body>
+</html>

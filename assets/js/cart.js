@@ -48,7 +48,15 @@ let cart = migrateLegacyCarts();
 const PRODUCT_CATALOG = {
     1: { id:1, name:'Schutz-Amulett "Aegis"', price:89.90, image:'assets/images/products/amulett-schutz.svg' },
     2: { id:2, name:'Kristallpyramide "Lumina"', price:149.90, image:'assets/images/products/pyramide-kristall.svg' },
-    3: { id:3, name:'Orakeldeck "Visions"', price:49.90, image:'assets/images/products/orakel-deck.svg' }
+    3: { id:3, name:'Orakeldeck "Visions"', price:49.90, image:'assets/images/products/orakel-deck.svg' },
+    // Shop-spezifische Produkte
+    'mystische-spirale': { id:'mystische-spirale', name:'Mystische Spirale', price:149.99, image:'assets/images/products/spirale.png' },
+    'mystische-pyramide': { id:'mystische-pyramide', name:'Mystische Pyramide', price:199.99, image:'assets/images/products/pyramide.png' },
+    'mystischer-wuerfel': { id:'mystischer-wuerfel', name:'Mystischer Würfel', price:119.99, image:'assets/images/products/cube.png' },
+    // Neue Engel
+    'engel-1': { id:'engel-1', name:'Engel I – Teelichthalter', price:59.99, image:'assets/images/products/engel1.png' },
+    'engel-2': { id:'engel-2', name:'Engel II – Teelichthalter', price:64.99, image:'assets/images/products/engel2.png' },
+    'engel-ohne': { id:'engel-ohne', name:'Engel Ohne – Dekofigur', price:39.99, image:'assets/images/products/engelohne.png' }
 };
 
 // Normalized save

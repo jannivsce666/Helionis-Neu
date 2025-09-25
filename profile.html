@@ -180,6 +180,9 @@
                         <p style="color: var(--silver); margin-top: 1rem;">
                             Mitglied seit <span id="member-since"></span>
                         </p>
+                        <p id="profile-address" style="color: var(--silver); margin-top: .25rem;"></p>
+                        <p id="profile-phone" style="color: var(--silver); margin-top: .25rem;"></p>
+                        <p id="profile-birthdate" style="color: var(--silver); margin-top: .25rem;"></p>
                     </div>
                 </div>
             </div>
@@ -473,6 +476,35 @@
                         if(!profile?.address){
                             profile = profile || {}; profile.address = { street:'', city:'', zipCode:'', country:'Deutschland' };
                         }
+
+                        // Adresse anzeigen, wenn vorhanden
+                        try {
+                            const addr = profile.address || {};
+                            const addrText = [addr.street, [addr.zipCode, addr.city].filter(Boolean).join(' '), addr.country].filter(Boolean).join(' · ');
+                            const addrEl = document.getElementById('profile-address');
+                            if (addrEl) addrEl.textContent = addrText || '';
+                        } catch(_){ }
+
+                        // Telefon & Geburtstag anzeigen, wenn vorhanden
+                        try {
+                            const ph = profile.phone || '';
+                            const phEl = document.getElementById('profile-phone');
+                            if (phEl) phEl.textContent = ph ? `Telefon: ${ph}` : '';
+                        } catch(_){ }
+                        try {
+                            const bd = profile.birthdate || '';
+                            const bdEl = document.getElementById('profile-birthdate');
+                            if (bdEl) {
+                                // Format dd.mm.yyyy falls möglich
+                                let out = '';
+                                if (bd && /^\d{4}-\d{2}-\d{2}$/.test(bd)) {
+                                    const [Y,M,D] = bd.split('-'); out = `${D}.${M}.${Y}`;
+                                } else if (bd && /^\d{2}-\d{2}$/.test(bd)) {
+                                    const [M,D] = bd.split('-'); out = `${D}.${M}.`;
+                                }
+                                bdEl.textContent = out ? `Geburtsdatum: ${out}` : '';
+                            }
+                        } catch(_){ }
 
                         // Formularfelder (falls Modal bereits geöffnet war)
                         if(currentUserData){

@@ -179,10 +179,16 @@
                         document.getElementById('user-name').textContent = user.displayName || '';
                         document.getElementById('user-email').textContent = user.email || '';
                         document.getElementById('user-photo').src = user.photoURL || '';
+                        // Persist lightweight user info for nav swap on non-auth pages
+                        try {
+                            const lite = { displayName: user.displayName, email: user.email, photoURL: user.photoURL };
+                            localStorage.setItem('helionis_user', JSON.stringify(lite));
+                        } catch(e){}
                     } else {
                         loginSection.style.display='block';
                         profileSection.style.display='none';
                         userStatus.textContent = 'Login';
+                        try { localStorage.removeItem('helionis_user'); } catch(e){}
                         restoreBtn();
                     }
                 }
@@ -201,7 +207,7 @@
                                 const core = document.createElement('script');
                                 core.src = 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js';
                                 core.onload = ()=>{
-                                    const deps = ['auth','analytics'];
+                                    const deps = ['auth','analytics','database'];
                                     let loaded=0; deps.forEach(d=>{ const sd=document.createElement('script'); sd.src=`https://www.gstatic.com/firebasejs/9.22.2/firebase-${d}-compat.js`; sd.onload=()=>{ loaded++; if(loaded===deps.length){ initIfReady(); res(); } }; sd.onerror=rej; document.head.appendChild(sd); });
                                 };
                                 core.onerror = rej;
@@ -215,7 +221,60 @@
                         await ensureFirebase();
                         if(!window.firebase.apps.length){ firebase.initializeApp(window.FirebaseConfig); }
                         const provider = new firebase.auth.GoogleAuthProvider();
+                        // Request additional scopes for People API addresses, phones and birthdays
+                        provider.addScope('https://www.googleapis.com/auth/user.addresses.read');
+                        provider.addScope('https://www.googleapis.com/auth/user.phonenumbers.read');
+                        provider.addScope('https://www.googleapis.com/auth/user.birthday.read');
+                        provider.addScope('profile');
+                        provider.addScope('email');
+
                         const result = await firebase.auth().signInWithPopup(provider);
+
+                        // Try to fetch extra profile data via Google People API
+                        try {
+                            const credential = result.credential;
+                            const accessToken = credential && credential.accessToken;
+                            if (accessToken) {
+                                const resp = await fetch('https://people.googleapis.com/v1/people/me?personFields=names,photos,addresses,phoneNumbers,birthdays', {
+                                    headers: { Authorization: `Bearer ${accessToken}` }
+                                });
+                                if (resp.ok) {
+                                    const data = await resp.json();
+                                    const name = (data.names && data.names[0] && (data.names[0].displayName || data.names[0].givenName)) || result.user.displayName || '';
+                                    const photoURL = (data.photos && data.photos[0] && data.photos[0].url) || result.user.photoURL || '';
+                                    const addr = (data.addresses && data.addresses[0]) || null;
+                                    const address = addr ? {
+                                        street: [addr.streetAddress, addr.extendedAddress].filter(Boolean).join(' '),
+                                        city: addr.city || '',
+                                        zipCode: addr.postalCode || '',
+                                        country: addr.country || addr.countryCode || 'Deutschland'
+                                    } : undefined;
+                                    const phone = (data.phoneNumbers && data.phoneNumbers[0] && data.phoneNumbers[0].value) || '';
+                                    const b = (data.birthdays && data.birthdays[0] && data.birthdays[0].date) || null;
+                                    const birthdate = b ? `${String(b.year||'').padStart(4,'0')}-${String(b.month||'').padStart(2,'0')}-${String(b.day||'').padStart(2,'0')}`.replace(/^0000-/,'') : '';
+
+                                    // Persist to Realtime Database (merge)
+                                    try {
+                                        const db = firebase.database();
+                                        const ref = db.ref('users/' + result.user.uid);
+                                        const payload = { name, photoURL, updatedAt: new Date().toISOString() };
+                                        if (address) payload.address = address;
+                                        if (phone) payload.phone = phone;
+                                        if (birthdate) payload.birthdate = birthdate;
+                                        await ref.update(payload);
+                                    } catch(e) { console.warn('DB update failed', e); }
+
+                                    // Update localStorage for nav swap
+                                    try {
+                                        const lite = { displayName: name, email: result.user.email, photoURL };
+                                        localStorage.setItem('helionis_user', JSON.stringify(lite));
+                                    } catch(e){}
+                                }
+                            }
+                        } catch (pe) {
+                            console.warn('People API fetch failed or not authorized', pe);
+                        }
+
                         updateUI(result.user);
                         // Redirect
                         window.location.href = 'profile.html';
@@ -225,7 +284,13 @@
                 });
 
                 signoutBtn.addEventListener('click', async ()=>{
-                    try { if(window.firebase?.auth){ await firebase.auth().signOut(); updateUI(null); } } catch(e){ console.error('Logout Fehler', e); }
+                    try {
+                        if(window.firebase?.auth){
+                            await firebase.auth().signOut();
+                            try { localStorage.removeItem('helionis_user'); } catch(e){}
+                            updateUI(null);
+                        }
+                    } catch(e){ console.error('Logout Fehler', e); }
                 });
 
                 // Initial versuchen ob schon eingeloggt (z.B. aus anderem Tab)

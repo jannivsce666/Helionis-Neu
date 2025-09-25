@@ -52,10 +52,9 @@
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Start</a></li>
                 <li><a href="shop.html" class="nav-link">Shop</a></li>
-                <!-- Horoskop-Link entfernt -->
                 <li><a href="about.html" class="nav-link">Über uns</a></li>
                 <li><a href="cart.html" class="nav-link cart-icon"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h2l2.5 11h10l2-7H8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9.5" cy="19" r="1.5" fill="currentColor"/><circle cx="17.5" cy="19" r="1.5" fill="currentColor"/></svg> <span class="cart-count" id="cart-count">0</span></a></li>
-                <li><a href="login.html" class="nav-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
+                <li><a href="login.html" class="nav-link" id="auth-link"><svg class="mystical-sprite" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" fill="currentColor"/></svg> <span id="user-status">Login</span></a></li>
             </ul>
             
             <div class="hamburger" id="hamburger">
@@ -124,16 +123,188 @@
                                 <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
                             </div>
                         </div>
-
                         <button class="btn btn-primary add-to-cart-btn" onclick="addSpiralToCart()">
                             <svg class="mystical-sprite small"><use href="#cart"></use></svg>
                             In den Warenkorb
                         </button>
 
-                        <button class="btn btn-secondary wishlist-btn">Zur Wunschliste</button>
+                        <button class="btn btn-secondary wishlist-btn">
+                            <svg class="mystical-sprite small"><use href="#heart-outline"></use></svg>
+                            Zur Wunschliste
+                        </button>
                     </div>
 
-                    
+                    <div class="delivery-info">
+                        <div class="info-item"><strong>Kostenloser Versand</strong> ab 75€ Bestellwert</div>
+                        <div class="info-item"><strong>Lieferzeit:</strong> 5-7 Werktage (Sonderanfertigung)</div>
+                        <div class="info-item"><strong>Sichere Bezahlung</strong> – SSL-verschlüsselt</div>
+                        <div class="info-item">
+                            <strong><svg class="mystical-sprite small"><use href="#return-arrow"></use></svg> 30 Tage Rückgaberecht</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-tabs">
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('description')">Detaillierte Beschreibung</button>
+                    <button class="tab-btn" onclick="showTab('usage')">Anwendung & Meditation</button>
+                    <button class="tab-btn" onclick="showTab('reviews')">Bewertungen (89)</button>
+                    <button class="tab-btn" onclick="showTab('shipping')">Versand & Rückgabe</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="description" class="tab-panel active">
+                        <h3>Die Mystische Spirale - Portal zur inneren Transformation</h3>
+                        <p>Seit Jahrtausenden ist die Spirale eines der mächtigsten Symbole der Menschheit. Sie repräsentiert den ewigen Kreislauf des Lebens, Wachstum, Evolution und die Reise der Seele durch verschiedene Bewusstseinszustände.</p>
+                        
+                        <h4>Spirituelle Bedeutung der Spirale</h4>
+                        <p>Die Spiralform findet sich überall in der Natur - von der DNS-Struktur bis zu Galaxien. Diese universelle Form trägt eine besondere Energie in sich, die Transformation und spirituelles Wachstum fördert. Unsere Mystische Spirale konzentriert diese natürliche Kraft in einem wunderschönen Meditationsobjekt.</p>
+                        
+                        <h4>Handwerkskunst und Materialien</h4>
+                        <p>Jede Spirale wird von erfahrenen tibetischen Handwerkern in monatelanger Arbeit gefertigt. Das vergoldete Messing bildet die perfekte Basis für die Spiralform, während der eingearbeitete Quarzkristall-Kern die Energie verstärkt und harmonisiert.</p>
+                        
+                        <h4>Energetische Eigenschaften</h4>
+                        <p>Nach der Fertigstellung wird jede Spirale 7 Tage lang in einem tibetischen Kloster aufgeladen. Mönche rezitieren spezielle Mantras und führen Energieübertragungsrituale durch, die der Spirale ihre besondere spirituelle Kraft verleihen.</p>
+                        
+                        <h4>Chakra-Harmonisierung</h4>
+                        <p>Die Spiralenergie wirkt besonders stark auf das Kronenchakra und das Dritte Auge. Sie kann dabei helfen, blockierte Energien zu lösen und einen freien Energiefluss durch alle Chakren zu fördern.</p>
+                    </div>
+
+                    <div id="usage" class="tab-panel">
+                        <h3>Anwendung und Meditation mit der Mystischen Spirale</h3>
+                        
+                        <h4>Grundlegende Meditation</h4>
+                        <ol>
+                            <li>Setzen Sie sich in eine bequeme Meditationsposition</li>
+                            <li>Platzieren Sie die Spirale vor sich auf Augenhöhe</li>
+                            <li>Atmen Sie tief ein und konzentrieren Sie sich auf die Spiralform</li>
+                            <li>Folgen Sie mit den Augen der Spiralbewegung von außen nach innen</li>
+                            <li>Lassen Sie Ihre Gedanken der Spiralenergie folgen</li>
+                            <li>Meditieren Sie 10-20 Minuten in dieser Weise</li>
+                        </ol>
+                        
+                        <h4>Chakra-Reinigung</h4>
+                        <ul>
+                            <li>Bewegen Sie die Spirale langsam über Ihre Chakren</li>
+                            <li>Visualisieren Sie, wie die Spiralenergie Blockaden löst</li>
+                            <li>Spüren Sie die harmonisierende Wirkung auf Ihre Energiezentren</li>
+                            <li>Beenden Sie mit einer Dankbarkeitsmeditation</li>
+                        </ul>
+                        
+                        <h4>Tägliche Pflege</h4>
+                        <ul>
+                            <li>Reinigen Sie die Spirale wöchentlich mit einem weichen Tuch</li>
+                            <li>Stellen Sie sie über Nacht auf Bergkristall oder Amethyst</li>
+                            <li>Bei Vollmond können Sie sie draußen "aufladen" lassen</li>
+                            <li>Behandeln Sie sie mit Respekt als heiliges Objekt</li>
+                        </ul>
+                    </div>
+
+                    <div id="reviews" class="tab-panel">
+                        <h3>Kundenbewertungen</h3>
+                        
+                        <div class="reviews-summary">
+                            <div class="overall-rating">
+                                <div class="rating-stars">
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                    <svg class="mystical-sprite"><use href="#star"></use></svg>
+                                </div>
+                                <div class="rating-text">4.8 von 5 Sternen (89 Bewertungen)</div>
+                            </div>
+                        </div>
+
+                        <div class="reviews-list">
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">David K.</div>
+                                    <div class="review-date">vor 2 Monaten</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Als Yoga-Lehrer kann ich diese Spirale nur empfehlen. Sie verstärkt die Energie im Raum enorm und meine Schüler spüren den Unterschied sofort. Ein Muss für jeden spirituell Suchenden!"</p>
+                                </div>
+                            </div>
+                            
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Maria S.</div>
+                                    <div class="review-date">vor 1 Monat</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Wunderschöne Verarbeitung und die Energie ist wirklich spürbar. Meine Meditationen sind viel tiefer geworden seit ich die Spirale verwende. Absolute Empfehlung!"</p>
+                                </div>
+                            </div>
+                            
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="reviewer-name">Thomas R.</div>
+                                    <div class="review-date">vor 3 Wochen</div>
+                                    <div class="review-rating">
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                        <svg class="mystical-sprite small"><use href="#star"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="review-text">
+                                    <p>"Schnelle Lieferung, sehr gut verpackt. Die Spirale ist noch schöner als auf den Bildern. Die Qualität rechtfertigt definitiv den Preis."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="shipping" class="tab-panel">
+                        <h3>Versand und Rückgabe</h3>
+                        
+                        <h4>Besondere Versandbedingungen</h4>
+                        <p>Da jede Mystische Spirale ein handgefertigtes Unikat ist, benötigen wir 5-7 Werktage für die Vorbereitung und energetische Aufladung vor dem Versand.</p>
+                        
+                        <h4>Versandinformationen</h4>
+                        <ul>
+                            <li><strong>Kostenloser Versand</strong> ab 75€ Bestellwert</li>
+                            <li><strong>Standardversand:</strong> 9,99€ (5-7 Werktage)</li>
+                            <li><strong>Express nicht verfügbar</strong> (aufgrund Energetisierungszeit)</li>
+                            <li><strong>Internationale Lieferung:</strong> Verfügbar in alle EU-Länder</li>
+                        </ul>
+                        
+                        <h4>Besondere Verpackung</h4>
+                        <p>Die Spirale wird in einer speziellen, energetisch neutralen Verpackung geliefert, die mit schützenden Symbolen versehen ist. Ein ausführliches Handbuch zur Anwendung und ein Echtheitszertifikat sind ebenfalls enthalten.</p>
+                        
+                        <h4>Rückgaberecht</h4>
+                        <ul>
+                            <li><strong>30 Tage Rückgaberecht</strong> ab Erhalt der Ware</li>
+                            <li>Bei Rückgabe wird eine energetische Neuaufladung durchgeführt</li>
+                            <li>Kostenlose Rücksendung bei Mängeln oder falscher Lieferung</li>
+                            <li>Normale Rücksendekosten: 15,99€ (aufgrund Spezialverpackung)</li>
+                        </ul>
+                        
+                        <h4>Garantie und Service</h4>
+                        <ul>
+                            <li><strong>5 Jahre Garantie</strong> auf Materialfehler</li>
+                            <li><strong>Lebenslange spirituelle Beratung</strong> durch unsere Meister</li>
+                            <li>Jährliche kostenlose Energetisierung auf Wunsch</li>
+                            <li>Reparaturservice für handwerkliche Schäden</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
@@ -226,5 +397,34 @@
             mainImage.style.display = 'block';
         }
     </script>
+    
+    <!-- Auth State Management -->
+    <script type="module">
+        // Lightweight auth state check for navigation
+        const userStatus = document.getElementById('user-status');
+        const authLink = document.getElementById('auth-link');
+        const userData = localStorage.getItem('helionis_user');
+        
+        if (userData && userStatus && authLink) {
+            try {
+                const user = JSON.parse(userData);
+                userStatus.textContent = user.displayName?.split(' ')[0] || 'Profil';
+                authLink.href = 'profile.html';
+            } catch (e) {
+                console.log('No user data found');
+            }
+        }
+        
+        // Load Firebase auth if available
+        if (window.location.pathname.includes('login') || window.location.pathname.includes('profile')) {
+            import('./assets/js/auth-state.js').catch(err => {
+                console.log('Auth not needed on this page');
+            });
+        }
+    </script>
+    
+    <script src="assets/js/sprites.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

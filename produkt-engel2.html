@@ -117,6 +117,20 @@
 
   <script src="assets/js/main.js"></script>
   <script src="assets/js/cart.js"></script>
+  
+  <script>
+    // Add to cart functionality for Engel II
+    function addToCart() {
+      const quantity = parseInt(document.getElementById('quantity')?.value) || 1;
+      window.addToCart({
+        id: 'engel-2-teelichthalter',
+        name: 'Engel II – Teelichthalter',
+        price: 64.99,
+        quantity: quantity,
+        image: 'assets/images/products/engel2.png'
+      });
+    }
+  </script>
   <script>
     const price = 64.99;
     function fmt(n){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n)}

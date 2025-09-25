@@ -306,6 +306,9 @@
         let index = 0, lock = false;
 
         function viewportWidth(){
+          // Use actual slide width to avoid gaps where images appear to vanish
+          const first = slides[0];
+          if (first) return first.getBoundingClientRect().width;
           const vp = track.parentElement; return vp ? vp.clientWidth : window.innerWidth;
         }
 
@@ -336,7 +339,11 @@
         function nudge(d){ go(index + d); }
         // layout
         track.style.display='flex';
-        slides.forEach(s => s.style.minWidth='100%');
+        slides.forEach(s => {
+          s.style.minWidth='100%';
+          const img = s.querySelector('img');
+          if(img){ img.style.visibility = 'visible'; img.style.opacity = '1'; }
+        });
 
         updateDots();
         go(0, true);

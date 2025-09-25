@@ -52,13 +52,7 @@
 .btn-primary.add-to-cart-btn svg { width:1.1rem; height:1.1rem; }
 
 .product-info-panels { margin-top:3rem; }
-.tab-buttons { display:flex; gap:.75rem; flex-wrap:wrap; }
-.tab-btn { background:#0f2220; color:var(--silver-light); border:1px solid rgba(255,255,255,.07); padding:.75rem 1.15rem; border-radius:30px; cursor:pointer; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; transition:.25s; }
-.tab-btn.active, .tab-btn:hover { background:var(--teal-medium); border-color:var(--teal-light); }
-
-.tab-panel { display:none; animation: fade .5s ease; }
-.tab-panel.active { display:block; }
-@keyframes fade { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+/* Tabs entfernt – Styles bereinigt */
 
 .product-features { display:grid; gap:.65rem; margin:1.8rem 0 2.2rem; }
 .product-features .feature { background:#0f2220; border:1px solid rgba(255,255,255,.05); padding:.85rem 1.05rem; border-radius:10px; font-size:.85rem; line-height:1.35rem; position:relative; }
@@ -81,7 +75,13 @@
   .product-title { font-size:2rem; }
   .price-main { font-size:1.7rem; }
   .product-detail { gap:2rem; }
-  .image-thumbnails img, .image-thumbnails .video-thumbnail { width:70px; height:70px; }
+  .media-frame { max-width:100%; padding:8px; border-radius:16px; }
+  .media-frame img { border-radius:12px; }
+  .image-thumbnails { gap:10px; }
+  .image-thumbnails img, .image-thumbnails .video-thumbnail { width:64px; height:64px; }
+  .quantity-controls { gap:6px; }
+  .btn-primary.add-to-cart-btn { width:100%; }
+  .quantity-selector { justify-content:space-between; width:100%; }
 }
 
 /* Ergänzungen: Medienrahmen & Related Products */
@@ -103,3 +103,8 @@
 /* Adjust main layout spacing when media shrinks */
 .product-detail {grid-template-columns:480px 1fr;}
 @media (max-width:1100px){ .product-detail {grid-template-columns:1fr;} }
+@media (max-width:600px){
+  .product-detail { grid-template-columns:1fr; gap:1.4rem; }
+  .product-actions { gap:1rem; }
+  #quantity { width:52px; }
+}

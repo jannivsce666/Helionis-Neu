@@ -232,12 +232,19 @@
 
                         // Try to fetch extra profile data via Google People API
                         try {
-                            const credential = result.credential;
+                            const credential = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
                             const accessToken = credential && credential.accessToken;
+                            console.log('Access token available:', !!accessToken);
+                            
                             if (accessToken) {
+                                console.log('Fetching People API data...');
                                 const resp = await fetch('https://people.googleapis.com/v1/people/me?personFields=names,photos,addresses,phoneNumbers,birthdays', {
-                                    headers: { Authorization: `Bearer ${accessToken}` }
+                                    headers: { 
+                                        'Authorization': `Bearer ${accessToken}`,
+                                        'Accept': 'application/json'
+                                    }
                                 });
+                                console.log('People API response status:', resp.status);
                                 if (resp.ok) {
                                     const data = await resp.json();
                                     const name = (data.names && data.names[0] && (data.names[0].displayName || data.names[0].givenName)) || result.user.displayName || '';
@@ -272,7 +279,7 @@
                                 }
                             }
                         } catch (pe) {
-                            console.warn('People API fetch failed or not authorized', pe);
+                            console.error('People API fetch failed:', pe);
                         }
 
                         updateUI(result.user);

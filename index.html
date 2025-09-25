@@ -296,14 +296,23 @@
 
     <!-- Lightweight slideshow logic -->
     <script>
-      (function(){
+      document.addEventListener('DOMContentLoaded', function(){
         const track = document.getElementById('slides');
-        if(!track) return;
+        if(!track) {
+          console.error('Slideshow: #slides not found');
+          return;
+        }
         const slides = Array.from(track.children);
+        if(slides.length === 0) {
+          console.error('Slideshow: No slides found');
+          return;
+        }
         const prev = document.querySelector('.nav-btn.left');
         const next = document.querySelector('.nav-btn.right');
         const dotsWrap = document.getElementById('dots');
         let index = 0, lock = false;
+        
+        console.log('Slideshow initialized with', slides.length, 'slides');
 
         function viewportWidth(){
           // Use actual slide width to avoid gaps where images appear to vanish
@@ -351,7 +360,9 @@
         next && next.addEventListener('click', ()=>nudge(1));
         document.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft')nudge(-1); if(e.key==='ArrowRight')nudge(1); });
         window.addEventListener('resize', ()=> go(index, true));
-      })();
+        
+        console.log('Slideshow event listeners attached');
+      });
     </script>
     
     <!-- Firebase and Auth (only load if needed) -->
